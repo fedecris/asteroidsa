@@ -52,6 +52,11 @@ public class FastRenderView extends SurfaceView implements Runnable {
         	for (int i=0; i < spriteSize; i++)
         		Globals.asteroids.get(i).update();
 
+        	// Update model for each star
+        	spriteSize = Globals.stars.size();
+        	for (int i=0; i < spriteSize; i++)
+        		Globals.stars.get(i).update();        	
+        	
         	// Update model for the ship
         	Globals.starShip.update();
         	
@@ -71,6 +76,11 @@ public class FastRenderView extends SurfaceView implements Runnable {
     private void drawSurface(Canvas canvas) {
     	// Clear screen
     	canvas.drawRGB(0, 0, 0);
+    	
+    	// draw stars!
+    	spriteSize = Globals.stars.size();
+    	for (int i=0; i < spriteSize; i++)
+    		Globals.stars.get(i).draw(canvas);
     	
     	// draw each asteroid
     	spriteSize = Globals.asteroids.size();
