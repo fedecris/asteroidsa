@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import android.graphics.Point;
 import ar.com.federicocristina.asteroidsa.model.Asteroid;
+import ar.com.federicocristina.asteroidsa.model.Star;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
 
 public class Globals {
@@ -14,6 +15,8 @@ public class Globals {
 	public static float[] acel = {1, 2, 0};
 	// Asteroids collection
 	public volatile static Vector<Asteroid> asteroids = new Vector<Asteroid>();
+	// Stars collection
+	public volatile static Vector<Star> stars = new Vector<Star>();	
 	// Our ship!
 	public static StarShip starShip = null;
 	// Level
@@ -22,14 +25,19 @@ public class Globals {
 	public static int lives = 5;
 	// Points
 	public static int points = 0;
+	// Points
+	public static int MAX_STARS = 50; 
 	
 	/**
 	 * Initial values
 	 */
 	public static void startup()
 	{
-		// A star ship and at least one asteroid
+		// A star ship, stars and at least one asteroid
         Globals.starShip = new StarShip();
+        stars.clear();
+        for (int i=0; i<MAX_STARS; i++)
+        	new Star();
         asteroids.clear();
         for (int i=0; i<level; i++)
         	new Asteroid();
