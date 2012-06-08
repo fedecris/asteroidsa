@@ -13,8 +13,8 @@ public class StarShip extends Sprite {
 	// Path for drawing ship
 	private Path p = new Path();
 	// Soften accelerometer reading for movement & heading
-	protected static final float SOFT_ROTATION = 15f;
-	protected static final float SOFT_THROOTLE = 15f;
+	protected static final float SOFT_ROTATION = 20f;
+	protected static final float SOFT_THROOTLE = 20f;
 	// Dead zone (rotation)
 	protected static final float DEAD_ZONE_ROTATION = 0.5f;
 	// Dead zone (throttle)	
@@ -29,10 +29,11 @@ public class StarShip extends Sprite {
 	 */
 	public StarShip()
 	{
-		position.x = 100;
-		position.y = 100;
-		width = 20;
-		height = 20;
+		topSpeed = .5f;
+		position.x = 10;
+		position.y = 10;
+		width = 3 * Globals.model2canvas.x;
+		height = 3 * Globals.model2canvas.x;
 		paint.setColor(Color.GREEN);
 		paint.setStrokeWidth(4);
         for (int j = 0; j < AMMO_COUNT; j++)
@@ -51,8 +52,8 @@ public class StarShip extends Sprite {
 		
 		// Change speed according to accelerometer
 		if (Globals.acel[0] - DEAD_ZONE_THROOTLE < 0) {
-	    	vector.x = vector.x + (float)Math.cos(heading) * -(Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE; 
-	        vector.y = vector.y + (float)Math.sin(heading) * -(Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE;
+	    	vector.x = vector.x + (float)Math.cos(heading) * - (Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE; 
+	        vector.y = vector.y + (float)Math.sin(heading) * - (Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE;
 	        if (vector.x > topSpeed) vector.x = topSpeed;
 	        if (vector.x < -topSpeed) vector.x = -topSpeed;
 	        if (vector.y > topSpeed) vector.y = topSpeed;
@@ -63,10 +64,10 @@ public class StarShip extends Sprite {
         // collision with an asteroid?
 		for (Asteroid a : Globals.asteroids)
 			if (a.active &&
-	       			position.x > a.position.x - a.width/1f &&  
-	       			position.x < a.position.x + a.width/1f && 
-	       			position.y > a.position.y - a.height/1f &&
-	       			position.y < a.position.y + a.height/1f)
+	       			position.x > a.position.x - a.width/4f &&  
+	       			position.x < a.position.x + a.width/4f && 
+	       			position.y > a.position.y - a.height/4f &&
+	       			position.y < a.position.y + a.height/4f)
 	       		{  
                 	Globals.lifeLost();
 	       		}
@@ -97,16 +98,18 @@ public class StarShip extends Sprite {
 		// Wings
 		paint.setColor(Color.GREEN);
 		p.reset();
-		p.moveTo(position.x + (float)Math.cos(heading) * width, 			position.y + (float)Math.sin(heading) * height );
-		p.lineTo(position.x + (float)Math.cos((heading+90)%360) * width, 	position.y + (float)Math.sin((heading+90)%360) * height );
-		p.lineTo(position.x + (float)Math.cos((heading-90)%360) * width, 	position.y + (float)Math.sin((heading-90)%360) * height );
-		p.lineTo(position.x + (float)Math.cos(heading) * width, 			position.y + (float)Math.sin(heading) * height );
+		float posX = position.x * Globals.model2canvas.x;
+		float posY = position.y * Globals.model2canvas.y;
+		p.moveTo(posX + (float)Math.cos(heading) * width, 			posY + (float)Math.sin(heading) * height );
+		p.lineTo(posX + (float)Math.cos((heading+90)%360) * width, 	posY + (float)Math.sin((heading+90)%360) * height );
+		p.lineTo(posX + (float)Math.cos((heading-90)%360) * width, 	posY + (float)Math.sin((heading-90)%360) * height );
+		p.lineTo(posX + (float)Math.cos(heading) * width, 			posY + (float)Math.sin(heading) * height );
 		canvas.drawPath(p, paint);	
 		
 		// Main line ship
 		paint.setColor(Color.RED);
-		canvas.drawLine(position.x, position.y, (float)(position.x+Math.cos(heading) * width), (float)(position.y+Math.sin(heading) * height), paint);
-		canvas.drawLine(position.x, position.y, (float)(position.x-Math.cos(heading) * width/2), (float)(position.y-Math.sin(heading) * height/2), paint);
+		canvas.drawLine(posX, posY, (float)(posX + Math.cos(heading) * width), (float)(posY + Math.sin(heading) * height), paint);
+		canvas.drawLine(posX, posY, (float)(posX - Math.cos(heading) * width/2), (float)(posY - Math.sin(heading) * height/2), paint);
 		
 	    // draw my laser shots!
 	    for (LaserBeam aBeam : ammo)

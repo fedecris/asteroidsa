@@ -3,6 +3,7 @@ package ar.com.federicocristina.asteroidsa.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -52,6 +53,8 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
         }
         
         // Initialize
+		Globals.model2canvas = new PointF((float)Globals.canvasSize.x / (float)Globals.modelSize.x, (float)Globals.canvasSize.y / (float)Globals.modelSize.y);
+		Globals.canvas2model = new PointF((float)Globals.modelSize.x / (float)Globals.canvasSize.x, (float)Globals.modelSize.y / (float)Globals.canvasSize.y);
         Globals.startup();
     }
     
