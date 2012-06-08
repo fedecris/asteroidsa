@@ -14,10 +14,12 @@ public class LaserBeam extends Sprite {
 	 */
     public void fire(float xPos, float yPos, float heading)
     {
+    	width = 2 * Globals.model2canvas.x;
+    	height = 2 * Globals.model2canvas.y;
         position.x = xPos;
         position.y = yPos;
-        vector.x = (float)Math.cos(heading) * 5f; 
-        vector.y = (float)Math.sin(heading) * 5f;
+        vector.x = (float)Math.cos(heading) * 1.5f; 
+        vector.y = (float)Math.sin(heading) * 1.5f;
         this.heading = heading;
         active = true;
     }
@@ -35,10 +37,10 @@ public class LaserBeam extends Sprite {
 		Asteroid targetAsteroid = null;
 		for (Asteroid a : Globals.asteroids)
        		if (a.active &&
-       			position.x > a.position.x - a.width/1.2f &&  
-       			position.x < a.position.x + a.width/1.2f && 
-       			position.y > a.position.y - a.height/1.2f &&
-       			position.y < a.position.y + a.height/1.2f)
+       			position.x > a.position.x - a.width/4f &&  
+       			position.x < a.position.x + a.width/4f && 
+       			position.y > a.position.y - a.height/4f &&
+       			position.y < a.position.y + a.height/4f)
        		{
            		active = false;
            		targetAsteroid = a;
@@ -56,10 +58,10 @@ public class LaserBeam extends Sprite {
         	return;
     	paint.setStrokeWidth(4);
     	paint.setColor(Color.RED);
-        canvas.drawLine(position.x, 
-        				position.y, 
-        				position.x + (float)Math.cos(heading) * width, 
-        				position.y + (float)Math.sin(heading) * height, 
+        canvas.drawLine(position.x * Globals.model2canvas.x, 
+        				position.y * Globals.model2canvas.y, 
+        				position.x * Globals.model2canvas.x + (float)Math.cos(heading) * width, 
+        				position.y * Globals.model2canvas.y + (float)Math.sin(heading) * height, 
         				paint );
 	}
 	

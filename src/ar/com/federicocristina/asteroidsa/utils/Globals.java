@@ -3,14 +3,21 @@ package ar.com.federicocristina.asteroidsa.utils;
 import java.util.Vector;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 import ar.com.federicocristina.asteroidsa.model.Asteroid;
 import ar.com.federicocristina.asteroidsa.model.Star;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
 
 public class Globals {
 
+	// Model size
+	public static Point modelSize = new Point(100, 100); 
 	// Screen size
 	public static Point canvasSize = null;
+	// Relation between model & screen size (example: (8, 4.8) in a 800x480 grid).
+	public static PointF model2canvas = null;
+	// Relation between model & screen size (example: (.080, .048) in a 800x480 grid).
+	public static PointF canvas2model = null;	
 	// Accelerometer vectors
 	public static float[] acel = {1, 2, 0};
 	// Asteroids collection
@@ -25,8 +32,10 @@ public class Globals {
 	public static int lives = 5;
 	// Points
 	public static int points = 0;
-	// Points
-	public static int MAX_STARS = 50; 
+	// Total front stars
+	public static int MAX_FRONT_STARS = 50; 
+	// Total back stars
+	public static int MAX_BACK_STARS = 50; 	
 	
 	/**
 	 * Initial values
@@ -36,8 +45,10 @@ public class Globals {
 		// A star ship, stars and at least one asteroid
         Globals.starShip = new StarShip();
         stars.clear();
-        for (int i=0; i<MAX_STARS; i++)
-        	new Star();
+        for (int i=0; i<MAX_BACK_STARS; i++)
+        	new Star(false);               
+        for (int i=0; i<MAX_FRONT_STARS; i++)
+        	new Star(true);
         asteroids.clear();
         for (int i=0; i<level; i++)
         	new Asteroid();

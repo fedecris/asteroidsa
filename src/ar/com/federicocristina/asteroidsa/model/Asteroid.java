@@ -17,14 +17,18 @@ public class Asteroid extends Sprite {
 	// Transformation matrix
 	Matrix matrix = new Matrix();
 	
+	// Asteroid Stamina Energy!
+	protected int energy = 3;
+	
     // initial size
-	protected int initialWidth = 40;
-	protected int initialHeight = 40;
+	protected int initialWidth =  6 * (int)Globals.model2canvas.x;
+	protected int initialHeight = 6 * (int)Globals.model2canvas.x;
     
 	
-	public Asteroid(float xPos, float yPos, float pWidth, float pHeight)
+	public Asteroid(float xPos, float yPos, float pWidth, float pHeight, int pEnergy)
 	{
 		this();
+		energy = pEnergy;
 		position.x = xPos;
 		position.y = yPos;
 		width = pWidth;
@@ -34,14 +38,14 @@ public class Asteroid extends Sprite {
 		
 	
 	public Asteroid() {
-		position.x = Globals.canvasSize.x - Globals.starShip.position.x;
-		position.y = Globals.canvasSize.y - Globals.starShip.position.y;
+		position.x = Globals.modelSize.x - Globals.starShip.position.x;
+		position.y = Globals.modelSize.y - Globals.starShip.position.y;
 		width = initialWidth;
 		height = initialHeight;
-		vector.x = (float)(Math.random() - 0.5f) * 5f;
-		vector.y = (float)(Math.random() - 0.5f) * 5f;
+		vector.x = (float)(Math.random() - 0.5f) * 1f;
+		vector.y = (float)(Math.random() - 0.5f) * 1f;
         heading = 0;
-        headingSpeed = (float)(Math.random() - 0.5f) * 3f;
+        headingSpeed = (float)(Math.random() - 0.5f) * 1f;
         margin = width;
         createShape();
         active = true;
@@ -77,16 +81,20 @@ public class Asteroid extends Sprite {
 		paint.setColor(Color.YELLOW);
 
 		// Rotate original shape
-		matrix.reset();
-		matrix.setRotate(headingSpeed, width / 4f, height / 4f);
-		shape.transform(matrix);
-
-		// Copy, translate and draw the copy
-		Path dst = new Path(shape);
-		matrix.reset();
-		matrix.setTranslate(position.x, position.y);
-		dst.transform(matrix);
-		canvas.drawPath(dst, paint);
+//		matrix.reset();
+//		matrix.setRotate(headingSpeed, width /4f, height /4f); 
+//		shape.transform(matrix);
+//
+//		// Copy, translate and draw the copy
+//		Path dst = new Path(shape);
+//		matrix.reset();
+//		matrix.setTranslate(position.x * Globals.model2canvas.x - position.x, position.y * Globals.model2canvas.y - position.y);
+//		dst.transform(matrix);
+//		canvas.drawPath(dst, paint);
+		
+		canvas.drawCircle(position.x * Globals.model2canvas.x, position.y * Globals.model2canvas.y, width, paint);
+//		canvas.drawArc(oval, startAngle, sweepAngle, useCenter, paint)
+//		canvas.draw
 		
 	}
 	
@@ -94,14 +102,15 @@ public class Asteroid extends Sprite {
 	{
 		// big enough?
 		Globals.points += 10;
-        if (width > 5)
+		energy--;
+        if (energy > 0)
         {
             // from 1 big asteroid -> 2 small pieces
             width = width / 2;
             height = height / 2;        
             createShape();
 
-            new Asteroid(position.x, position.y, width, height);
+            new Asteroid(position.x, position.y, width, height, energy);
         }
         else
         {

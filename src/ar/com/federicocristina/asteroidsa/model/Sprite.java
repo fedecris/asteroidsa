@@ -10,13 +10,13 @@ import ar.com.federicocristina.asteroidsa.utils.Globals;
 public abstract class Sprite {
 
 	// Size
-	protected float width = 10, height = 10;
+	protected float width = 1, height = 1;
 	// Current position
 	protected PointF position = new PointF(100, 100);
 	// Current directional speed
 	protected PointF vector = new PointF(0, 0);
 	// Max speed
-	protected float topSpeed = 3f;
+	protected float topSpeed = 1f;
 	// Heading angle
 	protected float heading = 0;
 	// Heading angle speed
@@ -66,24 +66,24 @@ public abstract class Sprite {
 	 */
 	public void checkMargins(boolean cycle)
 	{
-		if (position.x > Globals.canvasSize.x + margin && vector.x > 0)
+		if (position.x > Globals.modelSize.x + margin && vector.x > 0)
 			if (cycle)
 				position.x = -margin;
 			else
 				active = false;
-        if (position.x < -margin && position.x < 0)
+        if (position.x < -margin && vector.x < 0)
         	if (cycle)
-        		position.x = Globals.canvasSize.x + margin;
+        		position.x = Globals.modelSize.x + margin;
 			else
 				active = false;        
-        if (position.y > Globals.canvasSize.y && vector.y > 0)
+        if (position.y > Globals.modelSize.y + margin && vector.y > 0)
         	if (cycle)
         		position.y = -margin;
 			else
 				active = false;        
-        if (position.y < -margin && position.y < 0)
+        if (position.y < -margin && vector.y < 0)
         	if (cycle)        	
-        		position.y = Globals.canvasSize.y;
+        		position.y = Globals.modelSize.y + margin;
 			else
 				active = false;        
 	}
