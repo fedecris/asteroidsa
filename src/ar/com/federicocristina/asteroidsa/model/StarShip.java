@@ -68,14 +68,9 @@ public class StarShip extends Sprite {
 		{
 			a = Globals.asteroids.get(i);
 			if (a!=null && a.active &&
-//					position.x == a.position.x && position.y == a.position.y)
-//					Math.pow((position.x - a.position.x), 2) + Math.pow((position.y - a.position.y), 2) < (a.width*a.width)/8) 
-	       			position.x + width/4f > a.position.x - a.width/4f &&  
-	       			position.x - width/4f < a.position.x + a.width/4f && 
-	       			position.y + height/4f > a.position.y - a.height/4f &&
-	       			position.y - height/4f < a.position.y + a.height/4f)
+				((position.x - a.position.x)*(position.x - a.position.x) + (position.y - a.position.y)*(position.y - a.position.y)) < a.width/4*a.width/4 ) 
 	       		{  
-//					Log.d("CRASH", position.x + ", " + position.y + " - " + a.position.x + "," + a.position.y);
+					Log.d("CRASH", position.x + ", " + position.y + " - " + a.position.x + "," + a.position.y);
                 	Globals.lifeLost();
 	       		}
 		}

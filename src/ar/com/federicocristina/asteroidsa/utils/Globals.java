@@ -33,9 +33,9 @@ public class Globals {
 	// Points
 	public static int points = 0;
 	// Total front stars
-	public static int MAX_FRONT_STARS = 50; 
+	public static int MAX_FRONT_STARS = 0; 
 	// Total back stars
-	public static int MAX_BACK_STARS = 50; 	
+	public static int MAX_BACK_STARS = 0; 	
 	
 	/**
 	 * Initial values
