@@ -37,10 +37,7 @@ public class LaserBeam extends Sprite {
 		Asteroid targetAsteroid = null;
 		for (Asteroid a : Globals.asteroids)
        		if (a.active &&
-       			position.x > a.position.x - a.width/4f &&  
-       			position.x < a.position.x + a.width/4f && 
-       			position.y > a.position.y - a.height/4f &&
-       			position.y < a.position.y + a.height/4f)
+       		    ((position.x - a.position.x)*(position.x - a.position.x) + (position.y - a.position.y)*(position.y - a.position.y)) < a.width/4*a.width/4  )
        		{
            		active = false;
            		targetAsteroid = a;
