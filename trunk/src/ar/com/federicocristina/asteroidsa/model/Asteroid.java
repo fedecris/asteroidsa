@@ -21,8 +21,8 @@ public class Asteroid extends Sprite {
 	protected int energy = 3;
 	
     // initial size
-	protected int initialWidth =  6 * (int)Globals.model2canvas.x;
-	protected int initialHeight = 6 * (int)Globals.model2canvas.x;
+	protected int initialWidth =  5 * (int)Globals.model2canvas.x;
+	protected int initialHeight = 5 * (int)Globals.model2canvas.x;
     
 	
 	public Asteroid(float xPos, float yPos, float pWidth, float pHeight, int pEnergy)
@@ -45,8 +45,8 @@ public class Asteroid extends Sprite {
 		vector.x = (float)(Math.random() - 0.5f) * 1f;
 		vector.y = (float)(Math.random() - 0.5f) * 1f;
         heading = 0;
-        headingSpeed = (float)(Math.random() - 0.5f) * 1f;
-        margin = width;
+        headingSpeed = (float)(Math.random() - 0.5f) * 1.5f;
+        margin = width/4f;
         createShape();
         active = true;
 		Globals.asteroids.add(this);
@@ -81,20 +81,18 @@ public class Asteroid extends Sprite {
 		paint.setColor(Color.YELLOW);
 
 		// Rotate original shape
-//		matrix.reset();
-//		matrix.setRotate(headingSpeed, width /4f, height /4f); 
-//		shape.transform(matrix);
-//
-//		// Copy, translate and draw the copy
-//		Path dst = new Path(shape);
-//		matrix.reset();
-//		matrix.setTranslate(position.x * Globals.model2canvas.x - position.x, position.y * Globals.model2canvas.y - position.y);
-//		dst.transform(matrix);
-//		canvas.drawPath(dst, paint);
-		
-		canvas.drawCircle(position.x * Globals.model2canvas.x, position.y * Globals.model2canvas.y, width, paint);
-//		canvas.drawArc(oval, startAngle, sweepAngle, useCenter, paint)
-//		canvas.draw
+		matrix.reset();
+		matrix.setRotate(headingSpeed); 
+		shape.transform(matrix);
+
+		// Copy, translate and draw the copy
+		Path dst = new Path(shape);
+		matrix.reset();
+		matrix.setTranslate(position.x * Globals.model2canvas.x - position.x, position.y * Globals.model2canvas.y - position.y);
+		dst.transform(matrix);
+		canvas.drawPath(dst, paint);
+//		paint.setColor(Color.BLUE);
+//		canvas.drawCircle(position.x * Globals.model2canvas.x - position.x, position.y * Globals.model2canvas.y - position.y, 2, paint);
 		
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Vector;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.util.Log;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {
@@ -29,7 +30,7 @@ public class StarShip extends Sprite {
 	 */
 	public StarShip()
 	{
-		topSpeed = .5f;
+		topSpeed = .7f;
 		position.x = 10;
 		position.y = 10;
 		width = 3 * Globals.model2canvas.x;
@@ -62,15 +63,22 @@ public class StarShip extends Sprite {
 		updatePosition(true, true);
 		
         // collision with an asteroid?
-		for (Asteroid a : Globals.asteroids)
-			if (a.active &&
-	       			position.x > a.position.x - a.width/4f &&  
-	       			position.x < a.position.x + a.width/4f && 
-	       			position.y > a.position.y - a.height/4f &&
-	       			position.y < a.position.y + a.height/4f)
+		Asteroid a = null;
+		for (int i=0; i<Globals.asteroids.size(); i++)
+		{
+			a = Globals.asteroids.get(i);
+			if (a!=null && a.active &&
+//					position.x == a.position.x && position.y == a.position.y)
+//					Math.pow((position.x - a.position.x), 2) + Math.pow((position.y - a.position.y), 2) < (a.width*a.width)/8) 
+	       			position.x + width/4f > a.position.x - a.width/4f &&  
+	       			position.x - width/4f < a.position.x + a.width/4f && 
+	       			position.y + height/4f > a.position.y - a.height/4f &&
+	       			position.y - height/4f < a.position.y + a.height/4f)
 	       		{  
+//					Log.d("CRASH", position.x + ", " + position.y + " - " + a.position.x + "," + a.position.y);
                 	Globals.lifeLost();
 	       		}
+		}
 		
 		// Update my laser beams
 	    for (LaserBeam aBeam : ammo)
