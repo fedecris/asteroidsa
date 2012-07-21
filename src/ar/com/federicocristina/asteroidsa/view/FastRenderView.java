@@ -61,7 +61,7 @@ public class FastRenderView extends SurfaceView implements Runnable {
         	
         	
         	// Update model for the other ships
-        	// TODO!!!
+        	// TODO!!! Maybe an independent thread is not really the best option.  Should be triggered here ¿Synchronize???
         	
         	
             if(!holder.getSurface().isValid())

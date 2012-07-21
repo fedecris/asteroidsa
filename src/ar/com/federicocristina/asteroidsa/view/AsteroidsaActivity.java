@@ -9,6 +9,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -22,6 +24,8 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 	
 	// Rendering engine
 	protected FastRenderView renderView;
+	// Keep display ON!!
+	protected WakeLock wakeLock; 
 	
     /** Called when the activity is first created. */
     @Override
@@ -36,6 +40,8 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
         renderView = new FastRenderView(this);
         renderView.setOnTouchListener(this);
         setContentView(renderView);
+        PowerManager powerManager = (PowerManager)getBaseContext().getSystemService(Context.POWER_SERVICE); 
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock"); 
         
         Display display = getWindowManager().getDefaultDisplay();
         Globals.canvasSize = new Point(display.getWidth(), display.getHeight()); 
@@ -61,11 +67,13 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
     protected void onResume() {
         super.onResume();
         renderView.resume();
+        wakeLock.acquire();
     }
     
     protected void onPause() {
         super.onPause();         
         renderView.pause();
+        wakeLock.release();
     }
     
 	@Override
