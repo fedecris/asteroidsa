@@ -10,21 +10,30 @@ import ar.com.federicocristina.asteroidsa.utils.Globals;
 
 public class UDPClient extends Thread {
 	
-	protected DatagramSocket socket = null;
+	DatagramPacket packet = null;
+	InetAddress group = null;
+	MulticastSocket socket = null;
 	
 	public void run() {
-	    while (Globals.running) {
-	        try {
-	    		// enviar status actual
+		
+        try {
+        	
+        	group = InetAddress.getByName(Globals.GROUP_IP);
+            socket = new MulticastSocket(Globals.PORT_UDP);
+        	
+        	while (Globals.running) {
+
+        		// enviar status actual
 	    		sendPing();
 
 	            // actualizar el status cada cierto intervalo de tiempo
                 sleep(50);
-	        }
-            catch (InterruptedException e) { e.printStackTrace(); }
-	        catch (IOException e) { e.printStackTrace(); }
-	        catch (Exception e) { e.printStackTrace(); }
+	    	}
 	    }
+        catch (InterruptedException e) { e.printStackTrace(); }
+	    catch (IOException e) { e.printStackTrace(); }
+	    catch (Exception e) { e.printStackTrace(); }
+	    
 		try {
 			sendPing();
 			if (socket != null)
@@ -48,10 +57,7 @@ public class UDPClient extends Thread {
         			Globals.starShip.vector.y;
         buf = dString.getBytes();
 
-        InetAddress group = InetAddress.getByName(Globals.GROUP_IP);
-        DatagramPacket packet;
         packet = new DatagramPacket(buf, buf.length, group, Globals.PORT_UDP);
-        MulticastSocket socket = new MulticastSocket(Globals.PORT_UDP);
         socket.send(packet);
 	}
 	

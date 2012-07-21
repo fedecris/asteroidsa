@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-import android.graphics.Color;
 import android.graphics.PointF;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
@@ -49,6 +48,8 @@ public class UDPListener extends Thread {
 	    // Omitir mismo host
 	    if (Globals.thisHost.equals(host))
 	    	return;
+	    
+	    // Log.d(Globals.LOG_TAG, "["+Globals.thisHost.getHostIP()+"] ping recibido desde: "+values[0]);
 	    
 	    // Procesar info de otros hosts
 	    // ya existia el host?

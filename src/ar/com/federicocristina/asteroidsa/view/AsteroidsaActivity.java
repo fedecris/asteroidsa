@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -26,6 +27,8 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 	protected FastRenderView renderView;
 	// Keep display ON!!
 	protected WakeLock wakeLock; 
+	// Support multicast packets!!
+	WifiManager.MulticastLock multicastLock = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -42,9 +45,14 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
         setContentView(renderView);
         PowerManager powerManager = (PowerManager)getBaseContext().getSystemService(Context.POWER_SERVICE); 
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock"); 
-        
+        // Window Size
         Display display = getWindowManager().getDefaultDisplay();
         Globals.canvasSize = new Point(display.getWidth(), display.getHeight()); 
+        // Permitir multicast
+        WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE); 
+        WifiManager.MulticastLock multicastLock = wm.createMulticastLock("mydebuginfo"); 
+        multicastLock.setReferenceCounted(true);
+        multicastLock.acquire();
         
         // Accelerometer sensor
         SensorManager manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -67,13 +75,19 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
     protected void onResume() {
         super.onResume();
         renderView.resume();
-        wakeLock.acquire();
+        if (wakeLock!=null)
+        	wakeLock.acquire();
+        if (multicastLock!=null && !multicastLock.isHeld())
+        	multicastLock.acquire();
     }
     
     protected void onPause() {
         super.onPause();         
         renderView.pause();
-        wakeLock.release();
+        if (wakeLock!=null)
+        	wakeLock.release();
+        if (multicastLock!=null && multicastLock.isHeld())
+        	multicastLock.release();
     }
     
 	@Override

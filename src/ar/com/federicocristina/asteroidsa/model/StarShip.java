@@ -70,7 +70,7 @@ public class StarShip extends Sprite {
 			if (a!=null && a.active &&
 				((position.x - a.position.x)*(position.x - a.position.x) + (position.y - a.position.y)*(position.y - a.position.y)) < a.width/4*a.width/4 ) 
 	       		{  
-					Log.d("CRASH", position.x + ", " + position.y + " - " + a.position.x + "," + a.position.y);
+					Log.d(Globals.LOG_TAG, position.x + ", " + position.y + " - " + a.position.x + "," + a.position.y);
                 	Globals.lifeLost();
 	       		}
 		}
