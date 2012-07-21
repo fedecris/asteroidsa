@@ -7,9 +7,15 @@ import android.graphics.PointF;
 import ar.com.federicocristina.asteroidsa.model.Asteroid;
 import ar.com.federicocristina.asteroidsa.model.Star;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
+import ar.com.federicocristina.asteroidsa.network.Host;
+import ar.com.federicocristina.asteroidsa.network.UDPClient;
+import ar.com.federicocristina.asteroidsa.network.UDPListener;
+
 
 public class Globals {
 
+	// Game running
+	public static boolean running = true;
 	// Model size
 	public static Point modelSize = new Point(100, 100); 
 	// Screen size
@@ -26,8 +32,14 @@ public class Globals {
 	public volatile static Vector<Star> stars = new Vector<Star>();	
 	// Our ship!
 	public static StarShip starShip = null;
+	// The others ships!
+	public static Vector<StarShip> otherShips = null;
+	// Host local
+	public static Host thisHost = null;
+	// The other hosts
+	public static Vector<Host> otherHosts = null;
 	// Level
-	public static int level = 1;
+	public static int level = 0;
 	// Lives
 	public static int lives = 5;
 	// Points
@@ -36,6 +48,11 @@ public class Globals {
 	public static int MAX_FRONT_STARS = 0; 
 	// Total back stars
 	public static int MAX_BACK_STARS = 0; 	
+
+	/** Network Specific */ 
+	public static final int PORT_UDP = 9998;
+	public static final String GROUP_IP = "230.0.0.1";
+	
 	
 	/**
 	 * Initial values
@@ -52,6 +69,17 @@ public class Globals {
         asteroids.clear();
         for (int i=0; i<level; i++)
         	new Asteroid();
+        // First time configuration
+        if (thisHost == null)
+        {
+	        thisHost = Host.getLocalHostAddresAndIP();
+	        otherShips = new Vector<StarShip>();
+	        otherHosts= new Vector<Host>();
+	        UDPListener listener = new UDPListener();
+	        listener.start();
+	        UDPClient client = new UDPClient();
+	        client.start();
+        }
 	}
 	
 	/**
