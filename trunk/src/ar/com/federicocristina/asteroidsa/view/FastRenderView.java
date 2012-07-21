@@ -15,7 +15,6 @@ public class FastRenderView extends SurfaceView implements Runnable {
 
     Thread renderThread = null;
     SurfaceHolder holder;
-    volatile boolean running = false;
     int spriteSize = 0;
     Paint paint = new Paint();
     
@@ -25,13 +24,13 @@ public class FastRenderView extends SurfaceView implements Runnable {
     }
 
     public void resume() {          
-        running = true;
+        Globals.running = true;
         renderThread = new Thread(this);
         renderThread.start();         
     }
 
     public void pause() {        
-        running = false;                        
+    	Globals.running = false;                        
         while(true) {
             try {
                 renderThread.join();
@@ -45,7 +44,7 @@ public class FastRenderView extends SurfaceView implements Runnable {
 
     public void run() {
     	
-        while(running) {
+        while(Globals.running) {
 
         	// Update model for each asteroid
         	spriteSize = Globals.asteroids.size();
@@ -59,6 +58,11 @@ public class FastRenderView extends SurfaceView implements Runnable {
         	
         	// Update model for the ship
         	Globals.starShip.update();
+        	
+        	
+        	// Update model for the other ships
+        	// TODO!!!
+        	
         	
             if(!holder.getSurface().isValid())
                 continue;
@@ -86,6 +90,11 @@ public class FastRenderView extends SurfaceView implements Runnable {
     	spriteSize = Globals.asteroids.size();
     	for (int i=0; i < spriteSize; i++)
     		Globals.asteroids.get(i).draw(canvas);
+
+    	// draw other ships
+    	spriteSize = Globals.otherShips.size();
+    	for (int i=0; i < spriteSize; i++)
+    		Globals.otherShips.get(i).draw(canvas);
     	
     	// draw ship
     	Globals.starShip.draw(canvas);

@@ -12,13 +12,13 @@ public abstract class Sprite {
 	// Size
 	protected float width = 1, height = 1;
 	// Current position
-	protected PointF position = new PointF(100, 100);
+	public PointF position = new PointF(100, 100);
 	// Current directional speed
-	protected PointF vector = new PointF(0, 0);
+	public PointF vector = new PointF(0, 0);
 	// Max speed
 	protected float topSpeed = 1f;
 	// Heading angle
-	protected float heading = 0;
+	public float heading = 0;
 	// Heading angle speed
 	protected float headingSpeed = 0;	
 	// Basic color

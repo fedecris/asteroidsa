@@ -98,8 +98,12 @@ public class StarShip extends Sprite {
 	@Override
 	public void draw(Canvas canvas) {
 
-		// Wings
-		paint.setColor(Color.GREEN);
+		// Wings - (My ship or other?)
+		if (this.equals(Globals.starShip))
+			paint.setColor(Color.GREEN);
+		else
+			paint.setColor(Color.BLUE);
+		
 		p.reset();
 		float posX = position.x * Globals.model2canvas.x;
 		float posY = position.y * Globals.model2canvas.y;
