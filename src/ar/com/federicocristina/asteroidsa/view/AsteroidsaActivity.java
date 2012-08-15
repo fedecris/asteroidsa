@@ -8,12 +8,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.inputmethodservice.Keyboard.Key;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.text.Editable;
+import android.text.method.KeyListener;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -57,12 +62,12 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
         // Accelerometer sensor
         SensorManager manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() == 0) {
-//        	System.exit(1);
+        	Globals.inputMethod = Globals.INPUT_KEYBOARD;
         } else {
             Sensor accelerometer = manager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
             if (!manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)) {
-            	Log.e(this.getClass().toString(), "No accelerometer! Exiting...");
-//           	System.exit(1);
+            	Log.e(this.getClass().toString(), "No accelerometer!...");
+            	Globals.inputMethod = Globals.INPUT_KEYBOARD;
             }
         }
         
@@ -97,11 +102,16 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 	}	
     
     public void onSensorChanged(SensorEvent event) {
-    	// Usaremos flechitas (x86)
-    	//    	Globals.acel = event.values;
+    	Globals.acel = event.values;
     }
     
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // nothing to do here
     }
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return Globals.starShip.processKeyEvent(keyCode);
+	}
+	
 }

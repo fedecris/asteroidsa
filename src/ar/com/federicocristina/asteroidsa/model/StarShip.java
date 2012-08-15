@@ -6,23 +6,25 @@ import java.util.ArrayList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.util.FloatMath;
 import android.util.Log;
+import android.view.KeyEvent;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {
 
 	// Path for drawing ship
-	private transient Path p = new Path();
+	private Path p = new Path();
 	// Soften accelerometer reading for movement & heading
-	protected transient static final float SOFT_ROTATION = 20f;
-	protected transient static final float SOFT_THROOTLE = 20f;
+	protected static final float SOFT_ROTATION = 20f;
+	protected static final float SOFT_THROOTLE = 20f;
 	// Dead zone (rotation)
-	protected transient static final float DEAD_ZONE_ROTATION = 0.5f;
+	protected static final float DEAD_ZONE_ROTATION = 0.5f;
 	// Dead zone (throttle)	
-	protected transient static final float DEAD_ZONE_THROOTLE = 5;
+	protected static final float DEAD_ZONE_THROOTLE = 5;
 	// laser beams
-    protected transient static final int AMMO_COUNT = 5;
-    private transient ArrayList<LaserBeam> ammo = new ArrayList<LaserBeam>();
+    public static final int AMMO_COUNT = 1;
+    public ArrayList<LaserBeam> ammo = new ArrayList<LaserBeam>();
 	
 	
 	/**
@@ -30,37 +32,33 @@ public class StarShip extends Sprite {
 	 */
 	public StarShip()
 	{
-		topSpeed = .7f;
-		position.x = 10;
-		position.y = 10;
+		topSpeed = .3f;
+		position.x = (float)Math.random() * Globals.modelSize.x;
+		position.y = (float)Math.random() * Globals.modelSize.y;
 		width = 3 * Globals.model2canvas.x;
 		height = 3 * Globals.model2canvas.x;
-		paint.setColor(Color.GREEN);
-		paint.setStrokeWidth(4);
         for (int j = 0; j < AMMO_COUNT; j++)
-            ammo.add(new LaserBeam());
+            ammo.add(new LaserBeam(j));
         active = true;
-        heading = (float)(Math.random() - 0.5f) * 180f;
-        headingSpeed = (float)(Math.random() - 0.5f) * 1.5f;
+        heading = 0;
+        headingSpeed = 0; // (float)(Math.random() - 0.5f) * 1.5f;
 	}
 	
 	@Override
 	public void update() {
 
-		// Update heading according to accelerometer
-		if (Globals.acel[1] > DEAD_ZONE_ROTATION)
-			headingSpeed = (Globals.acel[1] - DEAD_ZONE_ROTATION) / SOFT_ROTATION;
-		if (Globals.acel[1] < -DEAD_ZONE_ROTATION)
-			headingSpeed = (Globals.acel[1] + DEAD_ZONE_ROTATION) / SOFT_ROTATION;
-		
-		// Change speed according to accelerometer
-		if (Globals.acel[0] - DEAD_ZONE_THROOTLE < 0) {
-	    	vector.x = vector.x + (float)Math.cos(heading) * - (Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE; 
-	        vector.y = vector.y + (float)Math.sin(heading) * - (Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE;
-	        if (vector.x > topSpeed) vector.x = topSpeed;
-	        if (vector.x < -topSpeed) vector.x = -topSpeed;
-	        if (vector.y > topSpeed) vector.y = topSpeed;
-	        if (vector.y < -topSpeed) vector.y = -topSpeed;    
+		if (Globals.inputMethod == Globals.INPUT_ACCELEROMETER) {
+			// Update heading according to accelerometer
+			if (Globals.acel[1] > DEAD_ZONE_ROTATION)
+				headingSpeed = (Globals.acel[1] - DEAD_ZONE_ROTATION) / SOFT_ROTATION;
+			if (Globals.acel[1] < -DEAD_ZONE_ROTATION)
+				headingSpeed = (Globals.acel[1] + DEAD_ZONE_ROTATION) / SOFT_ROTATION;
+			
+			// Change speed according to accelerometer
+			if (Globals.acel[0] - DEAD_ZONE_THROOTLE < 0) {
+		    	vector.x = vector.x + FloatMath.cos(heading) * - (Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE; 
+		        vector.y = vector.y + FloatMath.sin(heading) * - (Globals.acel[0] - DEAD_ZONE_THROOTLE) / SOFT_THROOTLE;
+			}
 		}
 		updatePosition(true, true);
 		
@@ -82,6 +80,32 @@ public class StarShip extends Sprite {
 	    	aBeam.update();
 	}
 
+	
+	public boolean processKeyEvent(int keyCode) {
+		if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+			headingSpeed -= .01f;
+			if (headingSpeed < -.05f)
+				headingSpeed = -.05f;
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+			headingSpeed += .01f;
+			if (headingSpeed > .05f)
+				headingSpeed = .05f;
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+			vector.x = vector.x + FloatMath.cos(heading) / StarShip.SOFT_THROOTLE; 
+			vector.y = vector.y + FloatMath.sin(heading) / StarShip.SOFT_THROOTLE;
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_SPACE) {
+			Globals.starShip.fire();
+			return true;
+		}
+		return false;
+
+	}
 	
 	/**
 	 * Fires a laser beam, if available
@@ -105,20 +129,20 @@ public class StarShip extends Sprite {
 			paint.setColor(Color.GREEN);
 		else
 			paint.setColor(Color.BLUE);
-		
+		paint.setStrokeWidth(4);
 		p.reset();
 		float posX = position.x * Globals.model2canvas.x;
 		float posY = position.y * Globals.model2canvas.y;
-		p.moveTo(posX + (float)Math.cos(heading) * width, 			posY + (float)Math.sin(heading) * height );
-		p.lineTo(posX + (float)Math.cos((heading+90)%360) * width, 	posY + (float)Math.sin((heading+90)%360) * height );
-		p.lineTo(posX + (float)Math.cos((heading-90)%360) * width, 	posY + (float)Math.sin((heading-90)%360) * height );
-		p.lineTo(posX + (float)Math.cos(heading) * width, 			posY + (float)Math.sin(heading) * height );
+		p.moveTo(posX + FloatMath.cos(heading) * width, 			posY + FloatMath.sin(heading) * height );
+		p.lineTo(posX + FloatMath.cos((heading+90)%360) * width, 	posY + FloatMath.sin((heading+90)%360) * height );
+		p.lineTo(posX + FloatMath.cos((heading-90)%360) * width, 	posY + FloatMath.sin((heading-90)%360) * height );
+		p.lineTo(posX + FloatMath.cos(heading) * width, 			posY + FloatMath.sin(heading) * height );
 		canvas.drawPath(p, paint);	
 		
 		// Main line ship
 		paint.setColor(Color.RED);
-		canvas.drawLine(posX, posY, (float)(posX + Math.cos(heading) * width), (float)(posY + Math.sin(heading) * height), paint);
-		canvas.drawLine(posX, posY, (float)(posX - Math.cos(heading) * width/2), (float)(posY - Math.sin(heading) * height/2), paint);
+		canvas.drawLine(posX, posY, (posX + FloatMath.cos(heading) * width), (posY + FloatMath.sin(heading) * height), paint);
+		canvas.drawLine(posX, posY, (posX - FloatMath.cos(heading) * width/2), (posY - FloatMath.sin(heading) * height/2), paint);
 		
 	    // draw my laser shots!
 	    for (LaserBeam aBeam : ammo)

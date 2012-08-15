@@ -2,7 +2,9 @@ package ar.com.federicocristina.asteroidsa.network;
 
 import java.io.Serializable;
 
+import ar.com.federicocristina.asteroidsa.model.LaserBeam;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
+import ar.com.federicocristina.asteroidsa.utils.Globals;
 import ar.com.federicocristina.asteroidsa.utils.Point2Df;
 
 public class NetworkGameData implements Serializable {
@@ -15,6 +17,12 @@ public class NetworkGameData implements Serializable {
 	protected Point2Df vector = new Point2Df(0, 0);
 	// Heading angle
 	protected float heading = 0;
+	// Lasershots!
+	protected boolean[] shotActive = new boolean[StarShip.AMMO_COUNT];
+	protected Point2Df[] shotPosition = new Point2Df[StarShip.AMMO_COUNT];
+	protected Point2Df[] shotVector = new Point2Df[StarShip.AMMO_COUNT];
+	protected float[] shotHeading = new float[StarShip.AMMO_COUNT];
+	
 	
 	public NetworkGameData() {
 		
@@ -23,6 +31,14 @@ public class NetworkGameData implements Serializable {
 	public NetworkGameData(Host host, StarShip ship) {
 		this.remoteHost = host;
 		setRemoteShip(ship);
+		int i=0;
+		for (LaserBeam beam : ship.ammo) {
+			shotActive[i] = beam.active;
+			shotPosition[i] = new Point2Df(beam.position.x, beam.position.y);
+			shotVector[i] = new Point2Df(beam.vector.x, beam.vector.y);
+			shotHeading[i] = beam.heading;
+			i++;
+		}
 	}
 
 	public void setRemoteShip(StarShip ship) {

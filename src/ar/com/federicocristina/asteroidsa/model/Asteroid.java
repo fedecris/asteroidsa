@@ -47,6 +47,7 @@ public class Asteroid extends Sprite {
         heading = 0;
         headingSpeed = (float)(Math.random() - 0.5f) * 1.5f;
         margin = width/4f;
+        topSpeed = .2f;
         createShape();
         active = true;
 		Globals.asteroids.add(this);

@@ -6,6 +6,15 @@ import ar.com.federicocristina.asteroidsa.utils.Globals;
 
 public class LaserBeam extends Sprite {
 
+	/** Shot identifier */
+	int shotID = -1;
+	
+	public LaserBeam(int id) {
+		shotID = id;
+    	width = 2 * Globals.model2canvas.x;
+    	height = 2 * Globals.model2canvas.y;
+	}
+	
 	/**
 	 * Fire! from the star ship
 	 * @param xPos starting x Point
@@ -14,8 +23,6 @@ public class LaserBeam extends Sprite {
 	 */
     public void fire(float xPos, float yPos, float heading)
     {
-    	width = 2 * Globals.model2canvas.x;
-    	height = 2 * Globals.model2canvas.y;
         position.x = xPos;
         position.y = yPos;
         vector.x = (float)Math.cos(heading) * 1.5f; 
