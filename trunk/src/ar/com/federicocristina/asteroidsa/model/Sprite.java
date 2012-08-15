@@ -1,34 +1,37 @@
 package ar.com.federicocristina.asteroidsa.model;
 
 
+import java.io.Serializable;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
+import ar.com.federicocristina.asteroidsa.utils.Point2Df;
 
-public abstract class Sprite {
+public abstract class Sprite implements Serializable {
 
-	// Size
-	protected float width = 1, height = 1;
 	// Current position
-	public PointF position = new PointF(100, 100);
+	public Point2Df position = new Point2Df(100, 100);
 	// Current directional speed
-	public PointF vector = new PointF(0, 0);
-	// Max speed
-	protected float topSpeed = 1f;
+	public Point2Df vector = new Point2Df(0, 0);
 	// Heading angle
 	public float heading = 0;
+	// Size
+	protected transient float width = 1, height = 1;
+	// Max speed
+	protected transient float topSpeed = 1f;
 	// Heading angle speed
-	protected float headingSpeed = 0;	
+	protected transient float headingSpeed = 0;	
 	// Basic color
-	protected Color color = new Color();
+	protected transient Color color = new Color();
 	// Paint properties
-	protected Paint paint = new Paint();
+	protected transient Paint paint = new Paint();
 	// Is active?
-	protected boolean active = false;
+	protected transient boolean active = false;
 	// Visual margin
-	protected float margin = 5f;
+	protected transient float margin = 5f;
 
 	/**
      * Updates sprite model (position, logic, etc.)
@@ -87,4 +90,6 @@ public abstract class Sprite {
 			else
 				active = false;        
 	}
+	
+	
 }

@@ -57,12 +57,12 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
         // Accelerometer sensor
         SensorManager manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() == 0) {
-        	System.exit(1);
+//        	System.exit(1);
         } else {
             Sensor accelerometer = manager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
             if (!manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)) {
             	Log.e(this.getClass().toString(), "No accelerometer! Exiting...");
-            	System.exit(1);
+//           	System.exit(1);
             }
         }
         
@@ -89,22 +89,18 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
         if (multicastLock!=null && multicastLock.isHeld())
         	multicastLock.release();
     }
-    
-	@Override
+	
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 			Globals.starShip.fire();
 		return true;
-	}
-
-	
-	
-    @Override
+	}	
+    
     public void onSensorChanged(SensorEvent event) {
-    	Globals.acel = event.values;
+    	// Usaremos flechitas (x86)
+    	//    	Globals.acel = event.values;
     }
     
-    @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // nothing to do here
     }

@@ -1,7 +1,7 @@
 package ar.com.federicocristina.asteroidsa.model;
 
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,17 +12,17 @@ import ar.com.federicocristina.asteroidsa.utils.Globals;
 public class StarShip extends Sprite {
 
 	// Path for drawing ship
-	private Path p = new Path();
+	private transient Path p = new Path();
 	// Soften accelerometer reading for movement & heading
-	protected static final float SOFT_ROTATION = 20f;
-	protected static final float SOFT_THROOTLE = 20f;
+	protected transient static final float SOFT_ROTATION = 20f;
+	protected transient static final float SOFT_THROOTLE = 20f;
 	// Dead zone (rotation)
-	protected static final float DEAD_ZONE_ROTATION = 0.5f;
+	protected transient static final float DEAD_ZONE_ROTATION = 0.5f;
 	// Dead zone (throttle)	
-	protected static final float DEAD_ZONE_THROOTLE = 5;
+	protected transient static final float DEAD_ZONE_THROOTLE = 5;
 	// laser beams
-    protected static final int AMMO_COUNT = 5;
-    private Vector<LaserBeam> ammo = new Vector<LaserBeam>();
+    protected transient static final int AMMO_COUNT = 5;
+    private transient ArrayList<LaserBeam> ammo = new ArrayList<LaserBeam>();
 	
 	
 	/**
@@ -40,6 +40,8 @@ public class StarShip extends Sprite {
         for (int j = 0; j < AMMO_COUNT; j++)
             ammo.add(new LaserBeam());
         active = true;
+        heading = (float)(Math.random() - 0.5f) * 180f;
+        headingSpeed = (float)(Math.random() - 0.5f) * 1.5f;
 	}
 	
 	@Override
@@ -123,5 +125,50 @@ public class StarShip extends Sprite {
 	    	aBeam.draw(canvas);
 	}
 	
+	
+//	private void writeObject(ObjectOutputStream out) throws IOException
+//	{
+//		out.defaultWriteObject();
+//		out.writeFloat(34.0f);
+//	}
+//	
+//	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+//	{
+//		in.defaultReadObject();
+//		position.x = in.readFloat();
+//		
+//
+//		// Current position
+//		position = new PointF(25, 25);
+//		// Current directional speed
+//		vector = new PointF(0, 0);
+//		// Heading angle
+//		heading = 15;
+//		// Size
+//		width = 1; height = 1;
+//		// Max speed
+//		topSpeed = 1f;
+//		// Heading angle speed
+//		headingSpeed = 0;	
+//		// Basic color
+//		color = new Color();
+//		// Paint properties
+//		paint = new Paint();
+//		// Is active?
+//		active = true;
+//		// Visual margin
+//		margin = 5f;
+//		// Path for drawing ship		
+//		p = new Path();
+//		// laser beams		
+//		ammo = new ArrayList<LaserBeam>();
+//		topSpeed = .7f;
+//		position.x = 10;
+//		position.y = 10;
+//		width = 3 * Globals.model2canvas.x;
+//		height = 3 * Globals.model2canvas.x;
+//		paint.setColor(Color.GREEN);
+//		paint.setStrokeWidth(4);
+//	}
 
 }

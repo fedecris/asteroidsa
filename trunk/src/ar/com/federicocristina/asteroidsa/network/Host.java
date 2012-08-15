@@ -1,11 +1,13 @@
 package ar.com.federicocristina.asteroidsa.network;
 
+import java.io.Serializable;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-public class Host {
+public class Host implements Serializable {
 
 	private String hostIP;
 	private boolean connected;
@@ -60,9 +62,12 @@ public class Host {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
+                        InetAddress inetAddress = enumIpAddr.nextElement();
+                        // Solo IPv4
+                        if (inetAddress instanceof Inet6Address)
+                                continue;
                     if (!inetAddress.isLoopbackAddress()) {
-                    	Host thisHost = new Host(inetAddress.getHostAddress().toString(), true);
+                        Host thisHost = new Host(inetAddress.getHostAddress().toString(), true);
                         return thisHost;
                     }
                 }
