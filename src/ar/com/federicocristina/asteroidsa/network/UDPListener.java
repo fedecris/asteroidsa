@@ -8,6 +8,7 @@ import java.net.MulticastSocket;
 import android.graphics.PointF;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
+import ar.com.federicocristina.asteroidsa.utils.Point2Df;
 
 public class UDPListener extends Thread {
 	
@@ -68,8 +69,8 @@ public class UDPListener extends Thread {
 
 	    // Actualizar estado de la otra navecita
 	    otherShip.heading = Float.parseFloat(values[1]);
-	    otherShip.position = new PointF(Float.parseFloat(values[2]), Float.parseFloat(values[3]));
-	    otherShip.vector = new PointF(Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+	    otherShip.position = new Point2Df(Float.parseFloat(values[2]), Float.parseFloat(values[3]));
+	    otherShip.vector = new Point2Df(Float.parseFloat(values[4]), Float.parseFloat(values[5]));
 	}
 
 }
