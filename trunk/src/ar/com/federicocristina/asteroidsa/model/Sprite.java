@@ -1,16 +1,13 @@
 package ar.com.federicocristina.asteroidsa.model;
 
 
-import java.io.Serializable;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
 import ar.com.federicocristina.asteroidsa.utils.Point2Df;
 
-public abstract class Sprite implements Serializable {
+public abstract class Sprite {
 
 	// Current position
 	public Point2Df position = new Point2Df(100, 100);
@@ -19,19 +16,19 @@ public abstract class Sprite implements Serializable {
 	// Heading angle
 	public float heading = 0;
 	// Size
-	protected transient float width = 1, height = 1;
-	// Max speed
-	protected transient float topSpeed = 1f;
+	public float width = 1, height = 1;
 	// Heading angle speed
-	protected transient float headingSpeed = 0;	
+	public float headingSpeed = 0;	
+	// Max speed
+	protected float topSpeed = 1f;
 	// Basic color
-	protected transient Color color = new Color();
+	protected Color color = new Color();
 	// Paint properties
-	protected transient Paint paint = new Paint();
+	protected Paint paint = new Paint();
 	// Is active?
-	protected transient boolean active = false;
+	public boolean active = false;
 	// Visual margin
-	protected transient float margin = 5f;
+	protected float margin = 5f;
 
 	/**
      * Updates sprite model (position, logic, etc.)
@@ -53,6 +50,12 @@ public abstract class Sprite implements Serializable {
 		// Is the sprite moving?
 		if (!active)
 			return; 
+		
+		// Check for topSpeed
+        if (vector.x > topSpeed) vector.x = topSpeed;
+        if (vector.x < -topSpeed) vector.x = -topSpeed;
+        if (vector.y > topSpeed) vector.y = topSpeed;
+        if (vector.y < -topSpeed) vector.y = -topSpeed; 
 		
 		// Update position & heading
 		position.x += vector.x;

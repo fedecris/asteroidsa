@@ -4,6 +4,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 
+import ar.com.federicocristina.asteroidsa.model.LaserBeam;
 import ar.com.federicocristina.asteroidsa.model.StarShip;
 import ar.com.federicocristina.asteroidsa.utils.Globals;
 
@@ -39,11 +40,12 @@ public class TCPServer extends TCPNetwork implements Runnable {
                 if (newMessage == null)
                     continue;
 
+                StarShip remoteShip = null;
             	// Si no existe el host remoto, agregarlo a la nomina local de globals
             	if (!Globals.otherHosts.contains(newMessage.getRemoteHost())) {
             		// Agregarlo (ByeBye MVC... muejeje)
         	    	Globals.otherHosts.add(newMessage.getRemoteHost());
-        	    	StarShip remoteShip = new StarShip();
+        	    	remoteShip = new StarShip();
         	    	remoteShip.position = newMessage.position;
         	    	remoteShip.vector = newMessage.vector;
         	    	remoteShip.heading = newMessage.heading;
@@ -52,13 +54,34 @@ public class TCPServer extends TCPNetwork implements Runnable {
         	    else {
         	    	// Recuperar host remoto y actualizar la nave remota en globals
         	    	int pos = Globals.otherHosts.indexOf(newMessage.getRemoteHost());
-        	    	StarShip remoteShip = Globals.otherShips.get(pos);
+        	    	remoteShip = Globals.otherShips.get(pos);
         	    	remoteShip.position.x = newMessage.position.x;
         	    	remoteShip.position.y = newMessage.position.y;
         	    	remoteShip.vector.x = newMessage.vector.x;
         	    	remoteShip.vector.y = newMessage.vector.y;
         	    	remoteShip.heading = newMessage.heading;
         	    }
+            	// Process laser hosts!
+            	int i=0;
+            	for (LaserBeam remoteLaserBeam : remoteShip.ammo) {
+            		remoteLaserBeam.active = newMessage.shotActive[i];
+            		remoteLaserBeam.position.x = newMessage.shotPosition[i].x;
+            		remoteLaserBeam.position.y = newMessage.shotPosition[i].y;
+            		remoteLaserBeam.vector.x = newMessage.shotVector[i].x;
+            		remoteLaserBeam.vector.y = newMessage.shotVector[i].y;
+            		remoteLaserBeam.heading = newMessage.shotHeading[i];
+            		
+            		// Hit?
+            		if ( ((remoteLaserBeam.position.x - Globals.starShip.position.x)*(remoteLaserBeam.position.x - Globals.starShip.position.x) + 
+            			  (remoteLaserBeam.position.y - Globals.starShip.position.y)*(remoteLaserBeam.position.y - Globals.starShip.position.y)) 
+            			   < Globals.starShip.width/4*Globals.starShip.width/4) {
+            			 Globals.lifeLost();
+            			 continue;
+            		}
+            		
+            		i++;
+            		
+            	}
             }
             catch (Exception e) { System.err.println("Error en run de NetworkServer: "+e.getMessage()); }
         }
