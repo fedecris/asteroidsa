@@ -80,7 +80,6 @@ public class TCPServer extends TCPNetwork implements Runnable {
             		}
             		
             		i++;
-            		
             	}
             }
             catch (Exception e) { System.err.println("Error en run de NetworkServer: "+e.getMessage()); }

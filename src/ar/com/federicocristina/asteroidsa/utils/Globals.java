@@ -54,9 +54,9 @@ public class Globals {
 	// Points
 	public static int points = 0;
 	// Total front stars
-	public static int MAX_FRONT_STARS = 0; 
+	public static int MAX_FRONT_STARS = 20; 
 	// Total back stars
-	public static int MAX_BACK_STARS = 0; 	
+	public static int MAX_BACK_STARS = 20; 	
 	
 	/** Network Specific */ 
 	// UDP Port
@@ -112,9 +112,10 @@ public class Globals {
 	        Thread serverRun = new Thread(server);
 	        serverRun.start();
 
-
 	        // TODO: Deshardcode!!
-	        TCPClient client = new TCPClient("10.0.0.15".equals(thisHost.getHostIP())?"10.0.0.16":"10.0.0.15", PORT_TCP);
+	        String host1IP = "192.168.1.121";
+	        String host2IP = "192.168.1.108";
+	        TCPClient client = new TCPClient(host1IP.equals(thisHost.getHostIP())?host2IP:host1IP, PORT_TCP);
 	        Thread clientRun = new Thread(client);
 	        clientRun.start();
         }
