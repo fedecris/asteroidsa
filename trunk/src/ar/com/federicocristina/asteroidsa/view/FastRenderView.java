@@ -46,61 +46,72 @@ public class FastRenderView extends SurfaceView implements Runnable {
     	
         while(Globals.running) {
 
-        	// Update model for each asteroid
-        	spriteSize = Globals.asteroids.size();
-        	for (int i=0; i < spriteSize; i++)
-        		Globals.asteroids.get(i).update();
-
-        	// Update model for each star
-        	spriteSize = Globals.stars.size();
-        	for (int i=0; i < spriteSize; i++)
-        		Globals.stars.get(i).update();        	
-        	
-        	// Update model for the ship
-        	Globals.starShip.update();
-        	
-            if(!holder.getSurface().isValid())
-                continue;
-            
-            Canvas canvas = holder.lockCanvas(); 
-            if (Globals.canvasSize == null)
-            	Globals.canvasSize = new Point(canvas.getWidth(), canvas.getHeight());
-
-            drawSurface(canvas);                                           
-            holder.unlockCanvasAndPost(canvas);            
-
+	        	try {
+	        	
+	        	// Update model for each asteroid
+	        	spriteSize = Globals.asteroids.size();
+	        	for (int i=0; i < spriteSize; i++)
+	        		Globals.asteroids.get(i).update();
+	
+	        	// Update model for each star
+	        	spriteSize = Globals.stars.size();
+	        	for (int i=0; i < spriteSize; i++)
+	        		Globals.stars.get(i).update();        	
+	        	
+	        	// Update model for the ship
+	        	Globals.starShip.update();
+	        	
+	            if(!holder.getSurface().isValid())
+	                continue;
+	            
+	            Canvas canvas = holder.lockCanvas(); 
+	            if (Globals.canvasSize == null)
+	            	Globals.canvasSize = new Point(canvas.getWidth(), canvas.getHeight());
+	
+	            drawSurface(canvas);                                           
+	            holder.unlockCanvasAndPost(canvas);            
+        	}
+        	catch (Exception e) {
+        		e.printStackTrace();
+        	}
         }
     }
 
     private void drawSurface(Canvas canvas) {
-    	// Clear screen
-    	canvas.drawRGB(0, 0, 0);
     	
-    	// draw stars!
-    	spriteSize = Globals.stars.size();
-    	for (int i=0; i < spriteSize; i++)
-    		Globals.stars.get(i).draw(canvas);
-    	
-    	// draw each asteroid
-    	spriteSize = Globals.asteroids.size();
-    	for (int i=0; i < spriteSize; i++)
-    		Globals.asteroids.get(i).draw(canvas);
-
-    	// draw other ships
-    	spriteSize = Globals.otherShips.size();
-    	for (int i=0; i < spriteSize; i++)
-    		Globals.otherShips.get(i).draw(canvas);
-    	
-    	// draw ship
-    	Globals.starShip.draw(canvas);
-    	
-    	paint.setTextSize(20);
-    	paint.setColor(Color.WHITE);
-    	paint.setStyle(Style.FILL);
-    	paint.setTypeface(Typeface.SANS_SERIF);
-    	canvas.drawText("Level:"+Globals.level, 10, 20, paint);
-    	canvas.drawText("Lives:"+Globals.lives, 100, 20, paint);
-    	canvas.drawText("Points:"+Globals.points, 200, 20, paint);
+    	try {
+	    	// Clear screen
+	    	canvas.drawRGB(0, 0, 0);
+	    	
+	    	// draw stars!
+	    	spriteSize = Globals.stars.size();
+	    	for (int i=0; i < spriteSize; i++)
+	    		Globals.stars.get(i).draw(canvas);
+	    	
+	    	// draw each asteroid
+	    	spriteSize = Globals.asteroids.size();
+	    	for (int i=0; i < spriteSize; i++)
+	    		Globals.asteroids.get(i).draw(canvas);
+	
+	    	// draw other ships
+	    	spriteSize = Globals.otherShips.size();
+	    	for (int i=0; i < spriteSize; i++)
+	    		Globals.otherShips.get(i).draw(canvas);
+	    	
+	    	// draw ship
+	    	Globals.starShip.draw(canvas);
+	    	
+//	    	paint.setTextSize(20);
+//	    	paint.setColor(Color.WHITE);
+//	    	paint.setStyle(Style.FILL);
+//	    	paint.setTypeface(Typeface.SANS_SERIF);
+//	    	canvas.drawText("Level:"+Globals.level, 10, 20, paint);
+//	    	canvas.drawText("Lives:"+Globals.lives, 100, 20, paint);
+//	    	canvas.drawText("Points:"+Globals.points, 200, 20, paint);
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
 
     }
 
