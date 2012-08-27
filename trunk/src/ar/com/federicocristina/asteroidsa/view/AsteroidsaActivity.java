@@ -1,4 +1,4 @@
-package ar.com.federicocristina.asteroidsa.view;
+package asteroidsa.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.utils.Globals;
 
 public class AsteroidsaActivity extends Activity implements OnTouchListener, SensorEventListener {
 	

@@ -1,15 +1,12 @@
-package ar.com.federicocristina.asteroidsa.view;
+package asteroidsa.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.utils.Globals;
 
 public class FastRenderView extends SurfaceView implements Runnable {
 

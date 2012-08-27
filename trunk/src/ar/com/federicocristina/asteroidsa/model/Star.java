@@ -1,8 +1,8 @@
-package ar.com.federicocristina.asteroidsa.model;
+package asteroidsa.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.utils.Globals;
 
 public class Star extends Sprite {
 

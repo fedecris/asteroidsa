@@ -1,4 +1,4 @@
-package ar.com.federicocristina.asteroidsa.network;
+package asteroidsa.network;
 
 import java.io.Serializable;
 import java.net.Inet6Address;
@@ -9,7 +9,9 @@ import java.util.Enumeration;
 
 public class Host implements Serializable {
 
+	/** IP del host */
 	private String hostIP;
+	/** Estado actual (conectado o no) */
 	private boolean connected;
 	
 	
@@ -55,7 +57,8 @@ public class Host implements Serializable {
 
     
     /**
-     * Determinar este host IP
+     * Determinar este host IP.
+     * @returns IP (solo version 4) o null en caso contrario
      */
     public static Host getLocalHostAddresAndIP() {
         try {

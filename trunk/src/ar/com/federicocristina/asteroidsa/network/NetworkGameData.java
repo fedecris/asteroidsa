@@ -1,11 +1,10 @@
-package ar.com.federicocristina.asteroidsa.network;
+package asteroidsa.network;
 
 import java.io.Serializable;
 
-import ar.com.federicocristina.asteroidsa.model.LaserBeam;
-import ar.com.federicocristina.asteroidsa.model.StarShip;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
-import ar.com.federicocristina.asteroidsa.utils.Point2Df;
+import asteroidsa.model.LaserBeam;
+import asteroidsa.model.StarShip;
+import asteroidsa.utils.Point2Df;
 
 public class NetworkGameData implements Serializable {
 

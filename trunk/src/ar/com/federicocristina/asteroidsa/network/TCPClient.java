@@ -1,10 +1,10 @@
-package ar.com.federicocristina.asteroidsa.network;
+package asteroidsa.network;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.utils.Globals;
 
 public class TCPClient extends TCPNetwork implements Runnable {
 

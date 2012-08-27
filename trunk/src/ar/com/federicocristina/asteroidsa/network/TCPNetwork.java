@@ -1,4 +1,4 @@
-package ar.com.federicocristina.asteroidsa.network;
+package asteroidsa.network;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
