@@ -1,4 +1,4 @@
-package ar.com.federicocristina.asteroidsa.utils;
+package asteroidsa.utils;
 
 import java.io.Serializable;
 

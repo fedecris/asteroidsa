@@ -1,4 +1,4 @@
-package ar.com.federicocristina.asteroidsa.model;
+package asteroidsa.model;
 
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import android.graphics.Path;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {
 

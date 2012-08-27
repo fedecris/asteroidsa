@@ -1,12 +1,12 @@
-package ar.com.federicocristina.asteroidsa.network;
+package asteroidsa.network;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 
-import ar.com.federicocristina.asteroidsa.model.LaserBeam;
-import ar.com.federicocristina.asteroidsa.model.StarShip;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.model.LaserBeam;
+import asteroidsa.model.StarShip;
+import asteroidsa.utils.Globals;
 
 
 

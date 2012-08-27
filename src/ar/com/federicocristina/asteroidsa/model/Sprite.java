@@ -1,11 +1,11 @@
-package ar.com.federicocristina.asteroidsa.model;
+package asteroidsa.model;
 
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
-import ar.com.federicocristina.asteroidsa.utils.Point2Df;
+import asteroidsa.utils.Globals;
+import asteroidsa.utils.Point2Df;
 
 public abstract class Sprite {
 

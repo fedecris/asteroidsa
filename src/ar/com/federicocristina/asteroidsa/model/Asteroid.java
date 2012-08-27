@@ -1,10 +1,10 @@
-package ar.com.federicocristina.asteroidsa.model;
+package asteroidsa.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Path;
-import ar.com.federicocristina.asteroidsa.utils.Globals;
+import asteroidsa.utils.Globals;
 
 public class Asteroid extends Sprite {
 

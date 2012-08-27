@@ -1,4 +1,4 @@
-package ar.com.federicocristina.asteroidsa.utils;
+package asteroidsa.utils;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -6,14 +6,14 @@ import java.util.Vector;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.Log;
-import ar.com.federicocristina.asteroidsa.model.Asteroid;
-import ar.com.federicocristina.asteroidsa.model.Star;
-import ar.com.federicocristina.asteroidsa.model.StarShip;
-import ar.com.federicocristina.asteroidsa.network.Host;
-import ar.com.federicocristina.asteroidsa.network.TCPClient;
-import ar.com.federicocristina.asteroidsa.network.TCPServer;
-import ar.com.federicocristina.asteroidsa.network.UDPClient;
-import ar.com.federicocristina.asteroidsa.network.UDPListener;
+import asteroidsa.model.Asteroid;
+import asteroidsa.model.Star;
+import asteroidsa.model.StarShip;
+import asteroidsa.network.Host;
+import asteroidsa.network.TCPClient;
+import asteroidsa.network.TCPServer;
+import asteroidsa.network.discovery.UDPClient;
+import asteroidsa.network.discovery.UDPListener;
 
 
 public class Globals {
@@ -59,12 +59,8 @@ public class Globals {
 	public static int MAX_BACK_STARS = 20; 	
 	
 	/** Network Specific */ 
-	// UDP Port
-	public static final int PORT_UDP = 9998;
 	// TCP Port
 	public static final int PORT_TCP = 9999;
-	// UDP Group
-	public static final String GROUP_IP = "230.0.0.1";
 	// TCP Server
 	public static final String SERVER_IP_TCP = "10.0.0.10";
 	
