@@ -8,14 +8,16 @@ import asteroidsa.network.NetworkApplicationData;
 
 public class TCPClient extends TCPNetwork implements Runnable {
 
+	/** Is this client connected to a server listening? */
+	protected boolean connected = false;
+	
     /**
      * Constructor
      * @param ip del server al cual conectar
-     * @param puerto al cual conectar
      */
-    public TCPClient(String ip, int puerto) {
+    public TCPClient(String ip) {
         this.host = ip;
-        this.port = puerto;
+        this.port = TCP_PORT;
     }
     
     /**
@@ -27,13 +29,14 @@ public class TCPClient extends TCPNetwork implements Runnable {
             socket = new Socket(host, port);
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
             toBuffer.flush();
-            fromBuffer = new ObjectInputStream(socket.getInputStream());       
-            return true;
+            fromBuffer = new ObjectInputStream(socket.getInputStream()); 
+            connected = true;
         }
         catch (Exception ex) { 
-            System.err.println ("Error en NetworkClient: " +ex.getMessage()); 
-            return false;
+            System.err.println ("Error en NetworkClient: " +ex.getMessage());
+            connected = false;
         } 
+        return connected;
     }  
    
      /**
@@ -47,26 +50,16 @@ public class TCPClient extends TCPNetwork implements Runnable {
 
     
     /**
-     * Periodically send local application state
+     * Send local application state
      */
 	public void run() {
+		sendMessage(networkGameData);
+	}
 
-		// Intentar conectar
-		while (!connect());
-		
-		while (true) {
-			// Update local state
+	
+	public boolean isConnected() {
+		return connected;
+	}
 
-			// TODO: UPDATE LOCAL DATA BEFORE SEND
-			sendMessage(networkGameData);
-			
-			try {
-				Thread.sleep(30);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}        
-     
+	
 }

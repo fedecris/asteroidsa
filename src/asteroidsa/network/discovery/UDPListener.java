@@ -6,6 +6,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import asteroidsa.network.Host;
+import asteroidsa.network.communication.NetworkCommunication;
+import asteroidsa.network.communication.NetworkCommunicationFactory;
+import asteroidsa.network.communication.TCPCommunication;
 
 public class UDPListener extends UDPDiscovery implements Runnable {
 	
@@ -48,8 +51,11 @@ public class UDPListener extends UDPDiscovery implements Runnable {
 	    	return;
 	    
 	    // Is the host already included in the list?
-	    if (!otherHosts.contains(host))
+	    if (!otherHosts.contains(host)) {
 	    	otherHosts.add(host);
+	    	NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+	    	networkComm.connectToServerHost(host);
+	    }
 	    else
 	    	otherHosts.set(otherHosts.indexOf(host), host);
 	}

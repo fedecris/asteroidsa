@@ -9,8 +9,11 @@ import android.util.Log;
 import asteroidsa.network.NetworkApplicationData;
 
 
-public class TCPNetwork extends TCPCommunication {
+public class TCPNetwork {
 
+	/** TCP Port */
+	public static final int TCP_PORT = 9999;
+	
     /** Host y puerto de conexion */
     protected String host;
     protected int port;     
@@ -26,7 +29,9 @@ public class TCPNetwork extends TCPCommunication {
     /** Mensaje de envio o recepción */
     protected NetworkApplicationData networkGameData;
 
-    /**
+
+
+	/**
      * Escribe datos a la salida
      * @param datos
      */
@@ -81,5 +86,13 @@ public class TCPNetwork extends TCPCommunication {
         }      
     }
     
-        
+
+    public NetworkApplicationData getNetworkGameData() {
+		return networkGameData;
+	}
+
+	public void setNetworkGameData(NetworkApplicationData networkGameData) {
+		this.networkGameData = networkGameData;
+	}
+    
 }
