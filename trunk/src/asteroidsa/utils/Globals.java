@@ -1,20 +1,22 @@
 package asteroidsa.utils;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
 import asteroidsa.model.Asteroid;
+import asteroidsa.model.LaserBeam;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
-import asteroidsa.network.Host;
-import asteroidsa.network.communication.TCPClient;
-import asteroidsa.network.communication.TCPListener;
+import asteroidsa.network.communication.NetworkCommunication;
+import asteroidsa.network.communication.NetworkCommunicationFactory;
 import asteroidsa.network.discovery.HostDiscovery;
+import asteroidsa.network.discovery.HostDiscoveryFactory;
 
 
-public class Globals {
+public class Globals implements Observer {
 
 	/** Game specific */
 	// Game running
@@ -36,7 +38,7 @@ public class Globals {
 	// Our ship!
 	public static StarShip starShip = null;
 	// The others ships!
-	public static ArrayList<StarShip> otherShips = null;
+	public static ArrayList<StarShip> otherShips = new ArrayList<StarShip>();
 	// Initial Level 
 	public final static int INITIAL_LEVEL = 0;
 	// Level (& number of asteroids!)
@@ -68,7 +70,7 @@ public class Globals {
 	public static void startup()
 	{
 		// A star ship, stars and at least one asteroid
-        Globals.starShip = new StarShip();
+        starShip = new StarShip();
         stars.clear();
         for (int i=0; i<MAX_BACK_STARS; i++)
         	new Star(false);               
@@ -80,8 +82,14 @@ public class Globals {
         // First time configuration
         if (HostDiscovery.thisHost == null)
         {
-	        otherShips = new ArrayList<StarShip>();
-
+        	// Discovery
+	        HostDiscovery discoveryMethod = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
+	        discoveryMethod.startDiscovery();
+	        
+	        // Communication
+	        StatusHandler handler = new StatusHandler();
+	        Thread handlerThread = new Thread(handler);
+	        handlerThread.start();
         }
 	}
 	
@@ -115,4 +123,65 @@ public class Globals {
 		startup();
 		
 	}
+
+	/**
+	 * Actualiza el modelo en funcion del mensaje recibido
+	 */
+	@Override
+	public void update(Observable observable, Object data) {
+		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
+		
+        StarShip remoteShip = null;
+    	// Recuperar host remoto y actualizar la nave remota en globals
+    	int pos = HostDiscovery.otherHosts.indexOf(message.getSourceHost());
+    	remoteShip = Globals.otherShips.get(pos);
+    	remoteShip.position.x = message.position.x;
+    	remoteShip.position.y = message.position.y;
+    	remoteShip.vector.x = message.vector.x;
+    	remoteShip.vector.y = message.vector.y;
+    	remoteShip.heading = message.heading;
+    	// Process laser hosts!
+    	int i=0;
+    	for (LaserBeam remoteLaserBeam : remoteShip.ammo) {
+    		remoteLaserBeam.active = message.shotActive[i];
+    		remoteLaserBeam.position.x = message.shotPosition[i].x;
+    		remoteLaserBeam.position.y = message.shotPosition[i].y;
+    		remoteLaserBeam.vector.x = message.shotVector[i].x;
+    		remoteLaserBeam.vector.y = message.shotVector[i].y;
+    		remoteLaserBeam.heading = message.shotHeading[i];
+    		
+    		// Hit?
+    		if ( ((remoteLaserBeam.position.x - Globals.starShip.position.x)*(remoteLaserBeam.position.x - Globals.starShip.position.x) + 
+    			  (remoteLaserBeam.position.y - Globals.starShip.position.y)*(remoteLaserBeam.position.y - Globals.starShip.position.y)) 
+    			   < Globals.starShip.width/4*Globals.starShip.width/4) {
+    			 Globals.lifeLost();
+    			 continue;
+    		}
+    		
+    		i++;
+    	}
+	}
+	
+	
+	
+	public static class StatusHandler extends Globals implements Runnable {
+
+		@Override
+		public void run() {
+			
+	        NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+	        networkComm.startListener();
+
+	        while (true) {
+	        	networkComm.sendMessageToAllHosts(new AsteroidsNetworkApplicationData(HostDiscovery.thisHost, starShip));
+	        	try {
+	        		Thread.sleep(30);
+	        	}
+	        	catch (Exception e) { e.printStackTrace(); }
+	        }
+			
+		}
+		
+	}
+	
 }

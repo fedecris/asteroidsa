@@ -11,12 +11,11 @@ import asteroidsa.network.NetworkApplicationData;
 public class TCPListener extends TCPNetwork implements Runnable {
             
     /**
-     * Crea la conexion server a fin de escruchar mensajes etrantes
-     * @param puerto por el cual entraran los mensajes
+     * Crea la conexion server a fin de escuchar mensajes entrantes
      */
-    public TCPListener(int puerto) {
+    public TCPListener() {
         try {
-            port = puerto;
+            port = TCP_PORT;
             serverConn = new ServerSocket(port);   
         }
         catch (Exception ex) { System.err.println ("Error en instanciar NetworkServer: " + ex.getMessage()); }

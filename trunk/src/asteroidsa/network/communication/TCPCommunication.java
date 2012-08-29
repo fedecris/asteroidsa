@@ -1,32 +1,74 @@
 package asteroidsa.network.communication;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import asteroidsa.network.discovery.HostDiscovery;
+import asteroidsa.network.Host;
+import asteroidsa.network.NetworkApplicationData;
 
-public class TCPCommunication {
+public class TCPCommunication implements NetworkCommunication {
 
-	// TCP Port
-	public static final int TCP_PORT = 9999;
+	/** TCP Listener */
+	public static TCPListener listener = new TCPListener();
+	/** TCP Clients: Target Host - TCPConnection */
+	public static HashMap<Host, TCPClient> clientPool = new HashMap<Host, TCPClient>();
 	
 	
-	public static ArrayList<TCPClient> commPool = new ArrayList<TCPClient>();
 	
-	
-	public void startCommunication() {
-        // Iniciar Server
-        TCPListener server = new TCPListener(TCP_PORT);
+	@Override
+	public void startListener() {
+        // Start listener
+        TCPListener server = new TCPListener();
         Thread serverRun = new Thread(server);
         serverRun.start();
-
-        // TODO: SHOULD ITERATE hostList and create a connection pool
-//        String host1IP = "192.168.1.121";
-//        String host2IP = "192.168.1.108";
-//        TCPClient client = new TCPClient(host1IP.equals(HostDiscovery.thisHost.getHostIP())?host2IP:host1IP, TCP_PORT);
-        Thread clientRun = new Thread(client);
-        clientRun.start();
+	}
 
 
+	@Override
+	public void connectToServerHost(Host target) {
+		if (clientPool.get(target) == null) 
+			clientPool.put(target, new TCPClient(target.getHostIP()));
+
+		TCPClient client = clientPool.get(target);
+		client.connect();
 	}
 	
+	
+	@Override
+	public void sendMessage(Host target, NetworkApplicationData data) {
+		// Add to pool if not exists
+		if (clientPool.get(target) == null) 
+			return;	// TODO: throw exception? log? return false? etc.
+		
+		sendAsyncMsg(target, data);
+	}
+
+	
+	@Override
+	public void sendMessageToAllHosts(NetworkApplicationData data) {
+		for (Host target : clientPool.keySet())
+			sendAsyncMsg(target, data);
+	}
+
+	
+	
+	/**
+	 * Creates a new thread for each message to send
+	 * @param target target host
+	 * @param data message to send
+	 */
+	protected void sendAsyncMsg(Host target, NetworkApplicationData data) {
+		
+		// Set info to send
+		TCPClient client = clientPool.get(target);
+		client.setNetworkGameData(data);
+		
+		// Start an independient thread to send data
+		Thread clientThread = new Thread(client);
+		clientThread.start();
+	}
+	
+
+
+
+
 }
