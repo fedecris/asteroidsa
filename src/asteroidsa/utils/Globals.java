@@ -64,6 +64,11 @@ public class Globals implements Observer {
 	public static final int INPUT_ACCELEROMETER	= 1;
 	public static int inputMethod = INPUT_ACCELEROMETER;
 	
+	
+	static boolean firstConf = false;
+	
+	static NetworkCommunication networkComm = null;
+	
 	/**
 	 * Initial values
 	 */
@@ -80,16 +85,24 @@ public class Globals implements Observer {
         for (int i=0; i<level; i++)
         	new Asteroid();
         // First time configuration
-        if (HostDiscovery.thisHost == null)
+        if (!firstConf)
         {
+        	firstConf = true;
         	// Discovery
 	        HostDiscovery discoveryMethod = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
 	        discoveryMethod.startDiscovery();
 	        
 	        // Communication
+	        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+	        networkComm.setNetworkApplicationData(new AsteroidsNetworkApplicationData());
+	        networkComm.startListener();
+	        networkComm.getNetworkApplicationData().addObserver(new Globals());
+	        
 	        StatusHandler handler = new StatusHandler();
 	        Thread handlerThread = new Thread(handler);
 	        handlerThread.start();
+	        
+
         }
 	}
 	
@@ -162,16 +175,11 @@ public class Globals implements Observer {
     	}
 	}
 	
-	
-	
 	public static class StatusHandler extends Globals implements Runnable {
 
 		@Override
 		public void run() {
 			
-	        NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-	        networkComm.startListener();
-
 	        while (true) {
 	        	networkComm.sendMessageToAllHosts(new AsteroidsNetworkApplicationData(HostDiscovery.thisHost, starShip));
 	        	try {

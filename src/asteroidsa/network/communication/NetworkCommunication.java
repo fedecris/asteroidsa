@@ -34,4 +34,14 @@ public interface NetworkCommunication {
 	public void sendMessageToAllHosts(NetworkApplicationData data);
 
 	
+	/**
+	 * @return a reference to the data message to be observed
+	 */
+	public NetworkApplicationData getNetworkApplicationData();
+	
+	/**
+	 * Sets the networkApplicationData instance to be observed
+	 * @param networkApplicationData the networkApplicationData instance to be observed
+	 */
+	public void setNetworkApplicationData(NetworkApplicationData networkApplicationData);
 }

@@ -8,7 +8,6 @@ import java.net.MulticastSocket;
 import asteroidsa.network.Host;
 import asteroidsa.network.communication.NetworkCommunication;
 import asteroidsa.network.communication.NetworkCommunicationFactory;
-import asteroidsa.network.communication.TCPCommunication;
 
 public class UDPListener extends UDPDiscovery implements Runnable {
 	

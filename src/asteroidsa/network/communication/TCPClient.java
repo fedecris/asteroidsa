@@ -53,7 +53,7 @@ public class TCPClient extends TCPNetwork implements Runnable {
      * Send local application state
      */
 	public void run() {
-		sendMessage(networkGameData);
+		sendMessage(networkApplicationData);
 	}
 
 	
