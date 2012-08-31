@@ -15,8 +15,9 @@ public interface NetworkCommunication {
 	/**
 	 * Connects to a server
 	 * @param target target host
+	 * @return true if a connection is achieved, or false otherwise
 	 */
-	public void connectToServerHost(Host target);
+	public boolean connectToServerHost(Host target);
 	
 	
 	/**      

@@ -1,6 +1,7 @@
 package asteroidsa.network.discovery;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import android.util.Log;
 import asteroidsa.network.Host;

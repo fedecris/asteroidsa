@@ -1,10 +1,11 @@
 package asteroidsa.network.communication;
 
-
 public class NetworkCommunicationFactory {
 	
 	/** Network communication through TCP Sockets */
 	public static final int COMMUNICATION_METHOD_TCP = 1;
+	/** Selected network communication implementation instance */
+	protected static NetworkCommunication instance = null;
 	
 	/**
 	 * Default method for network communication
@@ -22,9 +23,12 @@ public class NetworkCommunicationFactory {
 	public static NetworkCommunication getNetworkCommunication(int method) {
 		switch (method) {
 		case COMMUNICATION_METHOD_TCP:
-			return new TCPCommunication();
+			if (instance==null)
+				instance = new TCPCommunication();
+			return instance;
 		default:
 			return null;
 		}
+		
 	}
 }

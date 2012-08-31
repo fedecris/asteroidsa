@@ -4,7 +4,9 @@ public class HostDiscoveryFactory {
 	
 	/** Host discovery through UDP Sockets */
 	public static final int DISCOVERY_METHOD_UDP = 1;
-	
+	/** Selected host discovery implementation instance */
+	private static HostDiscovery instance = null;
+
 	/**
 	 * Default method for host discovery
 	 * @return method identifier for default host discovery method
@@ -21,7 +23,9 @@ public class HostDiscoveryFactory {
 	public static HostDiscovery getHostDiscovery(int method) {
 		switch (method) {
 		case DISCOVERY_METHOD_UDP:
-			return new UDPDiscovery();
+			if (instance==null)
+				instance = new UDPDiscovery(); 
+			return instance;
 		default:
 			return null;
 		}
