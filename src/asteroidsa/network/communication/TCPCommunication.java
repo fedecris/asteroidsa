@@ -19,18 +19,19 @@ public class TCPCommunication implements NetworkCommunication {
 	public void startListener() {
         // Start listener
         listener = new TCPListener();
+        listener.setNetworkApplicationData(networkApplicationData);
         Thread serverRun = new Thread(listener);
         serverRun.start();
 	}
 
 
 	@Override
-	public void connectToServerHost(Host target) {
+	public boolean connectToServerHost(Host target) {
 		if (clientPool.get(target) == null) 
 			clientPool.put(target, new TCPClient(target.getHostIP()));
 
 		TCPClient client = clientPool.get(target);
-		client.connect();
+		return client.connect();
 	}
 	
 	
@@ -51,9 +52,8 @@ public class TCPCommunication implements NetworkCommunication {
 	}
 
 	
-	
 	/**
-	 * Creates a new thread for each message to send
+	 * Sends a message to a host
 	 * @param target target host
 	 * @param data message to send
 	 */
@@ -65,11 +65,7 @@ public class TCPCommunication implements NetworkCommunication {
 		if (!client.isConnected() && !client.connect())
 			return;	// TODO: ACA HAY QUE LOGGEAR EL PROBLEMA
 		
-		client.setNetworkApplicationData(data);
 		client.sendMessage(data);
-		// Start an independient thread to send data
-	//	Thread clientThread = new Thread(client);
-	//	clientThread.start();
 	}
 	
 

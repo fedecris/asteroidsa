@@ -88,16 +88,18 @@ public class Globals implements Observer {
         if (!firstConf)
         {
         	firstConf = true;
-        	// Discovery
-	        HostDiscovery discoveryMethod = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
-	        discoveryMethod.startDiscovery();
-	        
-	        // Communication
+        	
+	        // Communication listener
 	        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
 	        networkComm.setNetworkApplicationData(new AsteroidsNetworkApplicationData());
 	        networkComm.startListener();
 	        networkComm.getNetworkApplicationData().addObserver(new Globals());
+        	
+        	// Discovery handler
+	        HostDiscovery discoveryMethod = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
+	        discoveryMethod.startDiscovery();
 	        
+	        // Communication client
 	        StatusHandler handler = new StatusHandler();
 	        Thread handlerThread = new Thread(handler);
 	        handlerThread.start();
@@ -146,8 +148,13 @@ public class Globals implements Observer {
 		
         StarShip remoteShip = null;
     	// Recuperar host remoto y actualizar la nave remota en globals
-    	int pos = HostDiscovery.otherHosts.indexOf(message.getSourceHost());
-    	remoteShip = Globals.otherShips.get(pos);
+        int pos = -1;
+        for (int i = 0 ; i<HostDiscovery.otherHosts.size() && i!=pos; i++)
+        	if ((HostDiscovery.otherHosts.get(i)).equals(message.getSourceHost()))
+        		pos = i;
+        if (otherShips.size() <= pos)
+        	otherShips.add(new StarShip());
+    	remoteShip = Globals.otherShips.get(pos); 
     	remoteShip.position.x = message.position.x;
     	remoteShip.position.y = message.position.y;
     	remoteShip.vector.x = message.vector.x;

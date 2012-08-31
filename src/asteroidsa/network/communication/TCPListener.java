@@ -40,7 +40,9 @@ public class TCPListener extends TCPNetwork implements Runnable {
                 networkApplicationData.notifyNewMessage();
 
             }
-            catch (Exception e) { System.err.println("Error en run de NetworkServer: "+e.getMessage()); }
+            catch (Exception e) { 
+            	System.err.println("Error en run de NetworkServer: "+e.getMessage()); 
+            }
         }
     }
     
@@ -72,12 +74,5 @@ public class TCPListener extends TCPNetwork implements Runnable {
         }
     }  
     
-  
-    public NetworkApplicationData getMessage() {
-        return networkApplicationData;
-    }
 
-    public void setMessage(NetworkApplicationData networkGameData) {
-        this.networkApplicationData = networkGameData;
-    }
 }

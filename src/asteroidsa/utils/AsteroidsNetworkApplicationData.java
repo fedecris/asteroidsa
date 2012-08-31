@@ -8,8 +8,6 @@ import asteroidsa.network.NetworkApplicationData;
 
 public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 
-	// Host origen del msj
-	protected Host remoteHost = null;
 	// Position
 	protected Point2Df position = new Point2Df(100, 100);
 	// Current directional speed
@@ -28,7 +26,7 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 	}
 	
 	public AsteroidsNetworkApplicationData(Host host, StarShip ship) {
-		this.remoteHost = host;
+		this.sourceHost = host;
 		setRemoteShip(ship);
 		int i=0;
 		for (LaserBeam beam : ship.ammo) {
@@ -51,13 +49,26 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 	
 	public void copy(NetworkApplicationData source) {
 		AsteroidsNetworkApplicationData s = (AsteroidsNetworkApplicationData)source; 
-		this.remoteHost = s.remoteHost;
-		this.position = s.position;
+		this.sourceHost = s.sourceHost;
+		this.position.x = s.position.x;
+		this.position.y = s.position.y;
 		this.vector = s.vector;
+		this.vector.x = s.vector.x;
+		this.vector.y = s.vector.y;
 		this.heading = s.heading;
-		this.shotActive = s.shotActive;
-		this.shotPosition = s.shotPosition;
-		this.shotVector = s.shotVector;
-		this.shotHeading = s.shotHeading;
+		shotActive = new boolean[StarShip.AMMO_COUNT];
+		shotPosition = new Point2Df[StarShip.AMMO_COUNT];
+		shotVector = new Point2Df[StarShip.AMMO_COUNT];
+		shotHeading = new float[StarShip.AMMO_COUNT];
+		for (int i=0; i<this.shotActive.length; i++) {
+			shotPosition[i] = new Point2Df(0, 0);
+			shotVector[i] = new Point2Df(0, 0);
+			this.shotActive[i] = s.shotActive[i];
+			this.shotPosition[i].x = s.shotPosition[i].x;
+			this.shotPosition[i].y = s.shotPosition[i].y;
+			this.shotVector[i].x = s.shotVector[i].x;
+			this.shotVector[i].y = s.shotVector[i].y;
+			this.shotHeading[i] = s.shotHeading[i];
+		}
 	}
 }
