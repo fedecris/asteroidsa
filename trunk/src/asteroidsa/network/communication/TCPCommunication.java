@@ -8,17 +8,18 @@ import asteroidsa.network.NetworkApplicationData;
 public class TCPCommunication implements NetworkCommunication {
 
 	/** TCP Listener */
-	public static TCPListener listener = new TCPListener();
+	public static TCPListener listener = null;
 	/** TCP Clients: Target Host - TCPConnection */
 	public static HashMap<Host, TCPClient> clientPool = new HashMap<Host, TCPClient>();
-	
+    /** Mensaje de envio o recepción */
+    protected NetworkApplicationData networkApplicationData = null;
 	
 	
 	@Override
 	public void startListener() {
         // Start listener
-        TCPListener server = new TCPListener();
-        Thread serverRun = new Thread(server);
+        listener = new TCPListener();
+        Thread serverRun = new Thread(listener);
         serverRun.start();
 	}
 
@@ -60,14 +61,26 @@ public class TCPCommunication implements NetworkCommunication {
 		
 		// Set info to send
 		TCPClient client = clientPool.get(target);
-		client.setNetworkGameData(data);
 		
+		if (!client.isConnected() && !client.connect())
+			return;	// TODO: ACA HAY QUE LOGGEAR EL PROBLEMA
+		
+		client.setNetworkApplicationData(data);
+		client.sendMessage(data);
 		// Start an independient thread to send data
-		Thread clientThread = new Thread(client);
-		clientThread.start();
+	//	Thread clientThread = new Thread(client);
+	//	clientThread.start();
 	}
 	
 
+	
+    public NetworkApplicationData getNetworkApplicationData() {
+		return networkApplicationData;
+	}
+
+	public void setNetworkApplicationData(NetworkApplicationData networkApplicationData) {
+		this.networkApplicationData = networkApplicationData;
+	}
 
 
 

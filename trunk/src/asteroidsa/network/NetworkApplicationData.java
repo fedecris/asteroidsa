@@ -25,6 +25,8 @@ public abstract class NetworkApplicationData extends Observable implements Seria
         notifyObservers(this);
     }
 	
+    
+    public abstract void copy(NetworkApplicationData source);
 
 	
 }

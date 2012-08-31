@@ -47,4 +47,17 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 		vector.y = ship.vector.y;
 		heading = ship.heading;
 	}
+	
+	
+	public void copy(NetworkApplicationData source) {
+		AsteroidsNetworkApplicationData s = (AsteroidsNetworkApplicationData)source; 
+		this.remoteHost = s.remoteHost;
+		this.position = s.position;
+		this.vector = s.vector;
+		this.heading = s.heading;
+		this.shotActive = s.shotActive;
+		this.shotPosition = s.shotPosition;
+		this.shotVector = s.shotVector;
+		this.shotHeading = s.shotHeading;
+	}
 }
