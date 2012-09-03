@@ -50,13 +50,14 @@ public class UDPListener extends UDPDiscovery implements Runnable {
 	    	return;
 	    
 	    // Is the host already included in the list?
-	    if (!otherHosts.contains(host)) {
-	    	otherHosts.add(host);
+	    if (!otherHosts.contains(host.getHostIP())) {
+	    	otherHosts.add(host.getHostIP());
 	    	NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
 	    	networkComm.connectToServerHost(host);
 	    }
-	    else
-	    	otherHosts.set(otherHosts.indexOf(host), host);
+	    else {
+	    	otherHosts.set(otherHosts.indexOf(host.getHostIP()), host.getHostIP());
+	    }
 	}
 
 }

@@ -1,7 +1,6 @@
 package asteroidsa.network.discovery;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 import android.util.Log;
 import asteroidsa.network.Host;
@@ -12,8 +11,8 @@ public abstract class HostDiscovery {
 
 	/** Host local */
 	public static Host thisHost = null;
-	/** The other hosts */
-	public static ArrayList<Host> otherHosts = new ArrayList<Host>();
+	/** The other hosts IPs */
+	public static ArrayList<String> otherHosts = new ArrayList<String>();
 	
 	/**
 	 * Start the discovery method for finding hosts
