@@ -1,82 +1,72 @@
 package asteroidsa.network.communication;
 
-import java.util.HashMap;
-
+import android.util.Log;
+import asteroidsa.network.Logger;
 import asteroidsa.network.Host;
 import asteroidsa.network.NetworkApplicationData;
 
-public class TCPCommunication implements NetworkCommunication {
+public class TCPCommunication extends NetworkCommunication {
 
-	/** TCP Listener */
-	public static TCPListener listener = null;
-	/** TCP Clients: Target Host - TCPConnection */
-	public static HashMap<Host, TCPClient> clientPool = new HashMap<Host, TCPClient>();
-    /** Mensaje de envio o recepción */
-    protected NetworkApplicationData networkApplicationData = null;
-	
 	
 	@Override
-	public void startListener() {
-        // Start listener
-        listener = new TCPListener();
-        listener.setNetworkApplicationData(networkApplicationData);
-        Thread serverRun = new Thread(listener);
-        serverRun.start();
+	public boolean startListener(NetworkApplicationData networkApplicationData) {
+
+		try {
+	        // Create a new listener (server)
+	        listener = new TCPListener();
+	        // Set the data type to be sent/received
+	        listener.setNetworkApplicationData(networkApplicationData);
+	        setNetworkApplicationData(networkApplicationData);
+	        // Start the service in a new thread
+	        Thread serverRun = new Thread(listener);
+	        serverRun.start();
+	        return true;
+		} 
+		catch (Exception e) {
+			Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en startListener(): " + e.getMessage());
+			return false;
+		}
 	}
 
 
 	@Override
 	public boolean connectToServerHost(Host target) {
-		if (clientPool.get(target) == null) 
-			clientPool.put(target, new TCPClient(target.getHostIP()));
+		if (clientPool.get(target.getHostIP()) == null) 
+			clientPool.put(target.getHostIP(), new TCPClient(target.getHostIP()));
 
-		TCPClient client = clientPool.get(target);
-		return client.connect();
+		TCPClient client = clientPool.get(target.getHostIP());
+		return client.isConnected() || client.connect();
 	}
 	
 	
 	@Override
-	public void sendMessage(Host target, NetworkApplicationData data) {
-		// Add to pool if not exists
-		if (clientPool.get(target) == null) 
-			return;	// TODO: throw exception? log? return false? etc.
+	public boolean sendMessage(String targetIP, NetworkApplicationData data) {
+
+		TCPClient client = clientPool.get(targetIP);	
+		if (client==null) {
+			Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en sendMessage(): client is null");
+			return false;
+		}
 		
-		sendAsyncMsg(target, data);
+		if (!client.isConnected() && !client.connect()) {
+			Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en sendMessage(): cannot connect to client!");
+			return false;	
+		}
+		
+		return client.sendMessage(data);
 	}
 
 	
 	@Override
-	public void sendMessageToAllHosts(NetworkApplicationData data) {
-		for (Host target : clientPool.keySet())
-			sendAsyncMsg(target, data);
+	public boolean sendMessageToAllHosts(NetworkApplicationData data) {
+		for (String targetIP : clientPool.keySet()) 
+			if (!sendMessage(targetIP, data))
+				return false;
+		return true;
 	}
 
 	
-	/**
-	 * Sends a message to a host
-	 * @param target target host
-	 * @param data message to send
-	 */
-	protected void sendAsyncMsg(Host target, NetworkApplicationData data) {
-		
-		// Set info to send
-		TCPClient client = clientPool.get(target);
-		
-		if (!client.isConnected() && !client.connect())
-			return;	// TODO: ACA HAY QUE LOGGEAR EL PROBLEMA
-		
-		client.sendMessage(data);
-	}
-	
 
-	
-    public NetworkApplicationData getNetworkApplicationData() {
-		return networkApplicationData;
-	}
-
-	public void setNetworkApplicationData(NetworkApplicationData networkApplicationData) {
-		this.networkApplicationData = networkApplicationData;
-	}
 
 
 

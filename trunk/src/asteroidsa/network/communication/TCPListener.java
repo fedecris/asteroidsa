@@ -4,6 +4,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 
+import android.util.Log;
+import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
 
@@ -18,7 +20,10 @@ public class TCPListener extends TCPNetwork implements Runnable {
             port = TCP_PORT;
             serverConn = new ServerSocket(port);   
         }
-        catch (Exception ex) { System.err.println ("Error en instanciar NetworkServer: " + ex.getMessage()); }
+        catch (Exception ex) { 
+        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error al instanciar NetworkServer(): " + ex.getMessage()); 
+        }
+        
     }
 
     /**
@@ -41,7 +46,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
 
             }
             catch (Exception e) { 
-            	System.err.println("Error en run de NetworkServer: "+e.getMessage()); 
+            	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en run de NetworkServer(): " + e.getMessage());
             }
         }
     }
@@ -54,7 +59,9 @@ public class TCPListener extends TCPNetwork implements Runnable {
                 closeServer();
                 serverConn = new ServerSocket(port);
         }
-        catch (Exception e) { System.err.println("Error en restartServer():" + e.getMessage()); }
+        catch (Exception e) { 
+        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en restartServer(): " + e.getMessage()); 
+        }
     }
     
     /**
@@ -69,7 +76,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
             return true;
         }
         catch (Exception ex) { 
-            System.err.println ("Error en listen de NetworkServer: " + ex.getMessage());
+        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en listen de NetworkServer(): " + ex.getMessage());
             return false;
         }
     }  

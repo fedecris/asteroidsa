@@ -6,10 +6,12 @@ import java.util.Observer;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 import asteroidsa.model.Asteroid;
 import asteroidsa.model.LaserBeam;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
+import asteroidsa.network.Logger;
 import asteroidsa.network.communication.NetworkCommunication;
 import asteroidsa.network.communication.NetworkCommunicationFactory;
 import asteroidsa.network.discovery.HostDiscovery;
@@ -64,10 +66,9 @@ public class Globals implements Observer {
 	public static final int INPUT_ACCELEROMETER	= 1;
 	public static int inputMethod = INPUT_ACCELEROMETER;
 	
-	
 	static boolean firstConf = false;
-	
 	static NetworkCommunication networkComm = null;
+	static HostDiscovery networkDicovery = null; 
 	
 	/**
 	 * Initial values
@@ -87,22 +88,32 @@ public class Globals implements Observer {
         // First time configuration
         if (!firstConf)
         {
-        	firstConf = true;
-        	
-	        // Communication listener
-	        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-	        networkComm.setNetworkApplicationData(new AsteroidsNetworkApplicationData());
-	        networkComm.startListener();
-	        networkComm.getNetworkApplicationData().addObserver(new Globals());
-        	
-        	// Discovery handler
-	        HostDiscovery discoveryMethod = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
-	        discoveryMethod.startDiscovery();
-	        
-	        // Communication client
-	        StatusHandler handler = new StatusHandler();
-	        Thread handlerThread = new Thread(handler);
-	        handlerThread.start();
+        	try {
+	        	firstConf = true;
+	        	
+		        // Communication listener
+		        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+		        networkComm.startListener(new AsteroidsNetworkApplicationData());
+		        networkComm.getNetworkApplicationData().addObserver(new Globals());
+	        	
+		        // FIXME: WHY?
+		        Thread.sleep(5000);
+		        
+	        	// Discovery handler
+		        networkDicovery = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
+		        networkDicovery.startDiscovery();
+
+		        // FIXME: WHY?
+		        Thread.sleep(5000);
+		        
+		        // Communication client
+		        StatusHandler handler = new StatusHandler();
+		        Thread handlerThread = new Thread(handler);
+		        handlerThread.start();
+        	}
+        	catch (Exception e) {
+        		
+        	}
 	        
 
         }
@@ -150,7 +161,7 @@ public class Globals implements Observer {
     	// Recuperar host remoto y actualizar la nave remota en globals
         int pos = -1;
         for (int i = 0 ; i<HostDiscovery.otherHosts.size() && i!=pos; i++)
-        	if ((HostDiscovery.otherHosts.get(i)).equals(message.getSourceHost()))
+        	if ((HostDiscovery.otherHosts.get(i)).equals(message.getSourceHost().getHostIP()))
         		pos = i;
         if (otherShips.size() <= pos)
         	otherShips.add(new StarShip());
@@ -192,7 +203,9 @@ public class Globals implements Observer {
 	        	try {
 	        		Thread.sleep(30);
 	        	}
-	        	catch (Exception e) { e.printStackTrace(); }
+	        	catch (Exception e) { 
+	        		Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en StatusHandrel(): " + e.getMessage()); 
+	        	}
 	        }
 			
 		}

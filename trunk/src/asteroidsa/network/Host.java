@@ -9,9 +9,9 @@ import java.util.Enumeration;
 
 public class Host implements Serializable {
 
-	/** IP del host */
+	/** Host IP */
 	private String hostIP;
-	/** Estado actual (conectado o no) */
+	/** Current status (online or offline) */
 	private boolean connected;
 	
 	
