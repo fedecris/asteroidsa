@@ -23,7 +23,7 @@ public class TCPCommunication extends NetworkCommunication {
 	        return true;
 		} 
 		catch (Exception e) {
-			Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en startListener(): " + e.getMessage());
+			Logger.e("Error en startListener(): " + e.getMessage());
 			return false;
 		}
 	}
@@ -44,12 +44,12 @@ public class TCPCommunication extends NetworkCommunication {
 
 		TCPClient client = clientPool.get(targetIP);	
 		if (client==null) {
-			Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en sendMessage(): client is null");
+			Logger.e("Error en sendMessage(): client is null");
 			return false;
 		}
 		
 		if (!client.isConnected() && !client.connect()) {
-			Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en sendMessage(): cannot connect to client!");
+			Logger.e("Error en sendMessage(): cannot connect to client!");
 			return false;	
 		}
 		

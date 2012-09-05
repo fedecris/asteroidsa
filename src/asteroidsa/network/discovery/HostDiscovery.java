@@ -36,4 +36,11 @@ public abstract class HostDiscovery {
 			System.exit(1);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		if (thisHost != null && thisHost.getHostIP() != null)
+			return thisHost.getHostIP();
+		return "";
+	}
 }
