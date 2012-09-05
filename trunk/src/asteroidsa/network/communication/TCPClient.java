@@ -27,7 +27,7 @@ public class TCPClient extends TCPNetwork implements Runnable {
      * @return true si fue posible la conexion o false en caso contrario
      */
     public boolean connect() {
-    	Log.d(Logger.LOG_NETWORK_COMMUNICATION, "En connect(): ");
+    	Logger.i("En connect()");
         try {
             socket = new Socket(host, port);
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
@@ -36,7 +36,7 @@ public class TCPClient extends TCPNetwork implements Runnable {
             connected = true;
         }
         catch (Exception ex) { 
-        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en connect(): " + ex.getMessage());
+        	Logger.e("Error en connect(): " + ex.getMessage());
             connected = false;
         } 
         return connected;
@@ -57,6 +57,10 @@ public class TCPClient extends TCPNetwork implements Runnable {
      */
 	public void run() {
 		sendMessage(networkApplicationData);
+		try {
+			Thread.sleep(30);
+		}
+		catch (Exception e) { }
 	}
 
 	

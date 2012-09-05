@@ -14,7 +14,6 @@ public abstract class NetworkCommunication {
     /** Mensaje de envio o recepción */
     protected NetworkApplicationData networkApplicationData = null;
 	
-	
 	/**
 	 * @return a reference to the data message to be observed
 	 */

@@ -21,7 +21,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
             serverConn = new ServerSocket(port);   
         }
         catch (Exception ex) { 
-        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error al instanciar NetworkServer(): " + ex.getMessage()); 
+        	Logger.e("Error al instanciar NetworkServer(): " + ex.getMessage()); 
         }
         
     }
@@ -46,7 +46,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
 
             }
             catch (Exception e) { 
-            	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en run de NetworkServer(): " + e.getMessage());
+            	Logger.e("Error en run de NetworkServer(): " + e.getMessage());
             }
         }
     }
@@ -60,7 +60,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
                 serverConn = new ServerSocket(port);
         }
         catch (Exception e) { 
-        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en restartServer(): " + e.getMessage()); 
+        	Logger.e("Error en restartServer(): " + e.getMessage()); 
         }
     }
     
@@ -76,7 +76,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
             return true;
         }
         catch (Exception ex) { 
-        	Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en listen de NetworkServer(): " + ex.getMessage());
+        	Logger.e("Error en listen de NetworkServer(): " + ex.getMessage());
             return false;
         }
     }  

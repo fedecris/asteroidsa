@@ -204,7 +204,7 @@ public class Globals implements Observer {
 	        		Thread.sleep(30);
 	        	}
 	        	catch (Exception e) { 
-	        		Log.e(Logger.LOG_NETWORK_COMMUNICATION, "Error en StatusHandrel(): " + e.getMessage()); 
+	        		Logger.e("Error en StatusHandler(): " + e.getMessage()); 
 	        	}
 	        }
 			
