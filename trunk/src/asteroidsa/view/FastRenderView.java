@@ -92,8 +92,8 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	
 	    	// draw other ships
 	    	spriteSize = Globals.otherShips.size();
-	    	for (int i=0; i < spriteSize; i++)
-	    		Globals.otherShips.get(i).draw(canvas);
+	    	for (String shipID : Globals.otherShips.keySet())
+	    		Globals.otherShips.get(shipID).draw(canvas);
 	    	
 	    	// draw ship
 	    	Globals.starShip.draw(canvas);

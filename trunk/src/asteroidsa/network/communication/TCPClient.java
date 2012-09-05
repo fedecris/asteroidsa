@@ -4,13 +4,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import android.util.Log;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
 public class TCPClient extends TCPNetwork implements Runnable {
 
-	/** Is this client connected to a server listening? */
+	/** Is this client already connected to a server? */
 	protected boolean connected = false;
 	
     /**
@@ -63,7 +62,10 @@ public class TCPClient extends TCPNetwork implements Runnable {
 		catch (Exception e) { }
 	}
 
-	
+	/**
+	 * Getter
+	 * @return true if this server is already connected to a server or false otherwise
+	 */
 	public boolean isConnected() {
 		return connected;
 	}

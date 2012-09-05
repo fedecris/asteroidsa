@@ -1,6 +1,7 @@
 package asteroidsa.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -39,8 +40,8 @@ public class Globals implements Observer {
 	public volatile static ArrayList<Star> stars = new ArrayList<Star>();	
 	// Our ship!
 	public static StarShip starShip = null;
-	// The others ships!
-	public static ArrayList<StarShip> otherShips = new ArrayList<StarShip>();
+	// The others ships! IP->Starship
+	public static HashMap<String, StarShip> otherShips = new HashMap<String, StarShip>();
 	// Initial Level 
 	public final static int INITIAL_LEVEL = 0;
 	// Level (& number of asteroids!)
@@ -158,14 +159,11 @@ public class Globals implements Observer {
 		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
 		
         StarShip remoteShip = null;
-    	// Recuperar host remoto y actualizar la nave remota en globals
-        int pos = -1;
-        for (int i = 0 ; i<HostDiscovery.otherHosts.size() && i!=pos; i++)
-        	if ((HostDiscovery.otherHosts.get(i)).equals(message.getSourceHost().getHostIP()))
-        		pos = i;
-        if (otherShips.size() <= pos)
-        	otherShips.add(new StarShip());
-    	remoteShip = Globals.otherShips.get(pos); 
+    	// Retrieve ship remote IP and update accordingly
+        if (otherShips.get(message.getSourceHost().getHostIP())==null)
+        	otherShips.put(message.getSourceHost().getHostIP(), new StarShip());
+       	remoteShip = otherShips.get(message.getSourceHost().getHostIP());
+       	// Set info
     	remoteShip.position.x = message.position.x;
     	remoteShip.position.y = message.position.y;
     	remoteShip.vector.x = message.vector.x;

@@ -57,8 +57,8 @@ public class Host implements Serializable {
 
     
     /**
-     * Determinar este host IP.
-     * @returns IP (solo version 4) o null en caso contrario
+     * Obtains this host IP
+     * @returns IPv4 or null otherwise
      */
     public static Host getLocalHostAddresAndIP() {
         try {
@@ -66,7 +66,7 @@ public class Host implements Serializable {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
-                        // Solo IPv4
+                        // IPv4 only
                         if (inetAddress instanceof Inet6Address)
                                 continue;
                     if (!inetAddress.isLoopbackAddress()) {
