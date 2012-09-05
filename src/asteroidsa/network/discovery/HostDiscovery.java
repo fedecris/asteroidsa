@@ -1,18 +1,16 @@
 package asteroidsa.network.discovery;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import android.util.Log;
 import asteroidsa.network.Host;
-import asteroidsa.utils.Globals;
+import asteroidsa.network.Logger;
 
 public abstract class HostDiscovery {
 
-
 	/** Host local */
 	public static Host thisHost = null;
-	/** The other hosts IPs */
-	public static ArrayList<String> otherHosts = new ArrayList<String>();
+	/** The other hosts list. IP->Host details */
+	public static HashMap<String, Host> otherHosts = new HashMap<String, Host>();
 	
 	/**
 	 * Start the discovery method for finding hosts
@@ -27,14 +25,17 @@ public abstract class HostDiscovery {
 	
 
 	/**
-	 * Set this host 
+	 * Set this host IP
 	 */
 	static {
+		// Get IPv4 IP
 		thisHost = Host.getLocalHostAddresAndIP();
 		if (thisHost == null || thisHost.getHostIP() == null || thisHost.getHostIP().length() == 0) {
-			Log.e(Globals.class.toString(), "No IP! Exiting...");
+			Logger.e("No IP! Exiting...");
 			System.exit(1);
 		}
+		// Initially conected
+		thisHost.setConnected(true);
 	}
 	
 	@Override
