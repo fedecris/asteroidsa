@@ -1,12 +1,18 @@
 package asteroidsa.network.communication;
 
-import android.util.Log;
-import asteroidsa.network.Logger;
+import java.util.HashMap;
+
 import asteroidsa.network.Host;
+import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
 public class TCPCommunication extends NetworkCommunication {
 
+	/** TCP Listener */
+	protected static TCPListener listener = null;
+	/** TCP Clients: Target Host IP - TCPConnection */
+	protected static HashMap<String, TCPClient> clientPool = new HashMap<String, TCPClient>();
+	
 	
 	@Override
 	public boolean startListener(NetworkApplicationData networkApplicationData) {

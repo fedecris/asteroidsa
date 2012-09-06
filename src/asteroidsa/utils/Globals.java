@@ -69,7 +69,7 @@ public class Globals implements Observer {
 	
 	static boolean firstConf = false;
 	static NetworkCommunication networkComm = null;
-	static HostDiscovery networkDicovery = null; 
+	static HostDiscovery networkDiscovery = null; 
 	
 	/**
 	 * Initial values
@@ -95,14 +95,14 @@ public class Globals implements Observer {
 		        // Communication listener
 		        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
 		        networkComm.startListener(new AsteroidsNetworkApplicationData());
-		        networkComm.getNetworkApplicationData().addObserver(new Globals());
-	        	
+		        networkComm.addObserver(new Globals());
+		        
 		        // FIXME: WHY?
 		        Thread.sleep(5000);
 		        
 	        	// Discovery handler
-		        networkDicovery = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
-		        networkDicovery.startDiscovery();
+		        networkDiscovery = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
+		        networkDiscovery.startDiscovery();
 
 		        // FIXME: WHY?
 		        Thread.sleep(5000);
@@ -156,6 +156,7 @@ public class Globals implements Observer {
 	 */
 	@Override
 	public void update(Observable observable, Object data) {
+
 		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
 		
         StarShip remoteShip = null;

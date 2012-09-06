@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import android.util.Log;
+import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
 
@@ -14,62 +14,63 @@ public class TCPNetwork extends TCPCommunication {
 	/** TCP Port */
 	public static final int TCP_PORT = 9999;
 	
-    /** Host y puerto de conexion */
+    /** Configured Host and port */
     protected String host;
     protected int port;     
-    
-    /** Socket cliente y servidor */
+
+    /** Client/Server sockets */
     protected Socket socket;
     protected ServerSocket serverConn;
     
-    /** Lectura / escritura del buffer */
+    /** Buffer for reading and writing objects */
     protected ObjectOutputStream toBuffer = null;
     protected ObjectInputStream fromBuffer = null;
 
 	/**
-     * Escribe datos a la salida
-     * @param datos
+     * Writes an object to the stream
+     * @param data object to be written
      */
-    public boolean write(NetworkApplicationData datos) {
+    public boolean write(NetworkApplicationData data) {
         try {
-            toBuffer.writeObject(datos);
+            toBuffer.writeObject(data);
             toBuffer.flush();
             return true;
         }
         catch (Exception ex) { 
-            Log.w("FEDE", ex.getMessage());
+        	Logger.w(ex.getMessage());
             return false;
         }
     }   
     
     /**
-     * Lee datos de la entrada
+     * Reads the next object from the stream
+     * @return received data or null otherwise
      */
     public NetworkApplicationData receive() {
-        NetworkApplicationData datos = null;
+        NetworkApplicationData data = null;
         try {
-            datos = (NetworkApplicationData)fromBuffer.readObject();
+            data = (NetworkApplicationData)fromBuffer.readObject();
         }   
         catch (Exception ex) { 
-            Log.w("FEDE", ex.getMessage()); 
+            Logger.w(ex.getMessage()); 
         }
-        return datos;
+        return data;
     }  
     
     /**
-     * Cierra el socket 
+     * Closes the socket 
      */
     public void close() {
         try {       
             socket.close();
         }
         catch (Exception ex) {
-            Log.w("FEDE", ex.getMessage()); 
+        	Logger.w(ex.getMessage()); 
         }      
     }
     
     /**
-     * Cierra el server socket 
+     * Closes the server socket 
      */
     public void closeServer() {
         try {       
@@ -77,7 +78,7 @@ public class TCPNetwork extends TCPCommunication {
             serverConn.close();
         }
         catch (Exception ex) {
-            Log.w("FEDE", ex.getMessage()); 
+            Logger.w(ex.getMessage()); 
         }      
     }
     

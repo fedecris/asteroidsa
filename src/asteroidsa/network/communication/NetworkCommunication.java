@@ -1,17 +1,13 @@
 package asteroidsa.network.communication;
 
-import java.util.HashMap;
+import java.util.Observable;
 
 import asteroidsa.network.Host;
 import asteroidsa.network.NetworkApplicationData;
 
-public abstract class NetworkCommunication {
+public abstract class NetworkCommunication extends Observable {
 
-	/** TCP Listener */
-	protected static TCPListener listener = null;
-	/** TCP Clients: Target Host IP - TCPConnection */
-	protected static HashMap<String, TCPClient> clientPool = new HashMap<String, TCPClient>();
-    /** Mensaje de envio o recepción */
+    /** Message data to send/received */
     protected NetworkApplicationData networkApplicationData = null;
 	
 	/**
@@ -30,6 +26,17 @@ public abstract class NetworkCommunication {
 	}
     
 	
+	/** 
+     * Notifies dependent objects about a new received message.
+     * Dependent objects will receive a <code>NetworkApplicationData</code> instance 
+     */
+    public void notifyNewMessage()
+    {
+        setChanged();
+        notifyObservers(networkApplicationData);
+    }
+	
+    
 	/* 
 	 * ================================================================================================= 
 	 */
