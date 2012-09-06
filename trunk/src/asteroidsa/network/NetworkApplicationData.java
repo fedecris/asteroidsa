@@ -5,9 +5,8 @@ package asteroidsa.network;
  */
 
 import java.io.Serializable;
-import java.util.Observable;
 
-public abstract class NetworkApplicationData extends Observable implements Serializable {
+public abstract class NetworkApplicationData implements Serializable {
 
 	/** Host that sends the message */
 	protected Host sourceHost = null;
@@ -16,15 +15,6 @@ public abstract class NetworkApplicationData extends Observable implements Seria
 		return sourceHost;
 	}
 
-	/** 
-     * Notifies dependent objects about the new message
-     */
-    public void notifyNewMessage()
-    {
-        setChanged();
-        notifyObservers(this);
-    }
-	
     /**
      * Generates a copy of the message
      * @param source

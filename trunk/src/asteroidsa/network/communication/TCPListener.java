@@ -4,7 +4,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 
-import android.util.Log;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
@@ -12,8 +11,11 @@ import asteroidsa.network.NetworkApplicationData;
 
 public class TCPListener extends TCPNetwork implements Runnable {
             
+	/** The observed instance */
+	NetworkCommunication networkCommInstance = null;
+	
     /**
-     * Crea la conexion server a fin de escuchar mensajes entrantes
+     * Creates TCP server connection
      */
     public TCPListener() {
         try {
@@ -30,20 +32,26 @@ public class TCPListener extends TCPNetwork implements Runnable {
      * Main loop, receives and notifies incoming messages
      */
     public synchronized void run() {
-    	if (!listen())
+    	if (!listen()) {
+    		Logger.e("Could not listen");
     		System.exit(1);
-
-    	
-        while   (true) {
+    	}
+    		
+        while (true) {
             try {
-                // Listen for incoming messages
-                NetworkApplicationData newMessage = (NetworkApplicationData)receive();
-                if (newMessage == null)
+                // Wait for incoming messages
+            	networkApplicationData = (NetworkApplicationData)receive();
+                if (networkApplicationData == null) {
+                	Logger.w("Received message is null");
                     continue;
+                }
 
-                networkApplicationData.copy(newMessage);
-                networkApplicationData.notifyNewMessage();
-
+                // Update observed object data
+                if (networkCommInstance == null)
+                	networkCommInstance = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+                networkCommInstance.setNetworkApplicationData(networkApplicationData);
+                networkCommInstance.notifyNewMessage();
+                
             }
             catch (Exception e) { 
             	Logger.e("Error en run de NetworkServer(): " + e.getMessage());
@@ -65,7 +73,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
     }
     
     /**
-     * Esperar la recepción de mensajes y setear los buffers correspondientes
+     * Waits for new connections
      */
     public boolean listen() {
         try {   

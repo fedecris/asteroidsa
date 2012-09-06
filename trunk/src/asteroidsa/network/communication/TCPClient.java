@@ -7,7 +7,7 @@ import java.net.Socket;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
-public class TCPClient extends TCPNetwork implements Runnable {
+public class TCPClient extends TCPNetwork {
 
 	/** Is this client already connected to a server? */
 	protected boolean connected = false;
@@ -22,8 +22,8 @@ public class TCPClient extends TCPNetwork implements Runnable {
     }
     
     /**
-     * Intenta conectar con el servidor a fin de enviar el mensaje
-     * @return true si fue posible la conexion o false en caso contrario
+     * Connects to the specified server
+     * @return true if connection was successful, false otherwise
      */
     public boolean connect() {
     	Logger.i("En connect()");
@@ -50,20 +50,8 @@ public class TCPClient extends TCPNetwork implements Runnable {
     	return write(networkGameData);
     }
 
-    
-    /**
-     * Send local application state
-     */
-	public void run() {
-		sendMessage(networkApplicationData);
-		try {
-			Thread.sleep(30);
-		}
-		catch (Exception e) { }
-	}
-
 	/**
-	 * Getter
+	 * Default Getter
 	 * @return true if this server is already connected to a server or false otherwise
 	 */
 	public boolean isConnected() {
