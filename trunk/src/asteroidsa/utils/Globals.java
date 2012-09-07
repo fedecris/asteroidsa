@@ -7,7 +7,6 @@ import java.util.Observer;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
 import asteroidsa.model.Asteroid;
 import asteroidsa.model.LaserBeam;
 import asteroidsa.model.Star;
@@ -53,9 +52,9 @@ public class Globals implements Observer {
 	// Points
 	public static int points = 0;
 	// Total front stars
-	public static int MAX_FRONT_STARS = 20; 
+	public static int MAX_FRONT_STARS = 0; 
 	// Total back stars
-	public static int MAX_BACK_STARS = 20; 	
+	public static int MAX_BACK_STARS = 0; 	
 	
 	/** Network Specific */ 
 	
@@ -94,7 +93,7 @@ public class Globals implements Observer {
 	        	
 		        // Communication listener
 		        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-		        networkComm.startListener(new AsteroidsNetworkApplicationData());
+		        networkComm.startService(new AsteroidsNetworkApplicationData());
 		        networkComm.addObserver(new Globals());
 		        
 		        // FIXME: WHY?
@@ -154,7 +153,6 @@ public class Globals implements Observer {
 	/**
 	 * Actualiza el modelo en funcion del mensaje recibido
 	 */
-	@Override
 	public void update(Observable observable, Object data) {
 
 		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
@@ -194,7 +192,6 @@ public class Globals implements Observer {
 	
 	public static class StatusHandler extends Globals implements Runnable {
 
-		@Override
 		public void run() {
 			
 	        while (true) {
