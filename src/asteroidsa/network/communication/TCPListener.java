@@ -5,7 +5,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 
 import asteroidsa.network.Logger;
-import asteroidsa.network.NetworkApplicationData;
 
 
 
@@ -15,7 +14,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
 	NetworkCommunication networkCommInstance = null;
 	
     /**
-     * Creates TCP server connection
+     * Creates the TCP ServerSocket
      */
     public TCPListener() {
         try {
@@ -29,34 +28,12 @@ public class TCPListener extends TCPNetwork implements Runnable {
     }
 
     /**
-     * Main loop, receives and notifies incoming messages
+     * Main loop, listens for new connection requests
      */
     public synchronized void run() {
-    	if (!listen()) {
-    		Logger.e("Could not listen");
-    		System.exit(1);
+    	while (true) {
+    		listen();
     	}
-    		
-        while (true) {
-            try {
-                // Wait for incoming messages
-            	networkApplicationData = (NetworkApplicationData)receive();
-                if (networkApplicationData == null) {
-                	Logger.w("Received message is null");
-                    continue;
-                }
-
-                // Update observed object data
-                if (networkCommInstance == null)
-                	networkCommInstance = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-                networkCommInstance.setNetworkApplicationData(networkApplicationData);
-                networkCommInstance.notifyNewMessage();
-                
-            }
-            catch (Exception e) { 
-            	Logger.e("Error en run de NetworkServer(): " + e.getMessage());
-            }
-        }
     }
     
     /**
@@ -73,7 +50,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
     }
     
     /**
-     * Waits for new connections
+     * Waits for new connections and spawns a new thread each time
      */
     public boolean listen() {
         try {   
@@ -81,6 +58,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
             toBuffer.flush();
             fromBuffer = new ObjectInputStream(socket.getInputStream());
+            new Thread(new TCPServer(socket, fromBuffer, toBuffer)).start();
             return true;
         }
         catch (Exception ex) { 

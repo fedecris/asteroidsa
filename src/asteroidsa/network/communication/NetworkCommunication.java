@@ -43,11 +43,11 @@ public abstract class NetworkCommunication extends Observable {
     
 	
 	/**
-	 * Starts the listener service for receiving messages from other hosts
+	 * Starts the service for receiving messages from other hosts
 	 * @param networkApplicationData type of data to be sent/received through this communication service
 	 * @return true if action was successful, false otherwise
 	 */
-	public abstract boolean startListener(NetworkApplicationData networkApplicationData);
+	public abstract boolean startService(NetworkApplicationData networkApplicationData);
 	
 	
 	/**

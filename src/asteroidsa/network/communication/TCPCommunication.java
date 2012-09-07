@@ -15,17 +15,13 @@ public class TCPCommunication extends NetworkCommunication {
 	
 	
 	@Override
-	public boolean startListener(NetworkApplicationData networkApplicationData) {
+	public boolean startService(NetworkApplicationData networkApplicationData) {
 
 		try {
 	        // Create a new listener (server)
 	        listener = new TCPListener();
-	        // Set the data type to be sent/received
-	        listener.setNetworkApplicationData(networkApplicationData);
-	        setNetworkApplicationData(networkApplicationData);
-	        // Start the service in a new thread
-	        Thread serverRun = new Thread(listener);
-	        serverRun.start();
+	        // Starts the listener in a new thread
+	        new Thread(listener).start();
 	        return true;
 		} 
 		catch (Exception e) {
