@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import asteroidsa.model.Asteroid;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
+import asteroidsa.network.NetworkStartup;
 import asteroidsa.network.communication.NetworkCommunication;
 import asteroidsa.network.communication.NetworkCommunicationFactory;
 import asteroidsa.network.discovery.HostDiscovery;
@@ -63,8 +64,7 @@ public class Globals {
 	public static int inputMethod = INPUT_ACCELEROMETER;
 	
 	static boolean firstConf = false;
-	static NetworkCommunication networkComm = null;
-	static HostDiscovery networkDiscovery = null; 
+
 	
 	/**
 	 * Initial values
@@ -83,36 +83,10 @@ public class Globals {
         	new Asteroid();
         // First time configuration
         if (!firstConf)
-        {
-        	try {
-	        	firstConf = true;
-	        	
-		        // Communication listener
-		        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-		        networkComm.addObserver(new NetworkObserver());
-		        networkComm.startService(new AsteroidsNetworkApplicationData());
-		        networkComm.setProducer(new NetworkProducer());
-
-		        
-		        // FIXME: WHY?
-		        Thread.sleep(5000);
-		        
-	        	// Discovery handler
-		        networkDiscovery = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
-		        networkDiscovery.startDiscovery();
-
-		        // FIXME: WHY?
-		        Thread.sleep(5000);
-
-		        // Communication client
-		        networkComm.startBroadcast();
-		        
-        	}
-        	catch (Exception e) {
-        		
-        	}
-	        
-
+        {	
+        	firstConf=true;
+        	NetworkStartup.configureStartup(new NetworkObserver(), new NetworkProducer());
+        	NetworkStartup.doStartup();
         }
 	}
 	
