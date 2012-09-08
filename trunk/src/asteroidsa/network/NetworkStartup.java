@@ -1,5 +1,9 @@
 package asteroidsa.network;
 
+/**
+ * Network support main class
+ */
+
 import asteroidsa.network.communication.NetworkCommunication;
 import asteroidsa.network.communication.NetworkCommunicationFactory;
 import asteroidsa.network.discovery.HostDiscovery;
