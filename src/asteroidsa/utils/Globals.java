@@ -9,10 +9,6 @@ import asteroidsa.model.Asteroid;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
 import asteroidsa.network.NetworkStartup;
-import asteroidsa.network.communication.NetworkCommunication;
-import asteroidsa.network.communication.NetworkCommunicationFactory;
-import asteroidsa.network.discovery.HostDiscovery;
-import asteroidsa.network.discovery.HostDiscoveryFactory;
 
 
 public class Globals {
