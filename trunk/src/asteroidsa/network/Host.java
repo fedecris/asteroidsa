@@ -9,6 +9,8 @@ import java.util.Enumeration;
 
 public class Host implements Serializable {
 
+	/** Serial Version UID */
+	private static final long serialVersionUID = 2807206367538864478L;
 	/** Host IP */
 	private String hostIP;
 	/** Current status (online or offline) */

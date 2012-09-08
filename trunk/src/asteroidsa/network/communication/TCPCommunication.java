@@ -25,11 +25,28 @@ public class TCPCommunication extends NetworkCommunication {
 	        return true;
 		} 
 		catch (Exception e) {
-			Logger.e("Error en startListener(): " + e.getMessage());
+			Logger.e("Error en startService(): " + e.getMessage());
 			return false;
 		}
 	}
 
+	
+	@Override
+	public boolean startBroadcast() {
+
+		try {
+	        // Create the client for broadcasting
+			new Thread(this).start();
+	        return true;
+		} 
+		catch (Exception e) {
+			Logger.e("Error en startListener(): " + e.getMessage());
+			return false;
+		}
+		
+		
+	}
+	
 
 	@Override
 	public boolean connectToServerHost(Host target) {
@@ -67,7 +84,6 @@ public class TCPCommunication extends NetworkCommunication {
 		return true;
 	}
 
-	
 
 
 

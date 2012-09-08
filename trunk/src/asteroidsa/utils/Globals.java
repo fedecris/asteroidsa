@@ -2,23 +2,19 @@ package asteroidsa.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
 import android.graphics.Point;
 import android.graphics.PointF;
 import asteroidsa.model.Asteroid;
-import asteroidsa.model.LaserBeam;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
-import asteroidsa.network.Logger;
 import asteroidsa.network.communication.NetworkCommunication;
 import asteroidsa.network.communication.NetworkCommunicationFactory;
 import asteroidsa.network.discovery.HostDiscovery;
 import asteroidsa.network.discovery.HostDiscoveryFactory;
 
 
-public class Globals implements Observer {
+public class Globals {
 
 	/** Game specific */
 	// Game running
@@ -93,8 +89,10 @@ public class Globals implements Observer {
 	        	
 		        // Communication listener
 		        networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+		        networkComm.addObserver(new NetworkObserver());
 		        networkComm.startService(new AsteroidsNetworkApplicationData());
-		        networkComm.addObserver(new Globals());
+		        networkComm.setProducer(new NetworkProducer());
+
 		        
 		        // FIXME: WHY?
 		        Thread.sleep(5000);
@@ -105,11 +103,10 @@ public class Globals implements Observer {
 
 		        // FIXME: WHY?
 		        Thread.sleep(5000);
-		        
+
 		        // Communication client
-		        StatusHandler handler = new StatusHandler();
-		        Thread handlerThread = new Thread(handler);
-		        handlerThread.start();
+		        networkComm.startBroadcast();
+		        
         	}
         	catch (Exception e) {
         		
@@ -147,64 +144,6 @@ public class Globals implements Observer {
 			level = INITIAL_LEVEL;
 		}
 		startup();
-		
-	}
-
-	/**
-	 * Actualiza el modelo en funcion del mensaje recibido
-	 */
-	public void update(Observable observable, Object data) {
-
-		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
-		
-        StarShip remoteShip = null;
-    	// Retrieve ship remote IP and update accordingly
-        if (otherShips.get(message.getSourceHost().getHostIP())==null)
-        	otherShips.put(message.getSourceHost().getHostIP(), new StarShip());
-       	remoteShip = otherShips.get(message.getSourceHost().getHostIP());
-       	// Set info
-    	remoteShip.position.x = message.position.x;
-    	remoteShip.position.y = message.position.y;
-    	remoteShip.vector.x = message.vector.x;
-    	remoteShip.vector.y = message.vector.y;
-    	remoteShip.heading = message.heading;
-    	// Process laser hosts!
-    	int i=0;
-    	for (LaserBeam remoteLaserBeam : remoteShip.ammo) {
-    		remoteLaserBeam.active = message.shotActive[i];
-    		remoteLaserBeam.position.x = message.shotPosition[i].x;
-    		remoteLaserBeam.position.y = message.shotPosition[i].y;
-    		remoteLaserBeam.vector.x = message.shotVector[i].x;
-    		remoteLaserBeam.vector.y = message.shotVector[i].y;
-    		remoteLaserBeam.heading = message.shotHeading[i];
-    		
-    		// Hit?
-    		if ( ((remoteLaserBeam.position.x - Globals.starShip.position.x)*(remoteLaserBeam.position.x - Globals.starShip.position.x) + 
-    			  (remoteLaserBeam.position.y - Globals.starShip.position.y)*(remoteLaserBeam.position.y - Globals.starShip.position.y)) 
-    			   < Globals.starShip.width/4*Globals.starShip.width/4) {
-    			 Globals.lifeLost();
-    			 continue;
-    		}
-    		
-    		i++;
-    	}
-	}
-	
-	public static class StatusHandler extends Globals implements Runnable {
-
-		public void run() {
-			
-	        while (true) {
-	        	networkComm.sendMessageToAllHosts(new AsteroidsNetworkApplicationData(HostDiscovery.thisHost, starShip));
-	        	try {
-	        		Thread.sleep(30);
-	        	}
-	        	catch (Exception e) { 
-	        		Logger.e("Error en StatusHandler(): " + e.getMessage()); 
-	        	}
-	        }
-			
-		}
 		
 	}
 	

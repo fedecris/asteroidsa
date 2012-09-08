@@ -3,13 +3,22 @@ package asteroidsa.network.communication;
 import java.util.Observable;
 
 import asteroidsa.network.Host;
+import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
+import asteroidsa.network.NetworkApplicationDataProducer;
 
-public abstract class NetworkCommunication extends Observable {
+public abstract class NetworkCommunication extends Observable implements Runnable {
 
+	/** Interval between status updates to the other hosts */
+	public static final int BROADCAST_LOCAL_STATUS_INTERVAL_MS = 30;
+	
+	/** Local data producer instance */
+	protected NetworkApplicationDataProducer producer = null;
     /** Message data to send/received */
     protected NetworkApplicationData networkApplicationData = null;
+    
 	
+    
 	/**
 	 * @return a reference to the data message to be observed
 	 */
@@ -24,7 +33,14 @@ public abstract class NetworkCommunication extends Observable {
 	public void setNetworkApplicationData(NetworkApplicationData networkApplicationData) {
 		this.networkApplicationData = networkApplicationData;
 	}
-    
+
+	/**
+	 * Sets de producer instance in charge of filling the data to be broadcasted
+	 * @param producer the NetworkApplicationDataProducer instance
+	 */
+	public void setProducer(NetworkApplicationDataProducer producer) {
+		this.producer = producer;
+	}
 	
 	/** 
      * Notifies dependent objects about a new received message.
@@ -35,6 +51,22 @@ public abstract class NetworkCommunication extends Observable {
         setChanged();
         notifyObservers(networkApplicationData);
     }
+    
+    /** 
+     * In charge of sending local status to the other hosts periodically
+     */
+    public void run() {
+    	while (true) {
+        	sendMessageToAllHosts(producer.produceNetworkApplicationData());
+        	try {
+        		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
+        	}
+        	catch (Exception e) { 
+        		Logger.e("Error en StatusHandler(): " + e.getMessage()); 
+        	}
+        }
+    }
+    
 	
     
 	/* 
@@ -49,6 +81,12 @@ public abstract class NetworkCommunication extends Observable {
 	 */
 	public abstract boolean startService(NetworkApplicationData networkApplicationData);
 	
+	
+	/**
+	 * Starts the thread in charge of broadcast local status to other hosts
+	 * @return true if action was successful, false otherwise
+	 */
+	public abstract boolean startBroadcast();
 	
 	/**
 	 * Connects to a server
@@ -74,6 +112,7 @@ public abstract class NetworkCommunication extends Observable {
 	 */
 	public abstract boolean sendMessageToAllHosts(NetworkApplicationData data);
 
-	
+
+
 
 }

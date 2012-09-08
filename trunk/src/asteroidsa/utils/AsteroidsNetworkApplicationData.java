@@ -8,6 +8,8 @@ import asteroidsa.network.NetworkApplicationData;
 
 public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	// Position
 	protected Point2Df position = new Point2Df(100, 100);
 	// Current directional speed

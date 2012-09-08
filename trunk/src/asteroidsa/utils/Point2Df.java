@@ -4,8 +4,13 @@ import java.io.Serializable;
 
 public class Point2Df implements Serializable {
 
+	/** Serial Version UID */
+	private static final long serialVersionUID = -8149951119625929042L;
+	/** X Coordinate */
 	public float x = 0;
+	/** Y Coordinate */
 	public float y = 0;
+	
 	
 	public Point2Df() {
 		
