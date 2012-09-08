@@ -15,7 +15,7 @@ public class TCPCommunication extends NetworkCommunication {
 	
 	
 	@Override
-	public boolean startService(NetworkApplicationData networkApplicationData) {
+	public boolean startService() {
 
 		try {
 	        // Create a new listener (server)
