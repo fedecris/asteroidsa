@@ -14,16 +14,19 @@ public class TCPNetwork extends TCPCommunication {
 	/** TCP Port */
 	public static final int TCP_PORT = 9999;
 	
-    /** Configured Host and port */
+    /** Configured Host */
     protected String host;
+    /** Configured Host port */
     protected int port;     
 
-    /** Client/Server sockets */
+    /** Client socket */
     protected Socket socket;
+    /** Server socket */
     protected ServerSocket serverConn;
     
-    /** Buffer for reading and writing objects */
+    /** Buffer for writing objects */
     protected ObjectOutputStream toBuffer = null;
+    /** Buffer for reading objects */
     protected ObjectInputStream fromBuffer = null;
 
 	/**
