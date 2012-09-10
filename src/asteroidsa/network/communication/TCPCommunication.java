@@ -1,6 +1,6 @@
 package asteroidsa.network.communication;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
@@ -11,7 +11,7 @@ public class TCPCommunication extends NetworkCommunication {
 	/** TCP Listener */
 	protected static TCPListener listener = null;
 	/** TCP Clients: Target Host IP - TCPConnection */
-	protected static HashMap<String, TCPClient> clientPool = new HashMap<String, TCPClient>();
+	protected static ConcurrentHashMap<String, TCPClient> clientPool = new ConcurrentHashMap<String, TCPClient>();
 	
 	
 	@Override
@@ -78,10 +78,11 @@ public class TCPCommunication extends NetworkCommunication {
 	
 	@Override
 	public boolean sendMessageToAllHosts(NetworkApplicationData data) {
+		boolean ok = true;
 		for (String targetIP : clientPool.keySet()) 
 			if (!sendMessage(targetIP, data))
-				return false;
-		return true;
+				ok = false;
+		return ok;
 	}
 
 

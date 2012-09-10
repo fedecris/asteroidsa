@@ -82,7 +82,7 @@ public abstract class NetworkCommunication extends Observable implements Runnabl
 	
 	
 	/**
-	 * Starts the thread in charge of broadcast local status to other hosts
+	 * Starts the thread in charge of broadcasting local status to other hosts
 	 * @return true if action was successful, false otherwise
 	 */
 	public abstract boolean startBroadcast();
@@ -97,7 +97,7 @@ public abstract class NetworkCommunication extends Observable implements Runnabl
 	
 	/**      
 	 * Sends asynchronously a single data message to a target
-	 * @param target destination host IP
+	 * @param targetIP destination host IP
 	 * @param data message content
 	 * @return true if action was successful, false otherwise 
 	 */
@@ -107,7 +107,8 @@ public abstract class NetworkCommunication extends Observable implements Runnabl
 	/**
 	 * Sends asynchronously a single data message to all known hosts
 	 * @param data message content
-	 * @return true if action was successful, false otherwise 
+	 * @return true if action was successful, false if one or more messages
+	 * 	where unable to be sent 
 	 */
 	public abstract boolean sendMessageToAllHosts(NetworkApplicationData data);
 

@@ -55,7 +55,5 @@ public class Logger {
 	 */
 	protected static String formatMsg(String message) {
 		return (new StringBuffer("[").append(HostDiscovery.thisHost).append("] ").append(message)).toString();
-		
-		
 	}
 }

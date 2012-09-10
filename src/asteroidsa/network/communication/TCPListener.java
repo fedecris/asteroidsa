@@ -6,8 +6,6 @@ import java.net.ServerSocket;
 
 import asteroidsa.network.Logger;
 
-
-
 public class TCPListener extends TCPNetwork implements Runnable {
             
 	/** The observed instance */

@@ -80,9 +80,14 @@ public class Globals {
         // First time configuration
         if (!firstConf)
         {	
-        	firstConf=true;
-        	NetworkStartup.configureStartup(new NetworkObserver(), new NetworkProducer());
-        	NetworkStartup.doStartup();
+        	try {
+	        	NetworkStartup.configureStartup(new NetworkObserver(), new NetworkProducer());
+	        	firstConf=true;
+	        	NetworkStartup.doStartup();
+        	}
+        	catch (Exception e) {
+        		e.printStackTrace();
+        	}
         }
 	}
 	

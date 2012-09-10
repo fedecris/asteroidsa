@@ -60,7 +60,7 @@ public class Host implements Serializable {
     
     /**
      * Obtains this host IP
-     * @returns IPv4 or null otherwise
+     * @return IPv4 or null otherwise
      */
     public static Host getLocalHostAddresAndIP() {
         try {
