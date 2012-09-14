@@ -1,5 +1,11 @@
 package asteroidsa.network;
 
+/**
+ * Classes implementing this interface are in charge of keeping
+ * the local information up-to-date every time the framework needs
+ * an update in order to send the information to the other hosts.
+ */
+
 public interface NetworkApplicationDataProducer {
 
 	/**

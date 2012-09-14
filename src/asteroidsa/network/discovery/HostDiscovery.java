@@ -16,7 +16,7 @@ public abstract class HostDiscovery {
 	 * Start the discovery method for finding hosts
 	 * Subclasses must periodically update otherHosts data
 	 */
-	public abstract void startDiscovery();
+	public abstract boolean startDiscovery();
 
 	/**
 	 * Stop the discovery method for finding hosts

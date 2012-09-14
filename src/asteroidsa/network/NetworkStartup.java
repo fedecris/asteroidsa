@@ -76,18 +76,24 @@ public class NetworkStartup {
 			throw new Exception ("NetworkStartup not configured.  Invoke configureStartup() first.");
 		
 		try {
-			networkCommunication.startService();	
+			// Communication server
+			if (!networkCommunication.startService())
+				throw new Exception ("Error starting network communication service");
 	        
 	        // FIXME: WHY?
 	        Thread.sleep(2000);
 	        
-	        networkDiscovery.startDiscovery();
+	        // Discovery service
+	        if (!networkDiscovery.startDiscovery())
+	        	throw new Exception ("Error starting network discovery service");
 	        
 	        // FIXME: WHY?
 	        Thread.sleep(2000);
 
 	        // Communication client
-	        networkCommunication.startBroadcast();	
+	        if (!networkCommunication.startBroadcast())
+	        	throw new Exception ("Error starting network communication broadcast");
+	        	
 	        return true;
 		}
 		catch (Exception e) {

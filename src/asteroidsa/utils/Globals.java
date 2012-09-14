@@ -81,7 +81,7 @@ public class Globals {
         if (!firstConf)
         {	
         	try {
-	        	NetworkStartup.configureStartup(new NetworkObserver(), new NetworkProducer());
+	        	NetworkStartup.configureStartup(new AsteroidsNetworkObserver(), new AsteroidsNetworkProducer());
 	        	firstConf=true;
 	        	NetworkStartup.doStartup();
         	}
