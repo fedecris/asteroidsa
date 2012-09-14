@@ -4,7 +4,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * 
  * The classes implementing this interface are in charge of processing  
  * the received messages from other hosts at the application level and   
  * update the local status based on the received information.

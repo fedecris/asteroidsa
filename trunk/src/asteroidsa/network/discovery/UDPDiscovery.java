@@ -30,7 +30,7 @@ class UDPDiscovery extends HostDiscovery {
 	/**
 	 * Starts UDP host discovery, creating two threads: one for the server and one for the client
 	 */
-	public void startDiscovery() {
+	public boolean startDiscovery() {
 		running = true;
 		
 		// Listener
@@ -42,6 +42,8 @@ class UDPDiscovery extends HostDiscovery {
         UDPClient client = new UDPClient();
         Thread threadB = new Thread(client);
         threadB.start();
+        
+        return true;
 	}
 	
 	/**
