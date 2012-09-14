@@ -6,7 +6,7 @@ import asteroidsa.model.LaserBeam;
 import asteroidsa.model.StarShip;
 import asteroidsa.network.NetworkApplicationDataObserver;
 
-public class NetworkObserver implements NetworkApplicationDataObserver {
+public class AsteroidsNetworkObserver implements NetworkApplicationDataObserver {
 
 	/**
 	 * Updates model data depending on the received message
