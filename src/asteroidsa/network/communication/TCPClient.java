@@ -26,7 +26,7 @@ public class TCPClient extends TCPNetwork {
      * @return true if connection was successful, false otherwise
      */
     public boolean connect() {
-    	Logger.i("En connect()");
+    	Logger.i("Conectando a:" + host);
         try {
             socket = new Socket(host, port);
             toBuffer = new ObjectOutputStream(socket.getOutputStream());

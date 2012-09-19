@@ -17,19 +17,20 @@ public class TCPListener extends TCPNetwork implements Runnable {
     public TCPListener() {
         try {
             port = TCP_PORT;
-            serverConn = new ServerSocket(port);   
+            // Subclasses should not create a new ServerSocket
+            if (this.getClass().equals(TCPListener.class))
+            	serverConn = new ServerSocket(port);   
         }
         catch (Exception ex) { 
         	Logger.e("Error al instanciar NetworkServer(): " + ex.getMessage()); 
         }
-        
     }
 
     /**
      * Main loop, listens for new connection requests
      */
     public synchronized void run() {
-    	while (true) {
+    	while (listenerRunning) {
     		listen();
     	}
     }
