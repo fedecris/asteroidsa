@@ -9,19 +9,21 @@ import asteroidsa.network.NetworkApplicationData;
 
 public class TCPServer extends TCPListener implements Runnable {
 
-	
+	/**
+	 * Constructor
+	 */
 	public TCPServer(Socket socket, ObjectInputStream fromBuffer, ObjectOutputStream toBuffer) {
 		this.socket = socket;
 		this.fromBuffer = fromBuffer;
 		this.toBuffer = toBuffer;
 	}
-	
+
 	
 	/**
 	 * Receives and notifies incoming messages
 	 */
 	public synchronized void run() {
-        while (true) {
+        while (listenerRunning) {
             try {
                 // Wait for incoming messages
             	networkApplicationData = (NetworkApplicationData)receive();

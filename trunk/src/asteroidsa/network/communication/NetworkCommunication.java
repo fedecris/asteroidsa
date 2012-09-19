@@ -3,11 +3,10 @@ package asteroidsa.network.communication;
 import java.util.Observable;
 
 import asteroidsa.network.Host;
-import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 import asteroidsa.network.NetworkApplicationDataProducer;
 
-public abstract class NetworkCommunication extends Observable implements Runnable {
+public abstract class NetworkCommunication extends Observable {
 
 	/** Interval between status updates to the other hosts */
 	public static final int BROADCAST_LOCAL_STATUS_INTERVAL_MS = 30;
@@ -52,40 +51,36 @@ public abstract class NetworkCommunication extends Observable implements Runnabl
         notifyObservers(networkApplicationData);
     }
     
-    /** 
-     * In charge of sending local status to the other hosts periodically
-     */
-    public void run() {
-    	while (true) {
-        	sendMessageToAllHosts(producer.produceNetworkApplicationData());
-        	try {
-        		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
-        	}
-        	catch (Exception e) { 
-        		Logger.e("Error en StatusHandler(): " + e.getMessage()); 
-        	}
-        }
-    }
-    
-	
     
 	/* 
 	 * ================================================================================================= 
 	 */
-    
 	
 	/**
 	 * Starts the service for receiving messages from other hosts
+	 * Should be started in a separate thread
 	 * @return true if action was successful, false otherwise
 	 */
 	public abstract boolean startService();
 	
-	
 	/**
-	 * Starts the thread in charge of broadcasting local status to other hosts
+	 * Starts the service in charge of broadcasting local status to other hosts
+	 * Should be started in a separate thread
 	 * @return true if action was successful, false otherwise
 	 */
 	public abstract boolean startBroadcast();
+
+	/**
+	 * Stops the service for receiving messages from other hosts
+	 * @return true if action was successful, false otherwise
+	 */
+	public abstract boolean stopService();
+	
+	/**
+	 * Stops the service in charge of broadcasting local status to other hosts
+	 * @return true if action was successful, false otherwise
+	 */
+	public abstract boolean stopBroadcast();
 	
 	/**
 	 * Connects to a server
@@ -94,25 +89,21 @@ public abstract class NetworkCommunication extends Observable implements Runnabl
 	 */
 	public abstract  boolean connectToServerHost(Host target);
 	
-	
 	/**      
-	 * Sends asynchronously a single data message to a target
+	 * Sends a single data message to a target
 	 * @param targetIP destination host IP
 	 * @param data message content
 	 * @return true if action was successful, false otherwise 
 	 */
 	public abstract boolean sendMessage(String targetIP, NetworkApplicationData data);
 	
-	
 	/**
-	 * Sends asynchronously a single data message to all known hosts
+	 * Sends a single data message to all known hosts
 	 * @param data message content
 	 * @return true if action was successful, false if one or more messages
 	 * 	where unable to be sent 
 	 */
 	public abstract boolean sendMessageToAllHosts(NetworkApplicationData data);
-
-
 
 
 }

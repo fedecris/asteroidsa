@@ -6,20 +6,26 @@ import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 
-public class TCPCommunication extends NetworkCommunication {
+public class TCPCommunication extends NetworkCommunication implements Runnable{
 
 	/** TCP Listener */
 	protected static TCPListener listener = null;
 	/** TCP Clients: Target Host IP - TCPConnection */
 	protected static ConcurrentHashMap<String, TCPClient> clientPool = new ConcurrentHashMap<String, TCPClient>();
-	
+	/** Communication listener is running */
+	protected static boolean listenerRunning = false;
+	/** Communication broadcast is running */
+	protected static boolean broadcastRunning = false;
+
 	
 	@Override
 	public boolean startService() {
 
 		try {
 	        // Create a new listener (server)
+			listenerRunning = true;
 	        listener = new TCPListener();
+	        Logger.i("Nuevo TCPListener");
 	        // Starts the listener in a new thread
 	        new Thread(listener).start();
 	        return true;
@@ -36,6 +42,7 @@ public class TCPCommunication extends NetworkCommunication {
 
 		try {
 	        // Create the client for broadcasting
+			broadcastRunning = true;
 			new Thread(this).start();
 	        return true;
 		} 
@@ -43,10 +50,21 @@ public class TCPCommunication extends NetworkCommunication {
 			Logger.e("Error en startListener(): " + e.getMessage());
 			return false;
 		}
-		
-		
 	}
 	
+	
+	@Override
+	public boolean stopService() {
+		listenerRunning = false;
+		return false;
+	}
+	
+	@Override
+	public boolean stopBroadcast() {
+		broadcastRunning = false;
+		return false;
+	}
+
 
 	@Override
 	public boolean connectToServerHost(Host target) {
@@ -86,7 +104,20 @@ public class TCPCommunication extends NetworkCommunication {
 	}
 
 
-
+    /** 
+     * In charge of sending local status to the other hosts periodically
+     */
+    public void run() {
+    	while (broadcastRunning) {
+        	sendMessageToAllHosts(producer.produceNetworkApplicationData());
+        	try {
+        		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
+        	}
+        	catch (Exception e) { 
+        		Logger.e("Error en StatusHandler(): " + e.getMessage()); 
+        	}
+        }
+    }
 
 
 }
