@@ -54,6 +54,18 @@ public class Logger {
 	 * @return augmented message
 	 */
 	protected static String formatMsg(String message) {
-		return (new StringBuffer("[").append(HostDiscovery.thisHost).append("] ").append(message)).toString();
+		return (
+			new StringBuffer("[")
+				// LocalHost information
+				.append(HostDiscovery.thisHost)
+				.append(" - ")
+				// [0] es getThreadStackTrace, [1] es getStackTrace(), [2] es formatMsg(), 
+				// [3] es el metodo segun nivel de log, [4] es el método buscado
+				.append(Thread.currentThread().getStackTrace()[4].getClassName())
+				.append(".")
+				.append(Thread.currentThread().getStackTrace()[4].getMethodName())
+				.append("] ")
+				.append(message)
+			).toString();
 	}
 }

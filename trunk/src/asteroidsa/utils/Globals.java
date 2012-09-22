@@ -1,7 +1,7 @@
 package asteroidsa.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -33,7 +33,7 @@ public class Globals {
 	// Our ship!
 	public static StarShip starShip = null;
 	// The others ships! IP->Starship
-	public static HashMap<String, StarShip> otherShips = new HashMap<String, StarShip>();
+	public static ConcurrentHashMap<String, StarShip> otherShips = new ConcurrentHashMap<String, StarShip>();
 	// Initial Level 
 	public final static int INITIAL_LEVEL = 0;
 	// Level (& number of asteroids!)

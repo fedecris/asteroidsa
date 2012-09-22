@@ -6,8 +6,6 @@ import java.net.MulticastSocket;
 
 class UDPDiscovery extends HostDiscovery {
 
-	/** Status update interval (ms) */
-	public static final int PING_INTERVAL_MS = 1000;
 	/** UDP Port */
 	public static final int UDP_PORT = 9998;
 	/** UDP Group */

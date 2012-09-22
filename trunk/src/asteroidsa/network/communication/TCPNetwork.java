@@ -14,7 +14,7 @@ public class TCPNetwork extends TCPCommunication {
 	/** TCP Port */
 	public static final int TCP_PORT = 9999;
 	
-    /** Configured Host */
+    /** Configured Host IP */
     protected String host;
     /** Configured Host port */
     protected int port;     
@@ -49,13 +49,16 @@ public class TCPNetwork extends TCPCommunication {
      * Reads the next object from the stream
      * @return received data or null otherwise
      */
+    int exceptionCounter = 0;
     public NetworkApplicationData receive() {
         NetworkApplicationData data = null;
         try {
-            data = (NetworkApplicationData)fromBuffer.readObject();
+        	data = (NetworkApplicationData)fromBuffer.readObject();
         }   
-        catch (Exception ex) { 
-            Logger.w(ex.getMessage()); 
+        catch (Exception ex) {
+        	exceptionCounter++;
+        	if (exceptionCounter%100==0)
+        		Logger.w("Exception reading object:" + ex.getMessage()); 
         }
         return data;
     }  

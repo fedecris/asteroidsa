@@ -1,8 +1,10 @@
 package asteroidsa.utils;
 
+import android.util.Log;
 import asteroidsa.model.LaserBeam;
 import asteroidsa.model.StarShip;
 import asteroidsa.network.Host;
+import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 import asteroidsa.network.NetworkApplicationDataConsumer;
 import asteroidsa.network.communication.NetworkCommunication;
@@ -55,7 +57,8 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	 */
 	public void newHost(Host aHost) {
     	NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-    	networkComm.connectToServerHost(aHost);
+    	if (!networkComm.connectToServerHost(aHost))
+    		Logger.e("Could not connect to host: " + aHost.getHostIP());
 	}
 	
 	
