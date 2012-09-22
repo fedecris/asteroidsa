@@ -32,12 +32,10 @@ public class TCPServer extends TCPListener implements Runnable {
                     continue;
                 }
 
-                // Update observed object data
+                // Update data to be consumed
                 if (networkCommInstance == null)
                 	networkCommInstance = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-                networkCommInstance.setNetworkApplicationData(networkApplicationData);
-                networkCommInstance.notifyNewMessage();
-                
+                networkCommInstance.getConsumer().newData(networkApplicationData);
             }
             catch (Exception e) { 
             	Logger.e("Error en run de NetworkServer(): " + e.getMessage());
