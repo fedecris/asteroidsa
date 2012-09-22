@@ -109,7 +109,12 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
      */
     public void run() {
     	while (broadcastRunning) {
-        	sendMessageToAllHosts(producer.produceNetworkApplicationData());
+    		networkApplicationData = producer.produceNetworkApplicationData();
+    		if (networkApplicationData==null) {
+            	Logger.w("Message to be sent is null");
+                continue;
+    		}
+        	sendMessageToAllHosts(networkApplicationData);
         	try {
         		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
         	}

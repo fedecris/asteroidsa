@@ -29,6 +29,5 @@ public class NetworkCommunicationFactory {
 		default:
 			return null;
 		}
-		
 	}
 }

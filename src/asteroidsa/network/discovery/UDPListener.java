@@ -60,7 +60,7 @@ class UDPListener extends UDPDiscovery implements Runnable {
 	    	otherHosts.put(values[0], host);
 	    	Logger.i("Agregado host:" + host.getHostIP());
 	    	NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-	    	networkComm.connectToServerHost(host);
+	    	networkComm.getConsumer().newHost(host);
 	    }
 	    else {
 	    	// Update host status

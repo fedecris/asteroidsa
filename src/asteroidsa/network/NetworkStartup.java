@@ -39,7 +39,7 @@ public class NetworkStartup {
 	 * @throws 
 	 * 		Exception if an application is trying to configure an already configured startup
 	 */
-	public static boolean configureStartup(NetworkApplicationDataObserver observer, NetworkApplicationDataProducer producer) throws Exception {
+	public static boolean configureStartup(NetworkApplicationDataConsumer consumer, NetworkApplicationDataProducer producer) throws Exception {
 		
 		try {
 			
@@ -50,7 +50,7 @@ public class NetworkStartup {
 	        networkDiscovery = HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
 	        // Communication listener
 	        networkCommunication = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-	        networkCommunication.addObserver(observer);
+	        networkCommunication.setConsumer(consumer);
 	        networkCommunication.setProducer(producer);
 	        return true;
 		} 

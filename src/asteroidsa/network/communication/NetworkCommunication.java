@@ -1,56 +1,53 @@
 package asteroidsa.network.communication;
 
-import java.util.Observable;
-
 import asteroidsa.network.Host;
 import asteroidsa.network.NetworkApplicationData;
+import asteroidsa.network.NetworkApplicationDataConsumer;
 import asteroidsa.network.NetworkApplicationDataProducer;
 
-public abstract class NetworkCommunication extends Observable {
+public abstract class NetworkCommunication {
 
 	/** Interval between status updates to the other hosts */
 	public static final int BROADCAST_LOCAL_STATUS_INTERVAL_MS = 30;
 	
 	/** Local data producer instance */
 	protected NetworkApplicationDataProducer producer = null;
+	/** Remote data consumer instance */
+	protected NetworkApplicationDataConsumer consumer = null;
     /** Message data to send/received */
     protected NetworkApplicationData networkApplicationData = null;
     
-	
-    
-	/**
-	 * @return a reference to the data message to be observed
-	 */
-    public NetworkApplicationData getNetworkApplicationData() {
-		return networkApplicationData;
+    /**
+     * Default producer getter
+     * @return the local data producer
+     */
+	public NetworkApplicationDataProducer getProducer() {
+		return producer;
 	}
 
 	/**
-	 * Sets the networkApplicationData instance to be observed
-	 * @param networkApplicationData the networkApplicationData instance to be observed
-	 */
-	public void setNetworkApplicationData(NetworkApplicationData networkApplicationData) {
-		this.networkApplicationData = networkApplicationData;
-	}
-
-	/**
-	 * Sets de producer instance in charge of filling the data to be broadcasted
-	 * @param producer the NetworkApplicationDataProducer instance
+	 * Default producer setter
+	 * @param producer the local data producer
 	 */
 	public void setProducer(NetworkApplicationDataProducer producer) {
 		this.producer = producer;
 	}
-	
-	/** 
-     * Notifies dependent objects about a new received message.
-     * Dependent objects will receive a <code>NetworkApplicationData</code> instance 
-     */
-    public void notifyNewMessage()
-    {
-        setChanged();
-        notifyObservers(networkApplicationData);
-    }
-    
+
+	/**
+	 * Default consumer getter
+	 * @return the remote data consumer
+	 */
+	public NetworkApplicationDataConsumer getConsumer() {
+		return consumer;
+	}
+
+	/**
+	 * Default consumer setter
+	 * @param consumer the remote data consumer
+	 */
+	public void setConsumer(NetworkApplicationDataConsumer consumer) {
+		this.consumer = consumer;
+	}
     
 	/* 
 	 * ================================================================================================= 
@@ -104,6 +101,8 @@ public abstract class NetworkCommunication extends Observable {
 	 * 	where unable to be sent 
 	 */
 	public abstract boolean sendMessageToAllHosts(NetworkApplicationData data);
+
+
 
 
 }

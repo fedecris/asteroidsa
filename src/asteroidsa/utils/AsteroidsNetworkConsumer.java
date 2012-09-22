@@ -1,17 +1,19 @@
 package asteroidsa.utils;
 
-import java.util.Observable;
-
 import asteroidsa.model.LaserBeam;
 import asteroidsa.model.StarShip;
-import asteroidsa.network.NetworkApplicationDataObserver;
+import asteroidsa.network.Host;
+import asteroidsa.network.NetworkApplicationData;
+import asteroidsa.network.NetworkApplicationDataConsumer;
+import asteroidsa.network.communication.NetworkCommunication;
+import asteroidsa.network.communication.NetworkCommunicationFactory;
 
-public class AsteroidsNetworkObserver implements NetworkApplicationDataObserver {
+public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer {
 
 	/**
 	 * Updates model data depending on the received message
 	 */
-	public void update(Observable observable, Object data) {
+	public void newData(NetworkApplicationData data) {
 
 		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
 		
@@ -48,6 +50,13 @@ public class AsteroidsNetworkObserver implements NetworkApplicationDataObserver 
     	}
 	}
 	
+	/**
+	 * Handles new joins to the group of hosts
+	 */
+	public void newHost(Host aHost) {
+    	NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
+    	networkComm.connectToServerHost(aHost);
+	}
 	
-
+	
 }
