@@ -27,10 +27,8 @@ public class TCPServer extends TCPListener implements Runnable {
             try {
                 // Wait for incoming messages
             	networkApplicationData = (NetworkApplicationData)receive();
-                if (networkApplicationData == null) {
-                	Logger.w("Received message is null");
+                if (networkApplicationData == null)
                     continue;
-                }
 
                 // Update data to be consumed
                 if (networkCommInstance == null)
@@ -38,7 +36,7 @@ public class TCPServer extends TCPListener implements Runnable {
                 networkCommInstance.getConsumer().newData(networkApplicationData);
             }
             catch (Exception e) { 
-            	Logger.e("Error en run de NetworkServer(): " + e.getMessage());
+            	Logger.e(e.getMessage());
             }
         }
     }

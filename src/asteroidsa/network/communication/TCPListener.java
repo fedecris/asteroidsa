@@ -22,7 +22,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
             	serverConn = new ServerSocket(port);   
         }
         catch (Exception ex) { 
-        	Logger.e("Error al instanciar NetworkServer(): " + ex.getMessage()); 
+        	Logger.e(ex.getMessage()); 
         }
     }
 
@@ -44,7 +44,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
                 serverConn = new ServerSocket(port);
         }
         catch (Exception e) { 
-        	Logger.e("Error en restartServer(): " + e.getMessage()); 
+        	Logger.e(e.getMessage()); 
         }
     }
     
@@ -55,13 +55,12 @@ public class TCPListener extends TCPNetwork implements Runnable {
         try {   
             socket = serverConn.accept();
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
-            toBuffer.flush();
             fromBuffer = new ObjectInputStream(socket.getInputStream());
             new Thread(new TCPServer(socket, fromBuffer, toBuffer)).start();
             return true;
         }
         catch (Exception ex) { 
-        	Logger.e("Error en listen de NetworkServer(): " + ex.getMessage());
+        	Logger.e(ex.getMessage());
             return false;
         }
     }  

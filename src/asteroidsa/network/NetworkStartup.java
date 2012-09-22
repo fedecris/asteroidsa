@@ -8,6 +8,7 @@ package asteroidsa.network;
  * FIXME: Mejorar metodos orientados a QoS. True/false convertir a algo más "rico".  Contabilizar nro de paquetes enviados/perdidos, etc.
  * FIXME: Ver temas de concurrencia en colecciones, no solo del framework NetworkDCQ, sino tambien en la app.
  * FIXME: Mejorar comentarios y documentacion
+ * FIXME: Mejorar la copia de datos de NetworkData
  */
 
 import asteroidsa.network.communication.NetworkCommunication;
@@ -30,7 +31,7 @@ public class NetworkStartup {
 	
 	/**
 	 * Network main application entry point for configuration.
-	 * @param observer 
+	 * @param consumer 
 	 * 		instance in charge of updating the local model based on the received messages from other hosts
 	 * @param producer
 	 * 		instance in charge of setting the local information to be broadcasted periodically to the other hosts
@@ -55,7 +56,7 @@ public class NetworkStartup {
 	        return true;
 		} 
 		catch (Exception e) {
-			Logger.e("Error in NetworkStartup(): " + e.getMessage());
+			Logger.e(e.getMessage());
 			return false;
 		}
         
@@ -80,16 +81,10 @@ public class NetworkStartup {
 			if (!networkCommunication.startService())
 				throw new Exception ("Error starting network communication service");
 	        
-	        // FIXME: WHY?
-	        Thread.sleep(2000);
-	        
 	        // Discovery service
 	        if (!networkDiscovery.startDiscovery())
 	        	throw new Exception ("Error starting network discovery service");
 	        
-	        // FIXME: WHY?
-	        Thread.sleep(2000);
-
 	        // Communication client
 	        if (!networkCommunication.startBroadcast())
 	        	throw new Exception ("Error starting network communication broadcast");
@@ -97,7 +92,7 @@ public class NetworkStartup {
 	        return true;
 		}
 		catch (Exception e) {
-			Logger.e("Error in DoStartup(): " + e.getMessage());
+			Logger.e(e.getMessage());
 			return false;
 		}		
         

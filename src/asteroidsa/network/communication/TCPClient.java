@@ -30,12 +30,11 @@ public class TCPClient extends TCPNetwork {
         try {
             socket = new Socket(host, port);
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
-            toBuffer.flush();
             fromBuffer = new ObjectInputStream(socket.getInputStream()); 
             connected = true;
         }
         catch (Exception ex) { 
-        	Logger.e("Error en connect(): " + ex.getMessage());
+        	Logger.e(ex.getMessage());
             connected = false;
         } 
         return connected;
@@ -47,6 +46,10 @@ public class TCPClient extends TCPNetwork {
      * @return true si pudo ser enviado o false en caso contrario
      */
     public boolean sendMessage(NetworkApplicationData networkGameData) {
+    	if (!connected) {
+    		Logger.w("Cannot send message. Not connected to host:" + host);
+    		return false;
+    	}
     	return write(networkGameData);
     }
 

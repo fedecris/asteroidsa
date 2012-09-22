@@ -24,7 +24,7 @@ class UDPClient extends UDPDiscovery implements Runnable {
 	    		sendPing();
 
 	            // Sleep for a while and resend status
-                Thread.sleep(PING_INTERVAL_MS);
+                Thread.sleep(DISCOVERY_INTERVAL_MS);
 	    	}
         	
         	// Close socket

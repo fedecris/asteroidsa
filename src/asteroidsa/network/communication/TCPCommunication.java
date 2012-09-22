@@ -1,5 +1,6 @@
 package asteroidsa.network.communication;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import asteroidsa.network.Host;
@@ -31,7 +32,7 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	        return true;
 		} 
 		catch (Exception e) {
-			Logger.e("Error en startService(): " + e.getMessage());
+			Logger.e(e.getMessage());
 			return false;
 		}
 	}
@@ -47,7 +48,7 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	        return true;
 		} 
 		catch (Exception e) {
-			Logger.e("Error en startListener(): " + e.getMessage());
+			Logger.e(e.getMessage());
 			return false;
 		}
 	}
@@ -81,12 +82,12 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 
 		TCPClient client = clientPool.get(targetIP);	
 		if (client==null) {
-			Logger.e("Error en sendMessage(): client is null");
+			Logger.e("Client is null");
 			return false;
 		}
 		
 		if (!client.isConnected() && !client.connect()) {
-			Logger.e("Error en sendMessage(): cannot connect to client!");
+			Logger.e("Cannot connect to client!");
 			return false;	
 		}
 		
@@ -97,7 +98,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	@Override
 	public boolean sendMessageToAllHosts(NetworkApplicationData data) {
 		boolean ok = true;
-		for (String targetIP : clientPool.keySet()) 
+		Set<String> keySet = clientPool.keySet();
+		for (String targetIP : keySet) 
 			if (!sendMessage(targetIP, data))
 				ok = false;
 		return ok;
@@ -119,7 +121,7 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
         		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
         	}
         	catch (Exception e) { 
-        		Logger.e("Error en StatusHandler(): " + e.getMessage()); 
+        		Logger.e(e.getMessage()); 
         	}
         }
     }
