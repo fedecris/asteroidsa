@@ -7,8 +7,7 @@ import java.net.MulticastSocket;
 
 import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
-import asteroidsa.network.communication.NetworkCommunication;
-import asteroidsa.network.communication.NetworkCommunicationFactory;
+import asteroidsa.network.NetworkStartup;
 
 class UDPListener extends UDPDiscovery implements Runnable {
 
@@ -59,8 +58,7 @@ class UDPListener extends UDPDiscovery implements Runnable {
 	    	Host host = new Host(values[0], "Y".equals(values[1])?true:false);
 	    	otherHosts.put(values[0], host);
 	    	Logger.i("Agregado host:" + host.getHostIP());
-	    	NetworkCommunication networkComm = NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
-	    	networkComm.getConsumer().newHost(host);
+	    	NetworkStartup.getCommunication().getConsumer().newHost(host);
 	    }
 	    else {
 	    	// Update host status

@@ -4,8 +4,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
+import asteroidsa.network.NetworkStartup;
+import asteroidsa.network.discovery.HostDiscovery;
 
 public class TCPClient extends TCPNetwork {
 
@@ -26,7 +29,7 @@ public class TCPClient extends TCPNetwork {
      * @return true if connection was successful, false otherwise
      */
     public boolean connect() {
-    	Logger.i("Conectando a:" + host);
+    	Logger.i("Connecting to:" + host);
         try {
             socket = new Socket(host, port);
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
@@ -47,10 +50,19 @@ public class TCPClient extends TCPNetwork {
      */
     public boolean sendMessage(NetworkApplicationData networkGameData) {
     	if (!connected) {
-    		Logger.w("Cannot send message. Not connected to host:" + host);
+    		Logger.e("Cannot send message. Not connected to host:" + host);
     		return false;
     	}
-    	return write(networkGameData);
+    	try {
+    		write(networkGameData);
+        	return true;
+    	}
+    	catch (Exception e) {
+            // Tell the app that the connection with the host is lost, or has too many errors
+        	NetworkStartup.getCommunication().getConsumer().byeHost(new Host(host, false));
+        	HostDiscovery.removeHost(host);
+        	return false;
+    	}
     }
 
 	/**

@@ -1,5 +1,6 @@
 package asteroidsa.network.communication;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -32,49 +33,39 @@ public class TCPNetwork extends TCPCommunication {
 	/**
      * Writes an object to the stream
      * @param data object to be written
+     * @throws IOException in case of socket error 
      */
-    public boolean write(NetworkApplicationData data) {
+    public void write(NetworkApplicationData data) throws IOException {
         try {
             toBuffer.writeObject(data);
             toBuffer.flush();
-            return true;
         }
         catch (Exception ex) { 
-        	Logger.w(ex.getMessage());
-            return false;
+        	Logger.w("Exception writing object:" + ex.getMessage());
+       		throw new IOException("Socket error");
         }
     }   
     
+
     /**
      * Reads the next object from the stream
      * @return received data or null otherwise
+     * @throws IOException in case of socket error
      */
-    int exceptionCounter = 0;
-    public NetworkApplicationData receive() {
+    public NetworkApplicationData receive() throws IOException {
         NetworkApplicationData data = null;
         try {
+        	// save to local variable
         	data = (NetworkApplicationData)fromBuffer.readObject();
         }   
         catch (Exception ex) {
-        	exceptionCounter++;
-        	if (exceptionCounter%100==0)
-        		Logger.w("Exception reading object:" + ex.getMessage()); 
+        	Logger.w("Exception reading object:" + ex.getMessage());
+       		throw new IOException("Socket error");
         }
         return data;
     }  
     
-    /**
-     * Closes the socket 
-     */
-    public void close() {
-        try {       
-            socket.close();
-        }
-        catch (Exception ex) {
-        	Logger.w(ex.getMessage()); 
-        }      
-    }
-    
+
     /**
      * Closes the server socket 
      */
