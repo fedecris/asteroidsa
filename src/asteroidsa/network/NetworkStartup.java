@@ -4,11 +4,11 @@ package asteroidsa.network;
  * Network support main class.  Applications interested in using this framework should
  * invoke the static methods configureStartup() and doStartup() in that order.
  * 
- * FIXME: Mejorar el log.  Deberia automatizar temas como el stack trace 
  * FIXME: Mejorar metodos orientados a QoS. True/false convertir a algo más "rico".  Contabilizar nro de paquetes enviados/perdidos, etc.
  * FIXME: Ver temas de concurrencia en colecciones, no solo del framework NetworkDCQ, sino tambien en la app.
  * FIXME: Mejorar comentarios y documentacion
  * FIXME: Mejorar la copia de datos de NetworkData
+ * FIXME: Propagar errores de conexion a la capa de aplicacion
  */
 
 import asteroidsa.network.communication.NetworkCommunication;
@@ -96,6 +96,14 @@ public class NetworkStartup {
 			return false;
 		}		
         
+	}
+
+	public static HostDiscovery getDiscovery() {
+		return HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
+	}
+	
+	public static NetworkCommunication getCommunication() {
+		return NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
 	}
 
 	

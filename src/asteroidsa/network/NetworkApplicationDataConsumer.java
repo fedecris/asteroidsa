@@ -19,6 +19,14 @@ public interface NetworkApplicationDataConsumer {
 	 */
 	public void newHost(Host aHost);
 	
+
+	/**
+	 * A new host has left the group (expectedly or not).
+	 * @param aHost the gone host 
+	 */
+	public void byeHost(Host aHost);
+	
+	
 	/**
 	 * New communication message received.
 	 * @param data is a subclass of {@link NetworkApplicationData} containing the received information

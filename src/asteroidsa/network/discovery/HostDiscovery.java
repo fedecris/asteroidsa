@@ -40,6 +40,15 @@ public abstract class HostDiscovery {
 		thisHost.setConnected(true);
 	}
 	
+	/**
+	 * Removes a host from de remote hosts list
+	 * @param ip the host IP
+	 */
+	public static void removeHost(String ip) {
+		otherHosts.remove(ip);
+	}
+	
+	
 	@Override
 	public String toString() {
 		if (thisHost != null && thisHost.getHostIP() != null)

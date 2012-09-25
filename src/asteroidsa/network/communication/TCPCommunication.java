@@ -86,8 +86,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 			return false;
 		}
 		
-		if (!client.isConnected() && !client.connect()) {
-			Logger.e("Cannot connect to client!");
+		if (!client.isConnected()) {
+			Logger.e("Client not connected!");
 			return false;	
 		}
 		
@@ -100,8 +100,11 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 		boolean ok = true;
 		Set<String> keySet = clientPool.keySet();
 		for (String targetIP : keySet) 
-			if (!sendMessage(targetIP, data))
+			if (!sendMessage(targetIP, data)) {
 				ok = false;
+				clientPool.remove(targetIP);
+			}
+				
 		return ok;
 	}
 

@@ -8,9 +8,6 @@ import asteroidsa.network.Logger;
 
 public class TCPListener extends TCPNetwork implements Runnable {
             
-	/** The observed instance */
-	NetworkCommunication networkCommInstance = null;
-	
     /**
      * Creates the TCP ServerSocket
      */
@@ -53,6 +50,7 @@ public class TCPListener extends TCPNetwork implements Runnable {
      */
     public boolean listen() {
         try {   
+        	Logger.i("Esperando client connections...");
             socket = serverConn.accept();
             toBuffer = new ObjectOutputStream(socket.getOutputStream());
             fromBuffer = new ObjectInputStream(socket.getInputStream());
