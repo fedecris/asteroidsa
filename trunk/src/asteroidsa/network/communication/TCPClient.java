@@ -43,25 +43,24 @@ public class TCPClient extends TCPNetwork {
         return connected;
     }  
    
-     /**
+    /**
      * Prepares and send a message to the otherHosts
      * @param networkGameData message to send
      * @return true si pudo ser enviado o false en caso contrario
      */
-    public boolean sendMessage(NetworkApplicationData networkGameData) {
+    public void sendMessage(NetworkApplicationData networkGameData) throws Exception {
     	if (!connected) {
     		Logger.e("Cannot send message. Not connected to host:" + host);
-    		return false;
+    		return;
     	}
     	try {
     		write(networkGameData);
-        	return true;
     	}
     	catch (Exception e) {
-            // Tell the app that the connection with the host is lost, or has too many errors
+            // Tell the app that the connection with the host is lost
         	NetworkStartup.getCommunication().getConsumer().byeHost(new Host(host, false));
         	HostDiscovery.removeHost(host);
-        	return false;
+        	throw e;
     	}
     }
 

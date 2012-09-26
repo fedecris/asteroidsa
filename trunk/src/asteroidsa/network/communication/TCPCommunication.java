@@ -73,39 +73,41 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 			clientPool.put(target.getHostIP(), new TCPClient(target.getHostIP()));
 
 		TCPClient client = clientPool.get(target.getHostIP());
-		return client.isConnected() || client.connect();
+		if (client!=null) {
+			client.connect();
+			return client.connected;
+		}
+		return false; 
 	}
 	
 	
 	@Override
-	public boolean sendMessage(String targetIP, NetworkApplicationData data) {
+	public synchronized void sendMessage(String targetIP, NetworkApplicationData data) {
 
 		TCPClient client = clientPool.get(targetIP);	
 		if (client==null) {
 			Logger.e("Client is null");
-			return false;
+			return;
 		}
-		
-		if (!client.isConnected()) {
+		if (!client.connected) {
 			Logger.e("Client not connected!");
-			return false;	
+			return;
 		}
-		
-		return client.sendMessage(data);
+		try {
+			client.sendMessage(data);
+		}
+		catch (Exception e) {
+			clientPool.remove(targetIP);
+		}
 	}
 
 	
 	@Override
-	public boolean sendMessageToAllHosts(NetworkApplicationData data) {
-		boolean ok = true;
+	public synchronized void sendMessageToAllHosts(NetworkApplicationData data) {
 		Set<String> keySet = clientPool.keySet();
-		for (String targetIP : keySet) 
-			if (!sendMessage(targetIP, data)) {
-				ok = false;
-				clientPool.remove(targetIP);
-			}
-				
-		return ok;
+		for (String targetIP : keySet) {
+			sendMessage(targetIP, data);
+		}
 	}
 
 
@@ -124,7 +126,7 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
         		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
         	}
         	catch (Exception e) { 
-        		Logger.e(e.getMessage()); 
+        		Logger.w(e.getMessage()); 
         	}
         }
     }
