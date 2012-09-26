@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+import asteroidsa.network.Logger;
 import asteroidsa.utils.Globals;
 
 public class AsteroidsaActivity extends Activity implements OnTouchListener, SensorEventListener {
@@ -36,7 +37,7 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
     public void onCreate(Bundle savedInstanceState) {
     	// Basic setup
         super.onCreate(savedInstanceState);
-        Log.i(this.getClass().toString(), "Starting...");
+        Logger.i("Starting...");
         
         // Full screen settings
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -107,6 +108,10 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			Logger.i("Exitting...");
+			System.exit(0);
+		}
 		return Globals.starShip.processKeyEvent(keyCode);
 	}
 	
