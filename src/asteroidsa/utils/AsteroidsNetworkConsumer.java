@@ -14,7 +14,7 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	/**
 	 * Updates model data depending on the received message
 	 */
-	public void newData(NetworkApplicationData data) {
+	public synchronized void newData(NetworkApplicationData data) {
 
 		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
 		
@@ -63,7 +63,7 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	/**
 	 * Handles a departure of a host from the group
 	 */
-	public void byeHost(Host aHost) {
+	public synchronized void byeHost(Host aHost) {
 		if (Globals.otherShips!=null && aHost!=null)
 			Globals.otherShips.remove(aHost.getHostIP());
 	}

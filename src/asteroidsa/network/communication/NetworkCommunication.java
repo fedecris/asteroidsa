@@ -87,20 +87,19 @@ public abstract class NetworkCommunication {
 	public abstract  boolean connectToServerHost(Host target);
 	
 	/**      
-	 * Sends a single data message to a target
+	 * Sends a single data message to a target.  In case of a communication error,
+	 * the <code>NetworkApplicationDataConsumer.byeHost()</code> method should 
+	 * be invoked, so that the application can behave accordingly
 	 * @param targetIP destination host IP
 	 * @param data message content
-	 * @return true if action was successful, false otherwise 
 	 */
-	public abstract boolean sendMessage(String targetIP, NetworkApplicationData data);
+	public abstract void sendMessage(String targetIP, NetworkApplicationData data);
 	
 	/**
 	 * Sends a single data message to all known hosts
 	 * @param data message content
-	 * @return true if action was successful, false if one or more messages
-	 * 	where unable to be sent 
 	 */
-	public abstract boolean sendMessageToAllHosts(NetworkApplicationData data);
+	public abstract void sendMessageToAllHosts(NetworkApplicationData data);
 
 
 
