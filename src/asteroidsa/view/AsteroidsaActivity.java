@@ -109,7 +109,7 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Logger.i("Exitting...");
+			Logger.i("Exiting...");
 			System.exit(0);
 		}
 		return Globals.starShip.processKeyEvent(keyCode);
