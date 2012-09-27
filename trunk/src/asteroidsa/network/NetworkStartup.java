@@ -4,9 +4,6 @@ package asteroidsa.network;
  * Network support main class.  Applications interested in using this framework should
  * invoke the static methods configureStartup() and doStartup() in that order.
  * 
- * FIXME: Mejorar metodos orientados a QoS. True/false convertir a algo más "rico".  Contabilizar nro de paquetes enviados/perdidos, etc.
- * FIXME: Mejorar comentarios y documentacion
- * FIXME: Mejorar la copia de datos de NetworkData
  * FIXME: Invocar el byeHost tambien desde UDP al momento en que un host abandona un grupo
  */
 
