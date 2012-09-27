@@ -11,33 +11,31 @@ import asteroidsa.network.NetworkStartup;
 
 public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer {
 
+	AsteroidsNetworkApplicationData remoteShipInfo;
+	
 	/**
 	 * Updates model data depending on the received message
 	 */
 	public synchronized void newData(NetworkApplicationData data) {
 
-		AsteroidsNetworkApplicationData message = (AsteroidsNetworkApplicationData)data;
+		remoteShipInfo = (AsteroidsNetworkApplicationData)data;
 		
         StarShip remoteShip = null;
     	// Retrieve ship remote IP and update accordingly
-        if (Globals.otherShips.get(message.getSourceHost().getHostIP())==null)
-        	Globals.otherShips.put(message.getSourceHost().getHostIP(), new StarShip());
-       	remoteShip = Globals.otherShips.get(message.getSourceHost().getHostIP());
+        if (Globals.otherShips.get(remoteShipInfo.getSourceHost().getHostIP())==null)
+        	Globals.otherShips.put(remoteShipInfo.getSourceHost().getHostIP(), new StarShip());
+       	remoteShip = Globals.otherShips.get(remoteShipInfo.getSourceHost().getHostIP());
        	// Set info
-    	remoteShip.position.x = message.position.x;
-    	remoteShip.position.y = message.position.y;
-    	remoteShip.vector.x = message.vector.x;
-    	remoteShip.vector.y = message.vector.y;
-    	remoteShip.heading = message.heading;
+       	remoteShip.position = remoteShipInfo.position;
+    	remoteShip.vector = remoteShipInfo.vector;
+    	remoteShip.heading = remoteShipInfo.heading;
     	// Process laser hosts!
     	int i=0;
     	for (LaserBeam remoteLaserBeam : remoteShip.ammo) {
-    		remoteLaserBeam.active = message.shotActive[i];
-    		remoteLaserBeam.position.x = message.shotPosition[i].x;
-    		remoteLaserBeam.position.y = message.shotPosition[i].y;
-    		remoteLaserBeam.vector.x = message.shotVector[i].x;
-    		remoteLaserBeam.vector.y = message.shotVector[i].y;
-    		remoteLaserBeam.heading = message.shotHeading[i];
+    		remoteLaserBeam.active = remoteShipInfo.shotActive[i];
+    		remoteLaserBeam.position = remoteShipInfo.shotPosition[i];
+    		remoteLaserBeam.vector = remoteShipInfo.shotVector[i];
+    		remoteLaserBeam.heading = remoteShipInfo.shotHeading[i];
     		
     		// Hit?
     		if ( ((remoteLaserBeam.position.x - Globals.starShip.position.x)*(remoteLaserBeam.position.x - Globals.starShip.position.x) + 

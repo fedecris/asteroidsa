@@ -6,8 +6,13 @@ import asteroidsa.network.discovery.HostDiscovery;
 
 public class AsteroidsNetworkProducer implements NetworkApplicationDataProducer {
 
+	/** Local information instance	*/
+	AsteroidsNetworkApplicationData instance = null;
+	
 	public NetworkApplicationData produceNetworkApplicationData() {
-		return new AsteroidsNetworkApplicationData(HostDiscovery.thisHost, Globals.starShip);
+		instance = new AsteroidsNetworkApplicationData();
+		instance.setData(HostDiscovery.thisHost, Globals.starShip);
+		return instance;
 	}
 
 
