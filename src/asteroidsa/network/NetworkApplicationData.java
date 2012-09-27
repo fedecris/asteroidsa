@@ -17,11 +17,5 @@ public abstract class NetworkApplicationData implements Serializable {
 		return sourceHost;
 	}
 
-    /**
-     * Generates a copy of the message
-     * @param source
-     */
-    public abstract void copy(NetworkApplicationData source);
 
-	
 }

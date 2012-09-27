@@ -121,7 +121,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
             	Logger.w("Message to be sent is null");
                 continue;
     		}
-        	sendMessageToAllHosts(networkApplicationData);
+    		if (clientPool.size() > 0)
+    			sendMessageToAllHosts(networkApplicationData);
         	try {
         		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
         	}

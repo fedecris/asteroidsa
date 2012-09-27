@@ -5,10 +5,9 @@ package asteroidsa.network;
  * invoke the static methods configureStartup() and doStartup() in that order.
  * 
  * FIXME: Mejorar metodos orientados a QoS. True/false convertir a algo más "rico".  Contabilizar nro de paquetes enviados/perdidos, etc.
- * FIXME: Ver temas de concurrencia en colecciones, no solo del framework NetworkDCQ, sino tambien en la app.
  * FIXME: Mejorar comentarios y documentacion
  * FIXME: Mejorar la copia de datos de NetworkData
- * FIXME: Propagar errores de conexion a la capa de aplicacion
+ * FIXME: Invocar el byeHost tambien desde UDP al momento en que un host abandona un grupo
  */
 
 import asteroidsa.network.communication.NetworkCommunication;
@@ -98,10 +97,20 @@ public class NetworkStartup {
         
 	}
 
+	/**
+	 * Shortcut for:
+	 * <code>HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod())</code>
+	 * @return the default discovery method instance
+	 */
 	public static HostDiscovery getDiscovery() {
 		return HostDiscoveryFactory.getHostDiscovery(HostDiscoveryFactory.getDefaultDiscoveryMethod());
 	}
 	
+	/**
+	 * Shortcut for:
+	 * <code>NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication())</code>
+	 * @return the default network communication instance
+	 */
 	public static NetworkCommunication getCommunication() {
 		return NetworkCommunicationFactory.getNetworkCommunication(NetworkCommunicationFactory.getDefaultNetworkCommunication());
 	}
