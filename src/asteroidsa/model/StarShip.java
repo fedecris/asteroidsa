@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
+import asteroidsa.network.discovery.HostDiscovery;
 import asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {
@@ -88,21 +89,25 @@ public class StarShip extends Sprite {
 				headingSpeed = -.05f;
 			return true;
 		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+		else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
 			headingSpeed += .01f;
 			if (headingSpeed > .05f)
 				headingSpeed = .05f;
 			return true;
 		}
-		if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+		else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
 			vector.x = vector.x + FloatMath.cos(heading) / StarShip.SOFT_THROOTLE; 
 			vector.y = vector.y + FloatMath.sin(heading) / StarShip.SOFT_THROOTLE;
 			return true;
 		}
-		if (keyCode == KeyEvent.KEYCODE_SPACE) {
+		else if (keyCode == KeyEvent.KEYCODE_SPACE) {
 			Globals.starShip.fire();
 			return true;
 		}
+		else if (keyCode == KeyEvent.KEYCODE_O) {
+			HostDiscovery.thisHost.setOnLine(!HostDiscovery.thisHost.isOnLine());
+		}
+		
 		return false;
 
 	}

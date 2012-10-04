@@ -37,7 +37,7 @@ public abstract class HostDiscovery {
 			System.exit(1);
 		}
 		// Initially conected
-		thisHost.setConnected(true);
+		thisHost.setOnLine(true);
 	}
 	
 	/**

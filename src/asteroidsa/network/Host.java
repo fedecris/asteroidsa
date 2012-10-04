@@ -13,12 +13,12 @@ public class Host implements Serializable {
 	private static final long serialVersionUID = 2807206367538864478L;
 	/** Host IP */
 	private String hostIP;
-	/** Current status (online or offline) */
-	private boolean connected;
+	/** Current status (online or not) */
+	private boolean onLine;
 	
 	
 	public String toString() {
-	    return " (" + hostIP + ") - " + (connected?"Online":"Offline");
+	    return " (" + hostIP + ") - " + (onLine?"Online":"Offline");
 	}
 
     public String getHostIP() {
@@ -29,17 +29,17 @@ public class Host implements Serializable {
         this.hostIP = hostIP;
     }
 
-    public boolean isConnected() {
-        return connected;
+    public boolean isOnLine() {
+        return onLine;
     }
 
-    public void setConnected(boolean connected) {
-        this.connected = connected;
+    public void setOnLine(boolean onLine) {
+        this.onLine = onLine;
     }
     
-    public Host(String hostIP, boolean connected) {
+    public Host(String hostIP, boolean onLine) {
         this.hostIP = hostIP;
-        this.connected = connected;
+        this.onLine = onLine;
     }
 
     /** 

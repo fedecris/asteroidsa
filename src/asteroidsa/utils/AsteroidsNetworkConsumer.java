@@ -7,6 +7,7 @@ import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 import asteroidsa.network.NetworkApplicationDataConsumer;
 import asteroidsa.network.NetworkStartup;
+import asteroidsa.network.discovery.HostDiscovery;
 
 
 public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer {
@@ -25,6 +26,11 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
         if (Globals.otherShips.get(remoteShipInfo.getSourceHost().getHostIP())==null)
         	Globals.otherShips.put(remoteShipInfo.getSourceHost().getHostIP(), new StarShip());
        	remoteShip = Globals.otherShips.get(remoteShipInfo.getSourceHost().getHostIP());
+       	
+       	// Is host online? If not, no need to draw
+       	if (HostDiscovery.otherHosts.get(data.getSourceHost().getHostIP())!=null && !HostDiscovery.otherHosts.get(data.getSourceHost().getHostIP()).isOnLine())
+       		return;
+       	
        	// Set info
        	remoteShip.position = remoteShipInfo.position;
     	remoteShip.vector = remoteShipInfo.vector;
