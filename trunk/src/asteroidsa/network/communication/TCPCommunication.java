@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
+import asteroidsa.network.discovery.HostDiscovery;
 
 public class TCPCommunication extends NetworkCommunication implements Runnable{
 
@@ -106,7 +107,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	public synchronized void sendMessageToAllHosts(NetworkApplicationData data) {
 		Set<String> keySet = clientPool.keySet();
 		for (String targetIP : keySet) {
-			sendMessage(targetIP, data);
+			if (HostDiscovery.otherHosts.get(targetIP)!=null && HostDiscovery.otherHosts.get(targetIP).isOnLine())
+				sendMessage(targetIP, data);
 		}
 	}
 

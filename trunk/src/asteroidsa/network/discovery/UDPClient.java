@@ -43,7 +43,7 @@ class UDPClient extends UDPDiscovery implements Runnable {
 	 */
 	protected void sendPing() throws Exception {
 		// Send current status
-        buf = (thisHost.getHostIP() + DATAGRAM_FIELD_SPLIT + (thisHost.isConnected()?"Y":"N")).getBytes();
+        buf = (thisHost.getHostIP() + DATAGRAM_FIELD_SPLIT + (thisHost.isOnLine()?"Y":"N") + DATAGRAM_FIELD_SPLIT).getBytes();
         if (packet==null)
         	packet = new DatagramPacket(buf, buf.length, group, UDP_PORT);
         packet.setData(buf);

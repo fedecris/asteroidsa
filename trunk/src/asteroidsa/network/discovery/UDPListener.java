@@ -43,10 +43,10 @@ class UDPListener extends UDPDiscovery implements Runnable {
 	
 	/**
 	 * Received datagramas processing.  Updates hosts list.
-	 * @param received String containing IP:..:active(Y/N)
+	 * @param received String containing IP:..:onLine(Y/N)
 	 */
 	protected void managePing(String received) {
-		// Parse the datagram: values[0]=IP, values[1]=Active 
+		// Parse the datagram: values[0]=IP, values[1]=onLine 
 	    values = received.split(DATAGRAM_FIELD_SPLIT);
 	    
 	    // Omit this host
@@ -62,7 +62,7 @@ class UDPListener extends UDPDiscovery implements Runnable {
 	    }
 	    else {
 	    	// Update host status
-	    	otherHosts.put(values[0], otherHosts.get(values[0]));
+	    	otherHosts.get(values[0]).setOnLine("Y".equals(values[1])?true:false);
 	    }
 	}
 
