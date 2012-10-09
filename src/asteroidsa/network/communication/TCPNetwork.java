@@ -49,20 +49,19 @@ public class TCPNetwork extends TCPCommunication {
 
     /**
      * Reads the next object from the stream
-     * @return received data or null otherwise
+     * @return received data
      * @throws IOException in case of socket error
      */
     public NetworkApplicationData receive() throws IOException {
-        NetworkApplicationData data = null;
         try {
         	// save to local variable
-        	data = (NetworkApplicationData)fromBuffer.readObject();
+        	return (NetworkApplicationData)fromBuffer.readObject();
         }   
         catch (Exception ex) {
         	Logger.w("Exception reading object:" + ex.getMessage());
        		throw new IOException("Socket error");
         }
-        return data;
+        
     }  
     
 

@@ -1,15 +1,14 @@
 package asteroidsa.utils;
 
-import asteroidsa.network.Host;
 import asteroidsa.model.LaserBeam;
-import asteroidsa.utils.Point2Df;
 import asteroidsa.model.StarShip;
+import asteroidsa.network.Host;
 import asteroidsa.network.NetworkApplicationData;
 
 public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 
-	/** Serial Version UID */
-	private static final long serialVersionUID = 1L;
+	/** serialVersionUID */
+	private static final long serialVersionUID = 7853200087637751560L;
 	/** Position */
 	protected Point2Df position = new Point2Df(100, 100);
 	/** Current directional speed */
@@ -67,5 +66,10 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 			shotHeading[i] = beam.heading;
 			i++;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "Heading: " + heading;
 	}
 }
