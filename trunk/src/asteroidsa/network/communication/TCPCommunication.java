@@ -18,7 +18,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	protected static boolean listenerRunning = false;
 	/** Communication broadcast is running */
 	protected static boolean broadcastRunning = false;
-
+	/** Local keySet of client pool (IPs) */
+	Set<String> localClientPool = null;
 	
 	@Override
 	public boolean startService() {
@@ -105,8 +106,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	
 	@Override
 	public synchronized void sendMessageToAllHosts(NetworkApplicationData data) {
-		Set<String> keySet = clientPool.keySet();
-		for (String targetIP : keySet) {
+		localClientPool = clientPool.keySet();
+		for (String targetIP : localClientPool) {
 			if (HostDiscovery.otherHosts.get(targetIP)!=null && HostDiscovery.otherHosts.get(targetIP).isOnLine())
 				sendMessage(targetIP, data);
 		}
@@ -118,13 +119,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
      */
     public void run() {
     	while (broadcastRunning) {
-    		networkApplicationData = producer.produceNetworkApplicationData();
-    		if (networkApplicationData==null) {
-            	Logger.w("Message to be sent is null");
-                continue;
-    		}
     		if (clientPool.size() > 0)
-    			sendMessageToAllHosts(networkApplicationData);
+    			sendMessageToAllHosts(producer.produceNetworkApplicationData());
         	try {
         		Thread.sleep(BROADCAST_LOCAL_STATUS_INTERVAL_MS);
         	}

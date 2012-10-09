@@ -7,7 +7,6 @@ import java.net.Socket;
 
 import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
-import asteroidsa.network.NetworkApplicationData;
 import asteroidsa.network.NetworkStartup;
 import asteroidsa.network.discovery.HostDiscovery;
 
@@ -32,12 +31,13 @@ public class TCPServer extends TCPListener implements Runnable {
         while (listenerRunning && ok) {
             try {
                 // Wait for incoming messages
-            	networkApplicationData = (NetworkApplicationData)receive();
+            	networkApplicationData = receive();
                 if (networkApplicationData == null)
                     continue;
 
                 // Update data to be consumed
                 NetworkStartup.getCommunication().getConsumer().newData(networkApplicationData);
+                networkApplicationData = null;
             }
             catch (IOException ex) {
                 // Tell the app that the connection with the host is lost, or has too many errors
