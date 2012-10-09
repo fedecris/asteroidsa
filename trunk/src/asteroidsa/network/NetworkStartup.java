@@ -3,8 +3,6 @@ package asteroidsa.network;
 /**
  * Network support main class.  Applications interested in using this framework should
  * invoke the static methods configureStartup() and doStartup() in that order.
- * 
- * FIXME: Invocar el byeHost tambien desde UDP al momento en que un host abandona un grupo
  */
 
 import asteroidsa.network.communication.NetworkCommunication;

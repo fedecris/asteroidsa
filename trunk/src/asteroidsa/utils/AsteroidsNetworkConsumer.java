@@ -17,9 +17,9 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	/**
 	 * Updates model data depending on the received message
 	 */
-	public synchronized void newData(NetworkApplicationData data) {
+	public synchronized void newData(NetworkApplicationData receivedData) {
 
-		remoteShipInfo = (AsteroidsNetworkApplicationData)data;
+		remoteShipInfo = (AsteroidsNetworkApplicationData)receivedData;
 		
         StarShip remoteShip = null;
     	// Retrieve ship remote IP and update accordingly
@@ -28,7 +28,7 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
        	remoteShip = Globals.otherShips.get(remoteShipInfo.getSourceHost().getHostIP());
        	
        	// Is host online? If not, no need to draw
-       	if (HostDiscovery.otherHosts.get(data.getSourceHost().getHostIP())!=null && !HostDiscovery.otherHosts.get(data.getSourceHost().getHostIP()).isOnLine())
+       	if (HostDiscovery.otherHosts.get(receivedData.getSourceHost().getHostIP())!=null && !HostDiscovery.otherHosts.get(receivedData.getSourceHost().getHostIP()).isOnLine())
        		return;
        	
        	// Set info
@@ -53,6 +53,8 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
     		
     		i++;
     	}
+    	
+    	receivedData = null;
 	}
 	
 	/**

@@ -26,13 +26,7 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 	protected float[] shotHeading = new float[StarShip.AMMO_COUNT];
 	
 
-	/**
-	 * Default constructor
-	 */
-	public AsteroidsNetworkApplicationData() {
-		
-	}
-	
+
 	/**
 	 * Sets the general data to be sent based on the passed parameters
 	 * @param host the host which originates the message to be sent

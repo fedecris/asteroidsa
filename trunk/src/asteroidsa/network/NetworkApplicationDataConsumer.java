@@ -29,7 +29,7 @@ public interface NetworkApplicationDataConsumer {
 	
 	/**
 	 * New communication message received.
-	 * @param data is a subclass of {@link NetworkApplicationData} containing the received information
+	 * @param receivedData is a subclass of {@link NetworkApplicationData} containing the received information
 	 */
-	public void newData(NetworkApplicationData data);	
+	public void newData(NetworkApplicationData receivedData);	
 }
