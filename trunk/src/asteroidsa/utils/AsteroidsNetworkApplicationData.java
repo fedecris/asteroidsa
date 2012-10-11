@@ -1,6 +1,5 @@
 package asteroidsa.utils;
 
-import asteroidsa.model.LaserBeam;
 import asteroidsa.model.StarShip;
 import asteroidsa.network.Host;
 import asteroidsa.network.NetworkApplicationData;
@@ -54,16 +53,15 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 		vector.x = ship.vector.x;
 		vector.y = ship.vector.y;
 		heading = ship.heading;
-		int i=0;
-		for (LaserBeam beam : ship.ammo) {
+		for (int i=0; i<ship.ammo.size(); i++) {
 			if (shotPosition[i]==null) shotPosition[i] = new Point2Df(0, 0);
 			if (shotVector[i]==null) shotVector[i] = new Point2Df(0, 0);
-			shotActive[i] = beam.active;
-			shotPosition[i].x = beam.position.x;
-			shotPosition[i].y = beam.position.y;
-			shotVector[i].x = beam.vector.x;
-			shotVector[i].y = beam.vector.y;
-			shotHeading[i] = beam.heading;
+			shotActive[i] = ship.ammo.get(i).active;
+			shotPosition[i].x = ship.ammo.get(i).position.x;
+			shotPosition[i].y = ship.ammo.get(i).position.y;
+			shotVector[i].x = ship.ammo.get(i).vector.x;
+			shotVector[i].y = ship.ammo.get(i).vector.y;
+			shotHeading[i] = ship.ammo.get(i).heading;
 			i++;
 		}
 	}

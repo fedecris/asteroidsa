@@ -14,19 +14,27 @@ import asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {
 
+
+	/** Soften accelerometer reading for movement, heading */
+	protected static final float SOFT_ROTATION = 20f;
+	/** Soften accelerometer reading for movement, heading */
+	protected static final float SOFT_THROOTLE = 20f;
+	/** Dead zone (rotation) */
+	protected static final float DEAD_ZONE_ROTATION = 0.5f;
+	/** Dead zone (throttle) */	
+	protected static final float DEAD_ZONE_THROOTLE = 5;
+	/** laser beam amount */
+    public static final int AMMO_COUNT = 1;
 	// Path for drawing ship
 	private Path p = new Path();
-	// Soften accelerometer reading for movement & heading
-	protected static final float SOFT_ROTATION = 20f;
-	protected static final float SOFT_THROOTLE = 20f;
-	// Dead zone (rotation)
-	protected static final float DEAD_ZONE_ROTATION = 0.5f;
-	// Dead zone (throttle)	
-	protected static final float DEAD_ZONE_THROOTLE = 5;
-	// laser beams
-    public static final int AMMO_COUNT = 1;
+	// Laser beams
     public ArrayList<LaserBeam> ammo = new ArrayList<LaserBeam>();
-	
+	// Problematic asteroid approaching!
+    private Asteroid approachingAsteroid = null;
+    // Internal use variable
+	private float posX = 0;
+    // Internal use variable
+	private float posY = 0;
 	
 	/**
 	 * Constructor
@@ -44,6 +52,7 @@ public class StarShip extends Sprite {
         heading = 0;
         headingSpeed = 0; // (float)(Math.random() - 0.5f) * 1.5f;
 	}
+
 	
 	@Override
 	public void update() {
@@ -64,21 +73,20 @@ public class StarShip extends Sprite {
 		updatePosition(true, true);
 		
         // collision with an asteroid?
-		Asteroid a = null;
 		for (int i=0; i<Globals.asteroids.size(); i++)
 		{
-			a = Globals.asteroids.get(i);
-			if (a!=null && a.active &&
-				((position.x - a.position.x)*(position.x - a.position.x) + (position.y - a.position.y)*(position.y - a.position.y)) < a.width/4*a.width/4 ) 
+			approachingAsteroid = Globals.asteroids.get(i);
+			if (approachingAsteroid!=null && approachingAsteroid.active &&
+				((position.x - approachingAsteroid.position.x)*(position.x - approachingAsteroid.position.x) + (position.y - approachingAsteroid.position.y)*(position.y - approachingAsteroid.position.y)) < approachingAsteroid.width/4*approachingAsteroid.width/4 ) 
 	       		{  
-					Log.d(Globals.LOG_TAG, position.x + ", " + position.y + " - " + a.position.x + "," + a.position.y);
+					Log.d(Globals.LOG_TAG, position.x + ", " + position.y + " - " + approachingAsteroid.position.x + "," + approachingAsteroid.position.y);
                 	Globals.lifeLost();
 	       		}
 		}
 		
 		// Update my laser beams
-	    for (LaserBeam aBeam : ammo)
-	    	aBeam.update();
+		for (int i=0; i<ammo.size(); i++)
+			ammo.get(i).update();
 	}
 
 	
@@ -118,14 +126,15 @@ public class StarShip extends Sprite {
 	public void fire()
 	{
 	    // any ammo available?
-	    for (LaserBeam aBeam : ammo)
-	    	if (!aBeam.active)
-	    	{
-	    		aBeam.fire(position.x, position.y, heading);
-	    		break;
-	    	}
+		for (int i=0; i<ammo.size(); i++) {
+			if (!ammo.get(i).active) {
+				ammo.get(i).fire(position.x, position.y, heading);
+				break;
+			}
+		}
 	}
 	
+
 	@Override
 	public void draw(Canvas canvas) {
 
@@ -136,8 +145,8 @@ public class StarShip extends Sprite {
 			paint.setColor(Color.BLUE);
 		paint.setStrokeWidth(4);
 		p.reset();
-		float posX = position.x * Globals.model2canvas.x;
-		float posY = position.y * Globals.model2canvas.y;
+		posX = position.x * Globals.model2canvas.x;
+		posY = position.y * Globals.model2canvas.y;
 		p.moveTo(posX + FloatMath.cos(heading) * width, 			posY + FloatMath.sin(heading) * height );
 		p.lineTo(posX + FloatMath.cos((heading+90)%360) * width, 	posY + FloatMath.sin((heading+90)%360) * height );
 		p.lineTo(posX + FloatMath.cos((heading-90)%360) * width, 	posY + FloatMath.sin((heading-90)%360) * height );
@@ -150,8 +159,8 @@ public class StarShip extends Sprite {
 		canvas.drawLine(posX, posY, (posX - FloatMath.cos(heading) * width/2), (posY - FloatMath.sin(heading) * height/2), paint);
 		
 	    // draw my laser shots!
-	    for (LaserBeam aBeam : ammo)
-	    	aBeam.draw(canvas);
+		for (int i=0; i<ammo.size(); i++)
+			ammo.get(i).draw(canvas);
 	}
 	
 }

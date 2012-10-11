@@ -18,8 +18,8 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	protected static boolean listenerRunning = false;
 	/** Communication broadcast is running */
 	protected static boolean broadcastRunning = false;
-	/** Local keySet of client pool (IPs) */
-	Set<String> localClientPool = null;
+	// Local keySet of client pool (IPs)
+	private Set<String> localClientPool = null;
 	
 	@Override
 	public boolean startService() {
@@ -82,21 +82,23 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 		return false; 
 	}
 	
-	
 	@Override
 	public synchronized void sendMessage(String targetIP, NetworkApplicationData data) {
 
-		TCPClient client = clientPool.get(targetIP);	
-		if (client==null) {
+		// dont send nulls
+		if (data==null)
+			return;
+		// get client from pool
+		if (clientPool.get(targetIP)==null) {
 			Logger.e("Client is null");
 			return;
 		}
-		if (!client.connected) {
-			Logger.e("Client not connected!");
+		if (!clientPool.get(targetIP).connected) {
+			Logger.w("Client not connected!");
 			return;
 		}
 		try {
-			client.sendMessage(data);
+			clientPool.get(targetIP).sendMessage(data);
 		}
 		catch (Exception e) {
 			clientPool.remove(targetIP);
@@ -106,7 +108,7 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	
 	@Override
 	public synchronized void sendMessageToAllHosts(NetworkApplicationData data) {
-		localClientPool = clientPool.keySet();
+		localClientPool = clientPool.keySet();		// FIXME: Causes GC
 		for (String targetIP : localClientPool) {
 			if (HostDiscovery.otherHosts.get(targetIP)!=null && HostDiscovery.otherHosts.get(targetIP).isOnLine())
 				sendMessage(targetIP, data);

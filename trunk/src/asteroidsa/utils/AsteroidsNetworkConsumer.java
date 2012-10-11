@@ -1,6 +1,5 @@
 package asteroidsa.utils;
 
-import asteroidsa.model.LaserBeam;
 import asteroidsa.model.StarShip;
 import asteroidsa.network.Host;
 import asteroidsa.network.Logger;
@@ -12,16 +11,18 @@ import asteroidsa.network.discovery.HostDiscovery;
 
 public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer {
 
-	AsteroidsNetworkApplicationData remoteShipInfo;
-	
+	/** Received remote information */
+	protected AsteroidsNetworkApplicationData remoteShipInfo;
+	// Internal use.  Ship data based on remote info.
+    private StarShip remoteShip = null;
+    
 	/**
 	 * Updates model data depending on the received message
 	 */
 	public synchronized void newData(NetworkApplicationData receivedData) {
 
 		remoteShipInfo = (AsteroidsNetworkApplicationData)receivedData;
-		
-        StarShip remoteShip = null;
+
     	// Retrieve ship remote IP and update accordingly
         if (Globals.otherShips.get(remoteShipInfo.getSourceHost().getHostIP())==null)
         	Globals.otherShips.put(remoteShipInfo.getSourceHost().getHostIP(), new StarShip());
@@ -36,16 +37,15 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
     	remoteShip.vector = remoteShipInfo.vector;
     	remoteShip.heading = remoteShipInfo.heading;
     	// Process laser hosts!
-    	int i=0;
-    	for (LaserBeam remoteLaserBeam : remoteShip.ammo) {
-    		remoteLaserBeam.active = remoteShipInfo.shotActive[i];
-    		remoteLaserBeam.position = remoteShipInfo.shotPosition[i];
-    		remoteLaserBeam.vector = remoteShipInfo.shotVector[i];
-    		remoteLaserBeam.heading = remoteShipInfo.shotHeading[i];
+    	for (int i=0; i<remoteShip.ammo.size(); i++) { 
+    		remoteShip.ammo.get(i).active = remoteShipInfo.shotActive[i];
+    		remoteShip.ammo.get(i).position = remoteShipInfo.shotPosition[i];
+    		remoteShip.ammo.get(i).vector = remoteShipInfo.shotVector[i];
+    		remoteShip.ammo.get(i).heading = remoteShipInfo.shotHeading[i];
     		
     		// Hit?
-    		if ( ((remoteLaserBeam.position.x - Globals.starShip.position.x)*(remoteLaserBeam.position.x - Globals.starShip.position.x) + 
-    			  (remoteLaserBeam.position.y - Globals.starShip.position.y)*(remoteLaserBeam.position.y - Globals.starShip.position.y)) 
+    		if ( ((remoteShip.ammo.get(i).position.x - Globals.starShip.position.x)*(remoteShip.ammo.get(i).position.x - Globals.starShip.position.x) + 
+    			  (remoteShip.ammo.get(i).position.y - Globals.starShip.position.y)*(remoteShip.ammo.get(i).position.y - Globals.starShip.position.y)) 
     			   < Globals.starShip.width/4*Globals.starShip.width/4) {
     			 Globals.lifeLost();
     			 continue;

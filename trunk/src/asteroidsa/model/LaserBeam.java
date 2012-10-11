@@ -8,6 +8,8 @@ public class LaserBeam extends Sprite {
 
 	/** Shot identifier */
 	int shotID = -1;
+	/** Target asteroid to be shot */
+	private Asteroid targetAsteroid = null;
 	
 	public LaserBeam(int id) {
 		shotID = id;
@@ -31,6 +33,7 @@ public class LaserBeam extends Sprite {
         active = true;
     }
 	
+    
 	@Override
 	public void update() {
 
@@ -41,16 +44,17 @@ public class LaserBeam extends Sprite {
 		updatePosition(true, false);
 		
         // collision with an asteroid?
-		Asteroid targetAsteroid = null;
-		for (Asteroid a : Globals.asteroids)
-       		if (a.active &&
-       		    ((position.x - a.position.x)*(position.x - a.position.x) + (position.y - a.position.y)*(position.y - a.position.y)) < a.width/4*a.width/4  )
+		for (int i=0; i< Globals.asteroids.size(); i++) {
+       		if (Globals.asteroids.get(i).active &&
+       		    ((position.x - Globals.asteroids.get(i).position.x)*(position.x - Globals.asteroids.get(i).position.x) + 
+       		    (position.y - Globals.asteroids.get(i).position.y)*(position.y - Globals.asteroids.get(i).position.y)) < 
+       		    Globals.asteroids.get(i).width/4*Globals.asteroids.get(i).width/4  )
        		{
            		active = false;
-           		targetAsteroid = a;
+           		targetAsteroid = Globals.asteroids.get(i);
            		break;
         	}
-        
+		}
         if (targetAsteroid!=null) 
         	targetAsteroid.newHit();
 	

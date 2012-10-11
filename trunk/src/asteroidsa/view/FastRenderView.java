@@ -1,5 +1,7 @@
 package asteroidsa.view;
 
+import java.util.Enumeration;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -39,6 +41,7 @@ public class FastRenderView extends SurfaceView implements Runnable {
         renderThread = null;        
     }
 
+    Canvas canvas = null;
     public void run() {
     	
         while(Globals.running) {
@@ -61,12 +64,13 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	            if(!holder.getSurface().isValid())
 	                continue;
 	            
-	            Canvas canvas = holder.lockCanvas(); 
+	            canvas = holder.lockCanvas(); 
 	            if (Globals.canvasSize == null)
 	            	Globals.canvasSize = new Point(canvas.getWidth(), canvas.getHeight());
 	
 	            drawSurface(canvas);                                           
-	            holder.unlockCanvasAndPost(canvas);            
+	            holder.unlockCanvasAndPost(canvas);
+	            canvas = null;
         	}
         	catch (Exception e) {
         		e.printStackTrace();
@@ -74,6 +78,7 @@ public class FastRenderView extends SurfaceView implements Runnable {
         }
     }
 
+    Enumeration<String> shipIDs = null;
     private void drawSurface(Canvas canvas) {
     	
     	try {
@@ -92,12 +97,14 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	
 	    	// draw other ships
 	    	spriteSize = Globals.otherShips.size();
-	    	for (String shipID : Globals.otherShips.keySet())
-	    		Globals.otherShips.get(shipID).draw(canvas);
+	    	shipIDs = Globals.otherShips.keys();	// FIXME: This still forces GC calls
+	    	while (shipIDs.hasMoreElements())
+	    		Globals.otherShips.get(shipIDs.nextElement()).draw(canvas);
 	    	
 	    	// draw ship
 	    	Globals.starShip.draw(canvas);
-	    	
+
+// TODO: Levels & Points system!
 //	    	paint.setTextSize(20);
 //	    	paint.setColor(Color.WHITE);
 //	    	paint.setStyle(Style.FILL);
