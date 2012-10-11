@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.KeyEvent;
 import asteroidsa.network.Logger;
 import asteroidsa.network.discovery.HostDiscovery;
