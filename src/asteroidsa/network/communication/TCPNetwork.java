@@ -54,14 +54,12 @@ public class TCPNetwork extends TCPCommunication {
      */
     public NetworkApplicationData receive() throws IOException {
         try {
-        	// save to local variable
         	return (NetworkApplicationData)fromBuffer.readObject();
         }   
         catch (Exception ex) {
         	Logger.w("Exception reading object:" + ex.getMessage());
        		throw new IOException("Socket error");
         }
-        
     }  
     
 
