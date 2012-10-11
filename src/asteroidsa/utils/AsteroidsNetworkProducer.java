@@ -10,7 +10,7 @@ public class AsteroidsNetworkProducer implements NetworkApplicationDataProducer 
 	AsteroidsNetworkApplicationData instance = null;
 	
 	public NetworkApplicationData produceNetworkApplicationData() {
-//		if (instance == null)
+		if (instance == null)
 			instance = new AsteroidsNetworkApplicationData();
 		instance.setData(HostDiscovery.thisHost, Globals.starShip);
 		return instance;

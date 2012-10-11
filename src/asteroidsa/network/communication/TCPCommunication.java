@@ -1,9 +1,7 @@
 package asteroidsa.network.communication;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import asteroidsa.network.Host;
+import asteroidsa.network.IterateableConcurrentHashMap;
 import asteroidsa.network.Logger;
 import asteroidsa.network.NetworkApplicationData;
 import asteroidsa.network.discovery.HostDiscovery;
@@ -13,13 +11,13 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	/** TCP Listener */
 	protected static TCPListener listener = null;
 	/** TCP Clients: Target Host IP - TCPConnection */
-	protected static ConcurrentHashMap<String, TCPClient> clientPool = new ConcurrentHashMap<String, TCPClient>();
+	protected static IterateableConcurrentHashMap<String, TCPClient> clientPool = new IterateableConcurrentHashMap<String, TCPClient>();
 	/** Communication listener is running */
 	protected static boolean listenerRunning = false;
 	/** Communication broadcast is running */
 	protected static boolean broadcastRunning = false;
-	// Local keySet of client pool (IPs)
-	private Set<String> localClientPool = null;
+
+	private int i = 0;
 	
 	@Override
 	public boolean startService() {
@@ -108,11 +106,9 @@ public class TCPCommunication extends NetworkCommunication implements Runnable{
 	
 	@Override
 	public synchronized void sendMessageToAllHosts(NetworkApplicationData data) {
-		localClientPool = clientPool.keySet();		// FIXME: Causes GC
-		for (String targetIP : localClientPool) {
-			if (HostDiscovery.otherHosts.get(targetIP)!=null && HostDiscovery.otherHosts.get(targetIP).isOnLine())
-				sendMessage(targetIP, data);
-		}
+		for (i=0; i<clientPool.getKeyList().size(); i++)
+			if (HostDiscovery.otherHosts.get(clientPool.getKeyList().get(i))!=null && HostDiscovery.otherHosts.get(clientPool.getKeyList().get(i)).isOnLine())
+				sendMessage(clientPool.getKeyList().get(i), data);
 	}
 
 
