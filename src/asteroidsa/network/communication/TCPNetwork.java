@@ -39,6 +39,7 @@ public class TCPNetwork extends TCPCommunication {
         try {
             toBuffer.writeObject(data);
             toBuffer.flush();
+            toBuffer.reset();
         }
         catch (Exception ex) { 
         	Logger.w("Exception writing object:" + ex.getMessage());

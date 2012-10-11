@@ -54,6 +54,7 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
     		i++;
     	}
     	
+    	remoteShip = null;
     	remoteShipInfo = null;
 	}
 	
