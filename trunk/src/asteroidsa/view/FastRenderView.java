@@ -1,10 +1,7 @@
 package asteroidsa.view;
 
-import java.util.Enumeration;
-
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,8 +11,9 @@ public class FastRenderView extends SurfaceView implements Runnable {
 
     Thread renderThread = null;
     SurfaceHolder holder;
-    int spriteSize = 0;
-    Paint paint = new Paint();
+    private int spriteSize = 0;
+    private int i = 0;
+
     
     public FastRenderView(Context context) {
         super(context);           
@@ -50,12 +48,12 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	        	
 	        	// Update model for each asteroid
 	        	spriteSize = Globals.asteroids.size();
-	        	for (int i=0; i < spriteSize; i++)
+	        	for (i=0; i < spriteSize; i++)
 	        		Globals.asteroids.get(i).update();
 	
 	        	// Update model for each star
 	        	spriteSize = Globals.stars.size();
-	        	for (int i=0; i < spriteSize; i++)
+	        	for (i=0; i < spriteSize; i++)
 	        		Globals.stars.get(i).update();        	
 	        	
 	        	// Update model for the ship
@@ -78,7 +76,6 @@ public class FastRenderView extends SurfaceView implements Runnable {
         }
     }
 
-    Enumeration<String> shipIDs = null;
     private void drawSurface(Canvas canvas) {
     	
     	try {
@@ -87,19 +84,18 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	    	
 	    	// draw stars!
 	    	spriteSize = Globals.stars.size();
-	    	for (int i=0; i < spriteSize; i++)
+	    	for (i=0; i < spriteSize; i++)
 	    		Globals.stars.get(i).draw(canvas);
 	    	
 	    	// draw each asteroid
 	    	spriteSize = Globals.asteroids.size();
-	    	for (int i=0; i < spriteSize; i++)
+	    	for (i=0; i < spriteSize; i++)
 	    		Globals.asteroids.get(i).draw(canvas);
 	
 	    	// draw other ships
-	    	spriteSize = Globals.otherShips.size();
-	    	shipIDs = Globals.otherShips.keys();	// FIXME: This still forces GC calls
-	    	while (shipIDs.hasMoreElements())
-	    		Globals.otherShips.get(shipIDs.nextElement()).draw(canvas);
+	    	spriteSize = Globals.otherShips.getValueList().size();
+	    	for (i=0; i < spriteSize; i++)
+	    		Globals.otherShips.getValueList().get(i).draw(canvas);
 	    	
 	    	// draw ship
 	    	Globals.starShip.draw(canvas);

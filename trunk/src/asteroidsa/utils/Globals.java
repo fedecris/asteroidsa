@@ -1,65 +1,64 @@
 package asteroidsa.utils;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Point;
 import android.graphics.PointF;
 import asteroidsa.model.Asteroid;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
+import asteroidsa.network.IterateableConcurrentHashMap;
 import asteroidsa.network.NetworkStartup;
 
 
 public class Globals {
 
-	/** Game specific */
-	// Game running
+	// Game specific
+	/** Game running */
 	public static boolean running = true;
-	// Model size
+	/** Model size */
 	public static Point modelSize = new Point(100, 100); 
-	// Screen size
+	/** Screen size */
 	public static Point canvasSize = null;
-	// Relation between model & screen size (example: (8, 4.8) in a 800x480 grid).
+	/** Relation between model & screen size (example: (8, 4.8) in a 800x480 grid). */
 	public static PointF model2canvas = null;
-	// Relation between model & screen size (example: (.080, .048) in a 800x480 grid).
+	/** Relation between model & screen size (example: (.080, .048) in a 800x480 grid). */
 	public static PointF canvas2model = null;	
-	// Accelerometer vectors
+	/** Accelerometer vectors */
 	public static float[] acel = {0, 0, 0};
-	// Asteroids collection
+	/** Asteroids collection */
 	public volatile static ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-	// Stars collection
+	/** Stars collection */
 	public volatile static ArrayList<Star> stars = new ArrayList<Star>();	
-	// Our ship!
+	/** Our ship! */
 	public static StarShip starShip = null;
-	// The others ships! IP->Starship
-	public static ConcurrentHashMap<String, StarShip> otherShips = new ConcurrentHashMap<String, StarShip>();
-	// Initial Level 
+	/** The others ships! IP->Starship */
+	public static IterateableConcurrentHashMap<String, StarShip> otherShips = new IterateableConcurrentHashMap<String, StarShip>();
+	/** Initial Level */
 	public final static int INITIAL_LEVEL = 0;
-	// Level (& number of asteroids!)
+	/** Level (& number of asteroids!) */
 	public static int level = INITIAL_LEVEL;
-	// Max lives
+	/** Max lives */
 	public final static int MAX_LIVES = 5;
-	// Lives
+	/** Lives */
 	public static int lives = 5;
-	// Points
+	/** Points */
 	public static int points = 0;
-	// Total front stars
+	/** Total front stars */
 	public static int MAX_FRONT_STARS = 0; 
-	// Total back stars
+	/** Total back stars */
 	public static int MAX_BACK_STARS = 0; 	
 	
-	/** Network Specific */ 
-	
-	/** Log Specific */
-	public static final String LOG_TAG = "Asteroidsa";
-	
-	/** Input specific */
+	// Input specific
+	/** Input through keyboard */
 	public static final int INPUT_KEYBOARD		= 0;
+	/** Input through accelerometer */
 	public static final int INPUT_ACCELEROMETER	= 1;
+	/** Default input method  */
 	public static int inputMethod = INPUT_ACCELEROMETER;
 	
-	static boolean firstConf = false;
+	// First time configuration run
+	protected static boolean firstConf = false;
 
 	
 	/**
@@ -121,5 +120,6 @@ public class Globals {
 		startup();
 		
 	}
+
 	
 }

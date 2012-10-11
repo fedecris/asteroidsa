@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.KeyEvent;
+import asteroidsa.network.Logger;
 import asteroidsa.network.discovery.HostDiscovery;
 import asteroidsa.utils.Globals;
 
@@ -79,7 +80,7 @@ public class StarShip extends Sprite {
 			if (approachingAsteroid!=null && approachingAsteroid.active &&
 				((position.x - approachingAsteroid.position.x)*(position.x - approachingAsteroid.position.x) + (position.y - approachingAsteroid.position.y)*(position.y - approachingAsteroid.position.y)) < approachingAsteroid.width/4*approachingAsteroid.width/4 ) 
 	       		{  
-					Log.d(Globals.LOG_TAG, position.x + ", " + position.y + " - " + approachingAsteroid.position.x + "," + approachingAsteroid.position.y);
+					Logger.d(position.x + ", " + position.y + " - " + approachingAsteroid.position.x + "," + approachingAsteroid.position.y);
                 	Globals.lifeLost();
 	       		}
 		}
