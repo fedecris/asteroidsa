@@ -34,24 +34,21 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
        	
        	// Set info
        	remoteShip.position = remoteShipInfo.position;
-    	remoteShip.vector = remoteShipInfo.vector;
     	remoteShip.heading = remoteShipInfo.heading;
     	// Process laser hosts!
     	for (int i=0; i<remoteShip.ammo.size(); i++) { 
     		remoteShip.ammo.get(i).active = remoteShipInfo.shotActive[i];
     		remoteShip.ammo.get(i).position = remoteShipInfo.shotPosition[i];
-    		remoteShip.ammo.get(i).vector = remoteShipInfo.shotVector[i];
     		remoteShip.ammo.get(i).heading = remoteShipInfo.shotHeading[i];
     		
     		// Hit?
-    		if ( ((remoteShip.ammo.get(i).position.x - Globals.starShip.position.x)*(remoteShip.ammo.get(i).position.x - Globals.starShip.position.x) + 
+    		if ( remoteShip.ammo.get(i).active &&
+    			 ((remoteShip.ammo.get(i).position.x - Globals.starShip.position.x)*(remoteShip.ammo.get(i).position.x - Globals.starShip.position.x) + 
     			  (remoteShip.ammo.get(i).position.y - Globals.starShip.position.y)*(remoteShip.ammo.get(i).position.y - Globals.starShip.position.y)) 
     			   < Globals.starShip.width/4*Globals.starShip.width/4) {
     			 Globals.lifeLost();
     			 continue;
     		}
-    		
-    		i++;
     	}
     	
     	remoteShip = null;

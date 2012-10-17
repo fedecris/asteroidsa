@@ -68,6 +68,9 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
             }
         }
         
+        // Increase heap size a little in order to avoid GC too frequently
+        dalvik.system.VMRuntime.getRuntime().setMinimumHeapSize(8*1024*1024);
+        
         // Initialize
 		Globals.model2canvas = new PointF((float)Globals.canvasSize.x / (float)Globals.modelSize.x, (float)Globals.canvasSize.y / (float)Globals.modelSize.y);
 		Globals.canvas2model = new PointF((float)Globals.modelSize.x / (float)Globals.canvasSize.x, (float)Globals.modelSize.y / (float)Globals.canvasSize.y);

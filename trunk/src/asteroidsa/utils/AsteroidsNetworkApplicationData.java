@@ -10,16 +10,12 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 	private static final long serialVersionUID = 7853200087637751560L;
 	/** Position */
 	protected Point2Df position = new Point2Df(100, 100);
-	/** Current directional speed */
-	protected Point2Df vector = new Point2Df(0, 0);
 	/** Heading angle */
 	protected float heading = 0;
 	/** Lasershots active */
 	protected boolean[] shotActive = new boolean[StarShip.AMMO_COUNT];
 	/** Lasershots position */
 	protected Point2Df[] shotPosition = new Point2Df[StarShip.AMMO_COUNT];
-	/** Lasershots vector */
-	protected Point2Df[] shotVector = new Point2Df[StarShip.AMMO_COUNT];
 	/** Lasershots heading */
 	protected float[] shotHeading = new float[StarShip.AMMO_COUNT];
 	
@@ -50,17 +46,12 @@ public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 	protected void setShip(StarShip ship) {
 		position.x = ship.position.x;
 		position.y = ship.position.y;
-		vector.x = ship.vector.x;
-		vector.y = ship.vector.y;
 		heading = ship.heading;
 		for (int i=0; i<ship.ammo.size(); i++) {
 			if (shotPosition[i]==null) shotPosition[i] = new Point2Df(0, 0);
-			if (shotVector[i]==null) shotVector[i] = new Point2Df(0, 0);
 			shotActive[i] = ship.ammo.get(i).active;
 			shotPosition[i].x = ship.ammo.get(i).position.x;
 			shotPosition[i].y = ship.ammo.get(i).position.y;
-			shotVector[i].x = ship.ammo.get(i).vector.x;
-			shotVector[i].y = ship.ammo.get(i).vector.y;
 			shotHeading[i] = ship.ammo.get(i).heading;
 			i++;
 		}

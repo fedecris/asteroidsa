@@ -1,6 +1,13 @@
 package asteroidsa.network;
 
+/**
+ * A ConcurrentHashMap which mantains a separate keyList and valueList in order to avoid
+ * creating new instances when using tratidional methods like keySet() or values(), hence
+ * this type is useful for cases in which iterations over a hashmap is frequently called.
+ */
+
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class IterateableConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
@@ -28,6 +35,11 @@ public class IterateableConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> 
 			return put(key, value);
 		}
 		return null;
+	}
+	
+	@Override
+	public void putAll(Map<? extends K, ? extends V> m) {
+		throw new RuntimeException("Method putAll() for type IterateableConcurrentHashMap not implemented yet");
 	}
 	
 	@Override
