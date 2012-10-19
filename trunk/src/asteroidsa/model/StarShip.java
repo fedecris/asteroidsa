@@ -135,6 +135,11 @@ public class StarShip extends Sprite {
 			Globals.cycleStarsLevel();
 			return true;
 		}
+		// CYCLE (I)NPUT METHOD
+		else if (keyCode == KeyEvent.KEYCODE_I) {
+			Globals.cycleInputMethod();
+			return true;
+		}
 		
 		return false;
 

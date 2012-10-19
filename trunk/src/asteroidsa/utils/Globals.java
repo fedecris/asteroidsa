@@ -56,8 +56,10 @@ public class Globals {
 	public static final int INPUT_ACCELEROMETER	= 1;
 	/** Input through virtual keyboard (HUD) */
 	public static final int INPUT_KEYBOARD_HUD	= 2;
+	/** Different number of input methods */
+	public static final int INPUT_METHODS_COUNT = 3;
 	/** Default input method  */
-	public static int inputMethod = INPUT_KEYBOARD_HUD;
+	public static int inputMethod = INPUT_ACCELEROMETER;
 	
 	// First time configuration run
 	protected static boolean firstConf = false;
@@ -141,5 +143,9 @@ public class Globals {
 		initStars();
 	}
 
+	public static void cycleInputMethod() {
+		if (inputMethod++ == INPUT_METHODS_COUNT)
+			inputMethod = 0;
+	}
 	
 }
