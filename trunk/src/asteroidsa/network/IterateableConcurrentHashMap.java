@@ -91,5 +91,13 @@ public class IterateableConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> 
 	public ArrayList<V> getValueList() {
 		return valueList;
 	}
+
+	public K getKeyAt(int pos) {
+		return keyList.get(pos);
+	}
 	
+	public V getValueAt(int pos) {
+		return valueList.get(pos);
+	}
+
 }

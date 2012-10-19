@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+import asteroidsa.model.HUD;
 import asteroidsa.network.Logger;
 import asteroidsa.utils.Globals;
 
@@ -97,7 +98,7 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 	
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
-			Globals.starShip.fire();
+			HUD.handleOnTouch(event);
 		return true;
 	}	
     

@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import asteroidsa.model.HUD;
+import asteroidsa.network.Logger;
 import asteroidsa.utils.Globals;
 
 public class FastRenderView extends SurfaceView implements Runnable {
@@ -59,6 +61,7 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	        	// Update model for the ship
 	        	Globals.starShip.update();
 	        	
+	        	// Wait for valid lock
 	            if(!holder.getSurface().isValid())
 	                continue;
 	            
@@ -71,7 +74,7 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	            canvas = null;
         	}
         	catch (Exception e) {
-        		e.printStackTrace();
+        		Logger.e(e.getMessage());
         	}
         }
     }
@@ -100,14 +103,8 @@ public class FastRenderView extends SurfaceView implements Runnable {
 	    	// draw ship
 	    	Globals.starShip.draw(canvas);
 
-// TODO: Levels & Points system!
-//	    	paint.setTextSize(20);
-//	    	paint.setColor(Color.WHITE);
-//	    	paint.setStyle(Style.FILL);
-//	    	paint.setTypeface(Typeface.SANS_SERIF);
-//	    	canvas.drawText("Level:"+Globals.level, 10, 20, paint);
-//	    	canvas.drawText("Lives:"+Globals.lives, 100, 20, paint);
-//	    	canvas.drawText("Points:"+Globals.points, 200, 20, paint);
+	    	// draw hud
+	    	HUD.draw(canvas);
     	}
     	catch (Exception e) {
     		e.printStackTrace();

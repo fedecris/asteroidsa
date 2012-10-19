@@ -16,8 +16,8 @@ public class Globals {
 	// Game specific
 	/** Game running */
 	public static boolean running = true;
-	/** Model size */
-	public static Point modelSize = new Point(100, 100); 
+	/** Model size (1% to 100% */
+	public static final Point modelSize = new Point(100, 100); 
 	/** Screen size */
 	public static Point canvasSize = null;
 	/** Relation between model & screen size (example: (8, 4.8) in a 800x480 grid). */
@@ -45,17 +45,19 @@ public class Globals {
 	/** Points */
 	public static int points = 0;
 	/** Total front stars */
-	public static int MAX_FRONT_STARS = 0; 
+	public static int MAX_FRONT_STARS = 10; 
 	/** Total back stars */
-	public static int MAX_BACK_STARS = 0; 	
+	public static int MAX_BACK_STARS = 10; 	
 	
 	// Input specific
 	/** Input through keyboard */
 	public static final int INPUT_KEYBOARD		= 0;
 	/** Input through accelerometer */
 	public static final int INPUT_ACCELEROMETER	= 1;
+	/** Input through virtual keyboard (HUD) */
+	public static final int INPUT_KEYBOARD_HUD	= 2;
 	/** Default input method  */
-	public static int inputMethod = INPUT_ACCELEROMETER;
+	public static int inputMethod = INPUT_KEYBOARD_HUD;
 	
 	// First time configuration run
 	protected static boolean firstConf = false;
@@ -67,15 +69,9 @@ public class Globals {
 	public static void startup()
 	{
 		// A star ship, stars and at least one asteroid
-        starShip = new StarShip();
-        stars.clear();
-        for (int i=0; i<MAX_BACK_STARS; i++)
-        	new Star(false);               
-        for (int i=0; i<MAX_FRONT_STARS; i++)
-        	new Star(true);
-        asteroids.clear();
-        for (int i=0; i<level; i++)
-        	new Asteroid();
+        initStarShip();
+        initStars();
+        initAsteroids();
         // First time configuration
         if (!firstConf)
         {	
@@ -88,6 +84,24 @@ public class Globals {
         		e.printStackTrace();
         	}
         }
+	}
+	
+	protected static void initStarShip() {
+		starShip = new StarShip();
+	}
+	
+	protected static void initStars() {
+        stars.clear();
+        for (int i=0; i<MAX_BACK_STARS; i++)
+        	new Star(false);               
+        for (int i=0; i<MAX_FRONT_STARS; i++)
+        	new Star(true);
+	}
+	
+	protected static void initAsteroids() {
+        asteroids.clear();
+        for (int i=0; i<level; i++)
+        	new Asteroid();
 	}
 	
 	/**
@@ -119,6 +133,12 @@ public class Globals {
 		}
 		startup();
 		
+	}
+	
+	public static void cycleStarsLevel() {
+		MAX_FRONT_STARS = (MAX_FRONT_STARS+10) % 100;
+		MAX_BACK_STARS = MAX_FRONT_STARS;
+		initStars();
 	}
 
 	

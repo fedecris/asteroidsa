@@ -25,6 +25,10 @@ public class StarShip extends Sprite {
 	protected static final float DEAD_ZONE_THROOTLE = 5;
 	/** laser beam amount */
     public static final int AMMO_COUNT = 1;
+    /** The color of the local ship */
+    public static final int LOCAL_SHIP_COLOR = Color.GREEN;
+    /** The color of the other ships */
+    public static final int REMOTE_SHIP_COLOR = Color.BLUE;
 	// Path for drawing ship
 	private Path p = new Path();
 	// Laser beams
@@ -91,29 +95,45 @@ public class StarShip extends Sprite {
 
 	
 	public boolean processKeyEvent(int keyCode) {
+		// LEFT
 		if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
 			headingSpeed -= .01f;
 			if (headingSpeed < -.05f)
 				headingSpeed = -.05f;
 			return true;
 		}
+		// RIGHT
 		else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
 			headingSpeed += .01f;
 			if (headingSpeed > .05f)
 				headingSpeed = .05f;
 			return true;
 		}
+		// GAS!
 		else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
 			vector.x = vector.x + FloatMath.cos(heading) / StarShip.SOFT_THROOTLE; 
 			vector.y = vector.y + FloatMath.sin(heading) / StarShip.SOFT_THROOTLE;
 			return true;
 		}
+		// FIRE!
 		else if (keyCode == KeyEvent.KEYCODE_SPACE) {
 			Globals.starShip.fire();
 			return true;
 		}
+		// CHANGE HOST (O)NLINE STATUS
 		else if (keyCode == KeyEvent.KEYCODE_O) {
 			HostDiscovery.thisHost.setOnLine(!HostDiscovery.thisHost.isOnLine());
+			return true;
+		}
+		// CHANGE (H)UD DISPLAY
+		else if (keyCode == KeyEvent.KEYCODE_H) {
+			HUD.displayHUD = !HUD.displayHUD;
+			return true;
+		}
+		// CYCLE (S)TARS LEVEL
+		else if (keyCode == KeyEvent.KEYCODE_S) {
+			Globals.cycleStarsLevel();
+			return true;
 		}
 		
 		return false;
@@ -140,9 +160,9 @@ public class StarShip extends Sprite {
 
 		// Wings - (My ship or other?)
 		if (this.equals(Globals.starShip))
-			paint.setColor(Color.GREEN);
+			paint.setColor(LOCAL_SHIP_COLOR);
 		else
-			paint.setColor(Color.BLUE);
+			paint.setColor(REMOTE_SHIP_COLOR);
 		paint.setStrokeWidth(4);
 		p.reset();
 		posX = position.x * Globals.model2canvas.x;
