@@ -1,8 +1,7 @@
 package asteroidsa.network.discovery;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import asteroidsa.network.Host;
+import asteroidsa.network.IterateableConcurrentHashMap;
 import asteroidsa.network.Logger;
 
 public abstract class HostDiscovery {
@@ -12,7 +11,7 @@ public abstract class HostDiscovery {
 	/** Host local */
 	public static Host thisHost = null;
 	/** The other hosts list. IP->Host details */
-	public static ConcurrentHashMap<String, Host> otherHosts = new ConcurrentHashMap<String, Host>();
+	public static IterateableConcurrentHashMap<String, Host> otherHosts = new IterateableConcurrentHashMap<String, Host>();
 	
 	/**
 	 * Start the discovery method for finding hosts
