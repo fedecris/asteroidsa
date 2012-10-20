@@ -7,9 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.util.FloatMath;
-import android.view.KeyEvent;
 import asteroidsa.network.Logger;
-import asteroidsa.network.discovery.HostDiscovery;
 import asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {
@@ -18,7 +16,7 @@ public class StarShip extends Sprite {
 	/** Soften accelerometer reading for movement, heading */
 	protected static final float SOFT_ROTATION = 20f;
 	/** Soften accelerometer reading for movement, heading */
-	protected static final float SOFT_THROOTLE = 20f;
+	public static final float SOFT_THROOTLE = 20f;
 	/** Dead zone (rotation) */
 	protected static final float DEAD_ZONE_ROTATION = 0.5f;
 	/** Dead zone (throttle) */	
@@ -93,57 +91,6 @@ public class StarShip extends Sprite {
 			ammo.get(i).update();
 	}
 
-	
-	public boolean processKeyEvent(int keyCode) {
-		// LEFT
-		if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-			headingSpeed -= .01f;
-			if (headingSpeed < -.05f)
-				headingSpeed = -.05f;
-			return true;
-		}
-		// RIGHT
-		else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-			headingSpeed += .01f;
-			if (headingSpeed > .05f)
-				headingSpeed = .05f;
-			return true;
-		}
-		// GAS!
-		else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-			vector.x = vector.x + FloatMath.cos(heading) / StarShip.SOFT_THROOTLE; 
-			vector.y = vector.y + FloatMath.sin(heading) / StarShip.SOFT_THROOTLE;
-			return true;
-		}
-		// FIRE!
-		else if (keyCode == KeyEvent.KEYCODE_SPACE) {
-			Globals.starShip.fire();
-			return true;
-		}
-		// CHANGE HOST (O)NLINE STATUS
-		else if (keyCode == KeyEvent.KEYCODE_O) {
-			HostDiscovery.thisHost.setOnLine(!HostDiscovery.thisHost.isOnLine());
-			return true;
-		}
-		// CHANGE (H)UD DISPLAY
-		else if (keyCode == KeyEvent.KEYCODE_H) {
-			HUD.displayHUD = !HUD.displayHUD;
-			return true;
-		}
-		// CYCLE (S)TARS LEVEL
-		else if (keyCode == KeyEvent.KEYCODE_S) {
-			Globals.cycleStarsLevel();
-			return true;
-		}
-		// CYCLE (I)NPUT METHOD
-		else if (keyCode == KeyEvent.KEYCODE_I) {
-			Globals.cycleInputMethod();
-			return true;
-		}
-		
-		return false;
-
-	}
 	
 	/**
 	 * Fires a laser beam, if available
