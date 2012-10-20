@@ -71,6 +71,10 @@ public class NetworkStartup {
 			throw new Exception ("NetworkStartup not configured.  Invoke configureStartup() first.");
 		
 		try {
+			if (HostDiscovery.NO_NETWORK_IP.equals(HostDiscovery.thisHost.getHostIP())) {
+				Logger.w("Cannot start network services.  No network detected");
+				return false;
+			}
 			// Communication server
 			if (!networkCommunication.startService())
 				throw new Exception ("Error starting network communication service");

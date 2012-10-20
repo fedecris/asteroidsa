@@ -121,8 +121,11 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
     }
 	
 	public boolean onTouch(View v, MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN)
-			HUD.handleOnTouch(event, this);
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			HUD.handleSingleTouch(event, this);
+			return true;
+		}
+		HUD.handleContinuousTouch(event, this);
 		return true;
 	}	
     
