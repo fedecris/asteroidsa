@@ -12,6 +12,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -20,11 +21,34 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import asteroidsa.model.HUD;
+import asteroidsa.model.StarShip;
 import asteroidsa.network.Logger;
+import asteroidsa.network.discovery.HostDiscovery;
 import asteroidsa.utils.Globals;
 
 public class AsteroidsaActivity extends Activity implements OnTouchListener, SensorEventListener {
+	
+	// Constants
+	/** Throttle control key */
+	public static int KEYCODE_CONTROL_THROTTLE 			= KeyEvent.KEYCODE_DPAD_UP;
+	/** Left control key */
+	public static int KEYCODE_CONTROL_LEFT 				= KeyEvent.KEYCODE_DPAD_LEFT;
+	/** Right control key */
+	public static int KEYCODE_CONTROL_RIGHT 			= KeyEvent.KEYCODE_DPAD_RIGHT;
+	/** Fire! control key */
+	public static int KEYCODE_CONTROL_FIRE 				= KeyEvent.KEYCODE_SPACE;
+	/** Show setting buttons */
+	public static int KEYCODE_SETTING_SETTINGS 			= KeyEvent.KEYCODE_S;
+	/** Change status online-offline*/
+	public static int KEYCODE_SETTING_ONLINE 			= KeyEvent.KEYCODE_O;
+	/** Display HUD */
+	public static int KEYCODE_SETTING_HUD_DISPLAY 		= KeyEvent.KEYCODE_H;
+	/** Draw graphics level */
+	public static int KEYCODE_SETTING_DETAIL_LEVEL 		= KeyEvent.KEYCODE_D;
+	/** Input method */
+	public static int KEYCODE_SETTING_INPUT_METHOD 		= KeyEvent.KEYCODE_I;
+	/** Exit Game */
+	public static int KEYCODE_ACTION_EXIT 				= KeyEvent.KEYCODE_BACK;
 	
 	// Rendering engine
 	protected FastRenderView renderView;
@@ -98,7 +122,7 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 	
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
-			HUD.handleOnTouch(event);
+			HUD.handleOnTouch(event, this);
 		return true;
 	}	
     
@@ -112,11 +136,72 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		return processKeyEvent(keyCode);
+	}
+	
+	/**
+	 * Process input key events
+	 * @param keyCode received keyCode
+	 * @return true if it was handled, or false otherwise
+	 */
+	public boolean processKeyEvent(int keyCode) {
+		// EXIT
+		if (keyCode == KEYCODE_ACTION_EXIT) {
 			Logger.i("Exiting...");
 			System.exit(0);
 		}
-		return Globals.starShip.processKeyEvent(keyCode);
+		// LEFT
+		else if (keyCode == KEYCODE_CONTROL_LEFT) {
+			Globals.starShip.headingSpeed -= .01f;
+			if (Globals.starShip.headingSpeed < -.05f)
+				Globals.starShip.headingSpeed = -.05f;
+			return true;
+		}
+		// RIGHT
+		else if (keyCode == KEYCODE_CONTROL_RIGHT) {
+			Globals.starShip.headingSpeed += .01f;
+			if (Globals.starShip.headingSpeed > .05f)
+				Globals.starShip.headingSpeed = .05f;
+			return true;
+		}
+		// GAS!
+		else if (keyCode == KEYCODE_CONTROL_THROTTLE) {
+			Globals.starShip.vector.x = Globals.starShip.vector.x + FloatMath.cos(Globals.starShip.heading) / StarShip.SOFT_THROOTLE; 
+			Globals.starShip.vector.y = Globals.starShip.vector.y + FloatMath.sin(Globals.starShip.heading) / StarShip.SOFT_THROOTLE;
+			return true;
+		}
+		// FIRE!
+		else if (keyCode == KEYCODE_CONTROL_FIRE) {
+			Globals.starShip.fire();
+			return true;
+		}
+		// CHANGE HOST ONLINE STATUS
+		else if (keyCode == KEYCODE_SETTING_ONLINE) {
+			HostDiscovery.thisHost.setOnLine(!HostDiscovery.thisHost.isOnLine());
+			return true;
+		}
+		// CHANGE HUD DISPLAY
+		else if (keyCode == KEYCODE_SETTING_HUD_DISPLAY) {
+			HUD.displayHUD = !HUD.displayHUD;
+			return true;
+		}
+		// CYCLE DETAIL LEVEL
+		else if (keyCode == KEYCODE_SETTING_DETAIL_LEVEL) {
+			Globals.cycleStarsLevel();
+			return true;
+		}
+		// CYCLE INPUT METHOD
+		else if (keyCode == KEYCODE_SETTING_INPUT_METHOD) {
+			Globals.cycleInputMethod();
+			return true;
+		}
+		// CYCLE SHOW/HIDE SETTING BUTTONS
+		else if (keyCode == KEYCODE_SETTING_SETTINGS) {
+			HUD.cycleSettingButtons();
+			return true;
+		}
+		
+		return false;
+
 	}
-	
 }

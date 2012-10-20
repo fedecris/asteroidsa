@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import asteroidsa.model.HUD;
 import asteroidsa.network.Logger;
 import asteroidsa.utils.Globals;
 

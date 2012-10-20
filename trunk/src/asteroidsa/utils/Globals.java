@@ -55,11 +55,13 @@ public class Globals {
 	/** Input through accelerometer */
 	public static final int INPUT_ACCELEROMETER	= 1;
 	/** Input through virtual keyboard (HUD) */
-	public static final int INPUT_KEYBOARD_HUD	= 2;
+	public static final int INPUT_VIRTUAL	= 2;
 	/** Different number of input methods */
 	public static final int INPUT_METHODS_COUNT = 3;
 	/** Default input method  */
 	public static int inputMethod = INPUT_ACCELEROMETER;
+	/** String corresponding input method */
+	public static String[] virtualMethods =  {"Keyboard", "Accelerometer", "Virtual"}; 
 	
 	// First time configuration run
 	protected static boolean firstConf = false;
@@ -144,7 +146,7 @@ public class Globals {
 	}
 
 	public static void cycleInputMethod() {
-		if (inputMethod++ == INPUT_METHODS_COUNT)
+		if (inputMethod++ == INPUT_METHODS_COUNT-1)
 			inputMethod = 0;
 	}
 	
