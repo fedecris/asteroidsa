@@ -125,19 +125,13 @@ public class HUD {
 	}
 	
 	/**
-	 * Handles received touch event
+	 * Handles received single touch event
 	 * @param event touch event to be handled
 	 */
-	public static void handleOnTouch(MotionEvent event, AsteroidsaActivity activity) {
+	public static void handleSingleTouch(MotionEvent event, AsteroidsaActivity activity) {
 		// Process main configuration button
 		if (configurationButton.handleOnTouchEvent(event, activity))
 			return;
-		// Process HUD input
-		if (displayHUD && Globals.inputMethod == Globals.INPUT_VIRTUAL) {
-			for (int i=0; i < actionButtons.size(); i++)
-				if (actionButtons.get(i).handleOnTouchEvent(event, activity))
-					return;
-		}
 		// Process setting input
 		if (displaySettings) {
 			for (int i=0; i < settingButtons.size(); i++)
@@ -145,10 +139,24 @@ public class HUD {
 					return;
 		}
 		// Fire touching somewhere on the screen!
-		else if (Globals.inputMethod == Globals.INPUT_ACCELEROMETER)
+		if (Globals.inputMethod == Globals.INPUT_ACCELEROMETER)
 			activity.processKeyEvent(AsteroidsaActivity.KEYCODE_CONTROL_FIRE);
 	}
 
+	/**
+	 * Handles received continuous touch event
+	 * @param event touch event to be handled
+	 */
+	public static void handleContinuousTouch(MotionEvent event, AsteroidsaActivity activity) {
+		// Process HUD input
+		if (Globals.inputMethod == Globals.INPUT_VIRTUAL) {
+			for (int i=0; i < actionButtons.size(); i++)
+				if (actionButtons.get(i).handleOnTouchEvent(event, activity))
+					return;
+		}
+	}
+
+	
 	public static void cycleSettingButtons() {
 		displaySettings = !displaySettings;		
 	}

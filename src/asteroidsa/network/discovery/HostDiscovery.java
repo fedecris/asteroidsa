@@ -12,13 +12,15 @@ public abstract class HostDiscovery {
 	public static Host thisHost = null;
 	/** The other hosts list. IP->Host details */
 	public static IterateableConcurrentHashMap<String, Host> otherHosts = new IterateableConcurrentHashMap<String, Host>();
+	/** No network constant */
+	public static String NO_NETWORK_IP = "No network detected";
 	
 	/**
 	 * Start the discovery method for finding hosts
 	 * Subclasses must periodically update otherHosts data
 	 */
 	public abstract boolean startDiscovery();
-
+ 
 	/**
 	 * Stop the discovery method for finding hosts
 	 */
@@ -32,11 +34,12 @@ public abstract class HostDiscovery {
 		// Get IPv4 IP
 		thisHost = Host.getLocalHostAddresAndIP();
 		if (thisHost == null || thisHost.getHostIP() == null || thisHost.getHostIP().length() == 0) {
-			Logger.e("No IP! Exiting...");
-			System.exit(1);
+			thisHost = new Host(NO_NETWORK_IP, false); 
+			Logger.w(NO_NETWORK_IP);
 		}
-		// Initially conected
-		thisHost.setOnLine(true);
+		// Initially conected (if there is network connection)
+		if (!NO_NETWORK_IP.equals(thisHost.getHostIP()))
+				thisHost.setOnLine(true);
 	}
 	
 	/**
