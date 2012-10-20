@@ -31,7 +31,7 @@ public class HUDButton {
 	 */
 	public void draw(Canvas canvas, Paint paint) {
 		canvas.drawRect(drawArea, paint);
-		canvas.drawText(text, (int)(position.x + size.x/2.3) * Globals.model2canvas.x, (int)(position.y + size.y/1.7) * Globals.model2canvas.y, paint);
+		canvas.drawText(text, (position.x) * Globals.model2canvas.x, (int)(position.y + size.y/1.7) * Globals.model2canvas.y, paint);
 	}
 	
 	/**

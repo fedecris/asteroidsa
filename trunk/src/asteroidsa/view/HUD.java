@@ -26,7 +26,7 @@ public class HUD {
 	static int HUD_COLOR = Color.WHITE;
 
 	// Configuration button
-	static HUDButton configurationButton = null;
+	static HUDButton configButton = null;
 	// HUD visual components
 	static Vector<HUDButton> actionButtons = new Vector<HUDButton>();
 	// Setting buttons
@@ -49,20 +49,20 @@ public class HUD {
 	static {
 		// Initial configuration
 		paint.setTextSize(TEXT_SIZE);
-    	paint.setTypeface(Typeface.SANS_SERIF);
-    	paint.setStyle(Style.STROKE);
+    	paint.setTypeface(Typeface.MONOSPACE);
+    	paint.setStyle(Style.FILL);
     	// Main configuration button
-    	configurationButton = new HUDButton(BUTTON_SETTINGS_POS, 	BUTTON_SIZE, "?", 		AsteroidsaActivity.KEYCODE_SETTING_SETTINGS);
+    	configButton = new HUDButton(BUTTON_SETTINGS_POS, 		BUTTON_SIZE, "    ?    ", 	AsteroidsaActivity.KEYCODE_SETTING_SETTINGS);
     	// Create actionButtons
-    	actionButtons.add(new HUDButton(BUTTON_LEFT_POS, 		BUTTON_SIZE, "<<", 		AsteroidsaActivity.KEYCODE_CONTROL_LEFT));
-    	actionButtons.add(new HUDButton(BUTTON_RIGHT_POS, 		BUTTON_SIZE, ">>", 		AsteroidsaActivity.KEYCODE_CONTROL_RIGHT));
-    	actionButtons.add(new HUDButton(BUTTON_THROTTLE_POS, 	BUTTON_SIZE, "/\\", 	AsteroidsaActivity.KEYCODE_CONTROL_THROTTLE));
-    	actionButtons.add(new HUDButton(BUTTON_FIRE_POS, 		BUTTON_SIZE, "><", 		AsteroidsaActivity.KEYCODE_CONTROL_FIRE));
+    	actionButtons.add(new HUDButton(BUTTON_LEFT_POS, 		BUTTON_SIZE, "    <<   ", 	AsteroidsaActivity.KEYCODE_CONTROL_LEFT));
+    	actionButtons.add(new HUDButton(BUTTON_RIGHT_POS, 		BUTTON_SIZE, "    >>   ",	AsteroidsaActivity.KEYCODE_CONTROL_RIGHT));
+    	actionButtons.add(new HUDButton(BUTTON_THROTTLE_POS, 	BUTTON_SIZE, "    /\\  ", 	AsteroidsaActivity.KEYCODE_CONTROL_THROTTLE));
+    	actionButtons.add(new HUDButton(BUTTON_FIRE_POS, 		BUTTON_SIZE, "    ><   ", 	AsteroidsaActivity.KEYCODE_CONTROL_FIRE));
     	// Create settingButtons
-    	settingButtons.add(new HUDButton(BUTTON_ONLINE_POS, 	BUTTON_SIZE, "Online", 	AsteroidsaActivity.KEYCODE_SETTING_ONLINE));
-    	settingButtons.add(new HUDButton(BUTTON_HUD_POS, 		BUTTON_SIZE, "HUD", 	AsteroidsaActivity.KEYCODE_SETTING_HUD_DISPLAY));
-    	settingButtons.add(new HUDButton(BUTTON_DETAIL_POS, 	BUTTON_SIZE, "Detail", 	AsteroidsaActivity.KEYCODE_SETTING_DETAIL_LEVEL));
-    	settingButtons.add(new HUDButton(BUTTON_INPUT_POS, 		BUTTON_SIZE, "Input", 	AsteroidsaActivity.KEYCODE_SETTING_INPUT_METHOD));
+    	settingButtons.add(new HUDButton(BUTTON_ONLINE_POS, 	BUTTON_SIZE, "  Online ", 	AsteroidsaActivity.KEYCODE_SETTING_ONLINE));
+    	settingButtons.add(new HUDButton(BUTTON_HUD_POS, 		BUTTON_SIZE, "   HUD   ", 	AsteroidsaActivity.KEYCODE_SETTING_HUD_DISPLAY));
+    	settingButtons.add(new HUDButton(BUTTON_DETAIL_POS, 	BUTTON_SIZE, "  Detail ", 	AsteroidsaActivity.KEYCODE_SETTING_DETAIL_LEVEL));
+    	settingButtons.add(new HUDButton(BUTTON_INPUT_POS, 		BUTTON_SIZE, "  Input  ", 	AsteroidsaActivity.KEYCODE_SETTING_INPUT_METHOD));
 	}
 	
 	/**
@@ -84,8 +84,8 @@ public class HUD {
 	protected static void drawConfigurationButton(Canvas canvas) {
 		paint.setTextSize(TEXT_SIZE*2);
 		paint.setColor(HUD_COLOR);
-		paint.setAlpha(70);
-		configurationButton.draw(canvas, paint);
+		paint.setAlpha(30);
+		configButton.draw(canvas, paint);
 	}
 	
 	protected static void drawHosts(Canvas canvas) {
@@ -108,7 +108,7 @@ public class HUD {
 	
 	protected static void drawControls(Canvas canvas) {
 		paint.setColor(HUD_COLOR);
-		paint.setAlpha(127);
+		paint.setAlpha(50);
 		paint.setTextSize(TEXT_SIZE*2);
 		for (int i=0; i<actionButtons.size(); i++) {
 			actionButtons.get(i).draw(canvas, paint);
@@ -117,7 +117,7 @@ public class HUD {
 	
 	protected static void drawSettingButtons(Canvas canvas) {
 		paint.setColor(HUD_COLOR);
-		paint.setAlpha(127);
+		paint.setAlpha(100);
 		paint.setTextSize(TEXT_SIZE*2);
 		for (int i=0; i<settingButtons.size(); i++) {
 			settingButtons.get(i).draw(canvas, paint);
@@ -130,7 +130,7 @@ public class HUD {
 	 */
 	public static void handleSingleTouch(MotionEvent event, AsteroidsaActivity activity) {
 		// Process main configuration button
-		if (configurationButton.handleOnTouchEvent(event, activity))
+		if (configButton.handleOnTouchEvent(event, activity))
 			return;
 		// Process setting input
 		if (displaySettings) {
