@@ -3,11 +3,13 @@ package asteroidsa.model;
 
 import java.util.ArrayList;
 
+import networkdcq.util.Logger;
+
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.util.FloatMath;
-import asteroidsa.network.Logger;
 import asteroidsa.utils.Globals;
 
 public class StarShip extends Sprite {

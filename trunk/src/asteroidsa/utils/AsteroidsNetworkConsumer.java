@@ -1,12 +1,12 @@
 package asteroidsa.utils;
 
 import asteroidsa.model.StarShip;
-import asteroidsa.network.Host;
-import asteroidsa.network.Logger;
-import asteroidsa.network.NetworkApplicationData;
-import asteroidsa.network.NetworkApplicationDataConsumer;
-import asteroidsa.network.NetworkStartup;
-import asteroidsa.network.discovery.HostDiscovery;
+import networkdcq.Host;
+import networkdcq.NetworkApplicationData;
+import networkdcq.NetworkApplicationDataConsumer;
+import networkdcq.NetworkStartup;
+import networkdcq.discovery.HostDiscovery;
+import networkdcq.util.Logger;
 
 
 public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer {

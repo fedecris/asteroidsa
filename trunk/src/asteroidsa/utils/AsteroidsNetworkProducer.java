@@ -1,8 +1,8 @@
 package asteroidsa.utils;
 
-import asteroidsa.network.NetworkApplicationData;
-import asteroidsa.network.NetworkApplicationDataProducer;
-import asteroidsa.network.discovery.HostDiscovery;
+import networkdcq.NetworkApplicationData;
+import networkdcq.NetworkApplicationDataProducer;
+import networkdcq.discovery.HostDiscovery;
 
 public class AsteroidsNetworkProducer implements NetworkApplicationDataProducer {
 

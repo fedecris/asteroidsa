@@ -1,8 +1,8 @@
 package asteroidsa.utils;
 
 import asteroidsa.model.StarShip;
-import asteroidsa.network.Host;
-import asteroidsa.network.NetworkApplicationData;
+import networkdcq.Host;
+import networkdcq.NetworkApplicationData;
 
 public class AsteroidsNetworkApplicationData extends NetworkApplicationData {
 

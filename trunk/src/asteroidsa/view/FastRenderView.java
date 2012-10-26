@@ -1,11 +1,11 @@
 package asteroidsa.view;
 
+import networkdcq.util.Logger;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import asteroidsa.network.Logger;
 import asteroidsa.utils.Globals;
 
 public class FastRenderView extends SurfaceView implements Runnable {
