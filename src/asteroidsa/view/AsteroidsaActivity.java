@@ -22,8 +22,8 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import asteroidsa.model.StarShip;
-import asteroidsa.network.Logger;
-import asteroidsa.network.discovery.HostDiscovery;
+import networkdcq.discovery.HostDiscovery;
+import networkdcq.util.Logger;
 import asteroidsa.utils.Globals;
 
 public class AsteroidsaActivity extends Activity implements OnTouchListener, SensorEventListener {

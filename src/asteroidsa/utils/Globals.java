@@ -2,13 +2,14 @@ package asteroidsa.utils;
 
 import java.util.ArrayList;
 
+
 import android.graphics.Point;
 import android.graphics.PointF;
 import asteroidsa.model.Asteroid;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
-import asteroidsa.network.IterateableConcurrentHashMap;
-import asteroidsa.network.NetworkStartup;
+import networkdcq.NetworkStartup;
+import networkdcq.util.IterateableConcurrentHashMap;
 
 
 public class Globals {

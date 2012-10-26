@@ -14,7 +14,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import asteroidsa.model.StarShip;
-import asteroidsa.network.discovery.HostDiscovery;
+import networkdcq.discovery.HostDiscovery;
 import asteroidsa.utils.Globals;
 
 public class HUD {
