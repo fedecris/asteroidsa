@@ -36,7 +36,7 @@ public class Globals {
 	/** The others ships! IP->Starship */
 	public static IterateableConcurrentHashMap<String, StarShip> otherShips = new IterateableConcurrentHashMap<String, StarShip>();
 	/** Initial Level */
-	public final static int INITIAL_LEVEL = 0;
+	public final static int INITIAL_LEVEL = 1;
 	/** Level (& number of asteroids!) */
 	public static int level = INITIAL_LEVEL;
 	/** Max lives */
@@ -67,6 +67,13 @@ public class Globals {
 	// First time configuration run
 	protected static boolean firstConf = false;
 
+	// Game Mode
+	/** Just one player */
+	public static final String GAME_MODE_SINGLE_PLAYER = "Single player";
+	/** More than one player (via DCQ) */
+	public static final String GAME_MODE_MULTI_PLAYER = "Multi player";
+	/** Current game mode */
+	public static String CURRENT_GAME_MODE = GAME_MODE_SINGLE_PLAYER;
 	
 	/**
 	 * Initial values
@@ -130,14 +137,15 @@ public class Globals {
 	 */
 	public static void lifeLost()
 	{
-		lives--;
-		if (lives == 0) {
-			lives = MAX_LIVES;
-			points = 0;
-			level = INITIAL_LEVEL;
+		if (CURRENT_GAME_MODE == GAME_MODE_SINGLE_PLAYER) {
+			lives--;
+			if (lives == 0) {
+				lives = MAX_LIVES;
+				points = 0;
+				level = INITIAL_LEVEL;
+			}
 		}
 		startup();
-		
 	}
 	
 	public static void cycleStarsLevel() {

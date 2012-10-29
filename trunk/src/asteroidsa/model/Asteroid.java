@@ -33,7 +33,7 @@ public class Asteroid extends Sprite {
 		position.y = yPos;
 		width = pWidth;
 		height = pHeight;
-//		createShape();
+		createShape();
 	}
 		
 	
@@ -47,7 +47,7 @@ public class Asteroid extends Sprite {
         heading = 0;
         headingSpeed = (float)(Math.random() - 0.5f) * 1.5f;
         margin = width/4f;
-        topSpeed = .2f;
+        topSpeed = .05f;
         createShape();
         active = true;
 		Globals.asteroids.add(this);
@@ -81,20 +81,17 @@ public class Asteroid extends Sprite {
 		paint.setStrokeWidth(4);
 		paint.setColor(Color.YELLOW);
 
-//		// Rotate original shape
-//		matrix.reset();
-//		matrix.setRotate(headingSpeed); 
-//		shape.transform(matrix);
-//
-//		// Copy, translate and draw the copy
-//		Path dst = new Path(shape);
-//		matrix.reset();
-//		matrix.setTranslate(position.x * Globals.model2canvas.x - position.x, position.y * Globals.model2canvas.y - position.y);
-//		dst.transform(matrix);
-//		canvas.drawPath(dst, paint);
+		// Rotate original shape
+		matrix.reset();
+		matrix.setRotate(headingSpeed); 
+		shape.transform(matrix);
 
-		canvas.drawCircle(position.x * Globals.model2canvas.x, position.y * Globals.model2canvas.y, width, paint);
-		
+		// Copy, translate and draw the copy
+		Path dst = new Path(shape);
+		matrix.reset();
+		matrix.setTranslate(position.x * Globals.model2canvas.x, position.y * Globals.model2canvas.y);
+		dst.transform(matrix);
+		canvas.drawPath(dst, paint);		
 	}
 	
 	public void newHit()

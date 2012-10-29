@@ -74,6 +74,9 @@ public class HUD {
 		if (displayHUD) {
 			drawHosts(canvas);
 			drawInputMethod(canvas);
+			drawGameMode(canvas);
+			if (Globals.CURRENT_GAME_MODE == Globals.GAME_MODE_SINGLE_PLAYER)
+				drawLevelAndLives(canvas);
 		}
 		if (Globals.inputMethod == Globals.INPUT_VIRTUAL)
 			drawControls(canvas);
@@ -104,6 +107,20 @@ public class HUD {
 		paint.setColor(HUD_COLOR);
 		paint.setAlpha(255);
 		canvas.drawText("Input method: " + Globals.virtualMethods[Globals.inputMethod], 40 * Globals.model2canvas.x,  2 * Globals.model2canvas.y, paint);
+	}
+
+	protected static void drawGameMode(Canvas canvas) {
+		paint.setTextSize(TEXT_SIZE);
+		paint.setColor(HUD_COLOR);
+		paint.setAlpha(255);
+		canvas.drawText("Game mode: " + Globals.CURRENT_GAME_MODE, 40 * Globals.model2canvas.x,  4 * Globals.model2canvas.y, paint);
+	}
+	
+	protected static void drawLevelAndLives(Canvas canvas) {
+		paint.setTextSize(TEXT_SIZE);
+		paint.setColor(HUD_COLOR);
+		paint.setAlpha(255);
+		canvas.drawText(Globals.points + " points - " + Globals.lives + " lives", 40 * Globals.model2canvas.x,  6 * Globals.model2canvas.y, paint);		
 	}
 	
 	protected static void drawControls(Canvas canvas) {

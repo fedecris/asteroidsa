@@ -1,5 +1,7 @@
 package asteroidsa.view;
 
+import networkdcq.discovery.HostDiscovery;
+import networkdcq.util.Logger;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -12,7 +14,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -21,9 +22,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import asteroidsa.model.StarShip;
-import networkdcq.discovery.HostDiscovery;
-import networkdcq.util.Logger;
 import asteroidsa.utils.Globals;
 
 public class AsteroidsaActivity extends Activity implements OnTouchListener, SensorEventListener {
@@ -155,22 +153,17 @@ public class AsteroidsaActivity extends Activity implements OnTouchListener, Sen
 		}
 		// LEFT
 		else if (keyCode == KEYCODE_CONTROL_LEFT) {
-			Globals.starShip.headingSpeed -= .01f;
-			if (Globals.starShip.headingSpeed < -.05f)
-				Globals.starShip.headingSpeed = -.05f;
+			Globals.starShip.rotateLeft();
 			return true;
 		}
 		// RIGHT
 		else if (keyCode == KEYCODE_CONTROL_RIGHT) {
-			Globals.starShip.headingSpeed += .01f;
-			if (Globals.starShip.headingSpeed > .05f)
-				Globals.starShip.headingSpeed = .05f;
+			Globals.starShip.rotateRight();
 			return true;
 		}
 		// GAS!
 		else if (keyCode == KEYCODE_CONTROL_THROTTLE) {
-			Globals.starShip.vector.x = Globals.starShip.vector.x + FloatMath.cos(Globals.starShip.heading) / StarShip.SOFT_THROOTLE; 
-			Globals.starShip.vector.y = Globals.starShip.vector.y + FloatMath.sin(Globals.starShip.heading) / StarShip.SOFT_THROOTLE;
+			Globals.starShip.accelerate();
 			return true;
 		}
 		// FIRE!
