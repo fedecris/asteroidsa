@@ -61,6 +61,12 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	public void newHost(Host aHost) {
     	if (!NetworkStartup.getCommunication().connectToServerHost(aHost))
     		Logger.e("Could not connect to host: " + aHost.getHostIP());
+    	else {
+    		Globals.CURRENT_GAME_MODE = Globals.GAME_MODE_MULTI_PLAYER;
+    		Globals.level = 0;
+    		Globals.startup();
+    	}
+    		
 	}
 
 	
@@ -70,6 +76,11 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	public synchronized void byeHost(Host aHost) {
 		if (Globals.otherShips!=null && aHost!=null)
 			Globals.otherShips.remove(aHost.getHostIP());
+		if (Globals.otherShips.size() == 0) {
+    		Globals.CURRENT_GAME_MODE = Globals.GAME_MODE_SINGLE_PLAYER;
+    		Globals.level = 1;
+    		Globals.startup();
+		}
 	}
 
 	

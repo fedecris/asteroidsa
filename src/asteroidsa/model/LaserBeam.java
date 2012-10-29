@@ -44,6 +44,7 @@ public class LaserBeam extends Sprite {
 		updatePosition(true, false);
 		
         // collision with an asteroid?
+		targetAsteroid = null;
 		for (int i=0; i< Globals.asteroids.size(); i++) {
        		if (Globals.asteroids.get(i).active &&
        		    ((position.x - Globals.asteroids.get(i).position.x)*(position.x - Globals.asteroids.get(i).position.x) + 

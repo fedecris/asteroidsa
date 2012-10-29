@@ -24,7 +24,7 @@ public class StarShip extends Sprite {
 	/** Dead zone (throttle) */	
 	protected static final float DEAD_ZONE_THROOTLE = 5;
 	/** laser beam amount */
-    public static final int AMMO_COUNT = 1;
+    public static final int AMMO_COUNT = 3;
     /** The color of the local ship */
     public static final int LOCAL_SHIP_COLOR = Color.GREEN;
     /** The color of the other ships */
@@ -45,7 +45,7 @@ public class StarShip extends Sprite {
 	 */
 	public StarShip()
 	{
-		topSpeed = .3f;
+		topSpeed = .2f;
 		position.x = (float)Math.random() * Globals.modelSize.x;
 		position.y = (float)Math.random() * Globals.modelSize.y;
 		width = 3 * Globals.model2canvas.x;
@@ -135,6 +135,23 @@ public class StarShip extends Sprite {
 	    // draw my laser shots!
 		for (int i=0; i<ammo.size(); i++)
 			ammo.get(i).draw(canvas);
+	}
+	
+	public void accelerate() {
+		Globals.starShip.vector.x = Globals.starShip.vector.x + FloatMath.cos(Globals.starShip.heading) / StarShip.SOFT_THROOTLE; 
+		Globals.starShip.vector.y = Globals.starShip.vector.y + FloatMath.sin(Globals.starShip.heading) / StarShip.SOFT_THROOTLE;
+	}
+	
+	public void rotateLeft() {
+		Globals.starShip.headingSpeed -= .01f;
+		if (Globals.starShip.headingSpeed < -.05f)
+			Globals.starShip.headingSpeed = -.05f;
+	}
+	
+	public void rotateRight() {
+		Globals.starShip.headingSpeed += .01f;
+		if (Globals.starShip.headingSpeed > .05f)
+			Globals.starShip.headingSpeed = .05f;
 	}
 	
 }
