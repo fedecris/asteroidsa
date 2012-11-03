@@ -90,7 +90,7 @@ public class Globals {
         	try {
 	        	NetworkStartup.configureStartup(new AsteroidsNetworkConsumer(), new AsteroidsNetworkProducer());
 	        	firstConf=true;
-	        	NetworkStartup.doStartup();
+	        	NetworkStartup.doStartup(true, true, true);
         	}
         	catch (Exception e) {
         		e.printStackTrace();
