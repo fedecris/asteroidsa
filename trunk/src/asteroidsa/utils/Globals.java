@@ -8,7 +8,7 @@ import android.graphics.PointF;
 import asteroidsa.model.Asteroid;
 import asteroidsa.model.Star;
 import asteroidsa.model.StarShip;
-import networkdcq.NetworkStartup;
+import networkdcq.NetworkDCQ;
 import networkdcq.util.IterateableConcurrentHashMap;
 
 
@@ -88,9 +88,9 @@ public class Globals {
         if (!firstConf)
         {	
         	try {
-	        	NetworkStartup.configureStartup(new AsteroidsNetworkConsumer(), new AsteroidsNetworkProducer());
+	        	NetworkDCQ.configureStartup(new AsteroidsNetworkConsumer(), new AsteroidsNetworkProducer());
 	        	firstConf=true;
-	        	NetworkStartup.doStartup(true, true, true);
+	        	NetworkDCQ.doStartup(true, true, true);
         	}
         	catch (Exception e) {
         		e.printStackTrace();
