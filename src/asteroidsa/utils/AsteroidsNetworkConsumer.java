@@ -4,7 +4,7 @@ import asteroidsa.model.StarShip;
 import networkdcq.Host;
 import networkdcq.NetworkApplicationData;
 import networkdcq.NetworkApplicationDataConsumer;
-import networkdcq.NetworkStartup;
+import networkdcq.NetworkDCQ;
 import networkdcq.discovery.HostDiscovery;
 import networkdcq.util.Logger;
 
@@ -59,7 +59,7 @@ public class AsteroidsNetworkConsumer implements NetworkApplicationDataConsumer 
 	 * Handles new joins to the group of hosts
 	 */
 	public void newHost(Host aHost) {
-    	if (!NetworkStartup.getCommunication().connectToServerHost(aHost))
+    	if (!NetworkDCQ.getCommunication().connectToServerHost(aHost))
     		Logger.e("Could not connect to host: " + aHost.getHostIP());
     	else {
     		Globals.CURRENT_GAME_MODE = Globals.GAME_MODE_MULTI_PLAYER;
