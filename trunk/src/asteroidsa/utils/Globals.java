@@ -88,7 +88,7 @@ public class Globals {
         if (!firstConf)
         {	
         	try {
-	        	NetworkDCQ.configureStartup(new AsteroidsNetworkConsumer(), new AsteroidsNetworkProducer(), null);
+	        	NetworkDCQ.configureStartup(new AsteroidsNetworkConsumer(), new AsteroidsNetworkProducer(), null, null);
 	        	firstConf=true;
 	        	NetworkDCQ.doStartup(true, true, true);
         	}
